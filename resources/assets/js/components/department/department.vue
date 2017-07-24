@@ -6,9 +6,9 @@
        @btn-back-clicked="onBtnBackClicked"   @btn-delete-clicked="beginDelete" >                 
     </show>
 
-    <!-- <edit v-else :id="id" 
+    <edit v-else :id="id" 
        @saved="onSaved"   @canceled="onEditCanceled" >                 
-    </edit>  -->
+    </edit> 
 
     <delete-confirm :showing="deleteConfirm.show" :message="deleteConfirm.msg"
       @close="closeConfirm" @confirmed="deleteDepartment">        
@@ -19,14 +19,14 @@
 </template>
 <script>
     import Show from '../../components/department/show.vue'
-    //import Edit from '../../components/department/edit.vue'
+    import Edit from '../../components/department/edit.vue'
 
 
     export default {
         name:'Department',
         components: {
             Show,
-            // Edit,
+            Edit,
         },
         props: {
             id: {

@@ -60,13 +60,13 @@ class DepartmentsController extends BaseController
     }
     public function show($id)
     {
-        if(!request()->ajax()){
-            $menus=$this->menus($this->key);            
-            return view('departments.details')
-                    ->with([ 'menus' => $menus,
-                              'id' => $id     
-                        ]);
-        }
+        // if(!request()->ajax()){
+        //     $menus=$this->menus($this->key);            
+        //     return view('departments.details')
+        //             ->with([ 'menus' => $menus,
+        //                       'id' => $id     
+        //                 ]);
+        // }
 
         $current_user=request()->user();
         
@@ -75,11 +75,22 @@ class DepartmentsController extends BaseController
             return  $this->unauthorized();   
         }
 
-
+        $department->getChildren();
         $department->getParent();
 
         $department->canEdit=$department->canEditBy($current_user);
         $department->canDelete=$department->canDeleteBy($current_user);
         return response()->json(['department' => $department]);
+    }
+    public function edit($id)
+    {
+        $department=$this->departments->findOrFail($id);    
+        $current_user=$this->currentUser();
+        if(!$department->canEditBy($current_user)){
+            return  $this->unauthorized(); 
+        }
+        return response()->json([
+                    'department' => $department
+                ]);        
     }
 }

@@ -34,6 +34,7 @@ Vue.component('updated', require('./components/Updated') )
 Vue.component('user-card', require('./components/UserCard') )
 Vue.component('tree-view', require('./components/TreeView') )
 Vue.component('tree-item', require('./components/TreeItem') )
+Vue.component('level-dropdown', require('./components/LevelDropdown') )
 
 
 Vue.component('department-index', require('./views/department/index') )

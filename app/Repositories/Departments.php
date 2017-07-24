@@ -39,6 +39,32 @@ class Departments
         
     }
 
+    public function optionsConverting($departmentList)
+    {
+        $options=[];
+        foreach($departmentList as $department)
+        {
+            $item=[ 'text' => $department->name , 
+                     'value' => $department->id , 
+                 ];
+            array_push($options,  $item);
+        }
+          return $options;
+    }
+
+    public function options()
+    {
+        $departments=$this->departments->getAll()
+                                       ->where('active',true)
+                                       ->where('parent',0)
+                                       ->get(); 
+        foreach ($departments as $department) {
+              $department->getChildren();
+        }
+
+       
+    }
+
      
 
      

@@ -41,12 +41,24 @@ class Department extends Model
 								->get();
 
 		if(count($children)){
-             foreach ($children as $department) {
+            foreach ($children as $department) {
                 $department->getChildren();
             }
         }
 
 		$this->children= $children;
+
+		// if(!$options) return;
+
+		// $options=[];
+        // foreach($this->children as $child)
+        // {
+        //     $item=[ 'text' => $child->name , 
+        //              'value' => $child->id , 
+        //          ];
+        //     array_push($options,  $item);
+        // }
+        // $this->childrenOption= $options;
 	}
 	public function canViewBy($user)
 	{
