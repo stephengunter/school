@@ -10,12 +10,14 @@ class Profile extends Model {
     protected $primaryKey = 'user_id';
     
 	protected $fillable = [
-	   'user_id' , 'fullname', 'SID', 'gender', 'dob' ,'photo_id','title_id'
+	   'fullname', 'SID', 'gender', 
+       'dob' , 'title_id', 'updated_by'
 	];
 
 	
     protected $filter = [
         'user_id', 'fullname', 'SID', 'dob', 'gender', 'created_at',
+		
         'user.email', 'user.phone', 'user.name',
     ];
 
@@ -25,8 +27,8 @@ class Profile extends Model {
             'fullname' => '',
             'SID' => '',
             'gender' => 1 ,
-            'dob' => null ,
-            'photo_id'=> null,
+            'dob' => '' ,
+            'photo_id'=> '',
            
         ];
     }
@@ -36,7 +38,16 @@ class Profile extends Model {
 		return $this->belongsTo('App\User');
 	}
 
-    
+    public function title() {
+		return $this->belongsTo('App\Title');
+	}
+    public function titleText() {
+		if($this->title){
+            return $this->title->name;
+        }else{
+            return '';
+        }
+	}
 
     public function photo()
 	{

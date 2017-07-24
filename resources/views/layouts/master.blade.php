@@ -19,13 +19,13 @@
                         <strong v-text="alertSetting.title"></strong>
                     <p v-text="alertSetting.text"></p>
             </alert>
-            {{-- <modal  :showbtn="false"   :title="editor.title" :show.sync="showUpdatedBy" 
+            <modal  :showbtn="false"   :title="editor.title" :show.sync="showUpdatedBy" 
                 effect="fade" width="800"  
                 @closed="endShowUpdatedBy">
                 <div slot="modal-body" class="modal-body">
-                    <admin-card v-if="showUpdatedBy" :id="editor.updated_by" ></admin-card>
+                    <user-card v-if="showUpdatedBy" :id="editor.updated_by" ></user-card>
                 </div>
-            </modal> --}}
+            </modal>
 
             {{-- <modal :showbtn="false" :width="630" :show.sync="showLogin"  effect="fade"
                 @closed="showLogin=false" >

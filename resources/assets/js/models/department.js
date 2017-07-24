@@ -5,15 +5,12 @@ class Department {
             this[property] = data[property];
         }
 
-        this.formatedCourseName = Department.getFormatedCourseName(data.course)
+        this.parent=''
+        if(data.parentDepartment){
+            this.parent=data.parentDepartment.name
+        }
 
-        this.formatedTuition = Department.formatTuition(data.discount, data.points)
-
-        this.statusText = Department.getStatusText(data.status)
-
-
-
-        this.discountText = Department.formatDiscountText(data.discount, data.points)
+     
 
     }
     static title() {
@@ -206,62 +203,10 @@ class Department {
 
         return thead
     }
-    static formatTuition(discount, points) {
-        let formated_tuition = Helper.formatMoney(this.tuition) + ' 元'
-        if (!discount) return formated_tuition
+  
 
 
-        formated_tuition += ' &nbsp ( '
-        formated_tuition += discount + ' &nbsp  '
-        formated_tuition += this.getPointsText(points) + ' 折優惠'
-        formated_tuition += ' )'
-
-        return formated_tuition
-
-    }
-
-    static formatDiscountText(discount, points) {
-        if (!discount) return ''
-        return this.getPointsText(points) + ' 折 / ' + discount
-    }
-
-    static getPointsText(points) {
-        let pointsText = points
-        if (parseInt(points) % 10 == 0) {
-            pointsText = parseInt(points) / 10
-        }
-        return pointsText
-    }
-
-    static getStatusText(status) {
-        status = parseInt(status)
-        if (status == 0) return '待繳費'
-        if (status == 1) return '已繳費'
-        if (status == -1) return '已取消'
-        return ''
-    }
-    static getStatusStyle(status) {
-        status = parseInt(status)
-        if (status == 0) return 'default'
-        if (status == 1) return 'info'
-        if (status == -1) return 'warning'
-
-        return ''
-    }
-
-    static getFormatedCourseName(course, text) {
-        return Course.getFormatedCourseName(course, text)
-    }
-
-
-
-    statusLabel() {
-        let status = this.status
-        let text = Department.getStatusText(status)
-        let style = 'label label-' + Department.getStatusStyle(status)
-
-        return `<span class="${style}" > ${text} </span>`
-    }
+    
 
 
 

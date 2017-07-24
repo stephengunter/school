@@ -21,5 +21,6 @@ Route::get('/login', function () {
 
 Route::post('login', '\App\Http\Controllers\Auth\SessionsController@store');
 Route::resource('departments', 'DepartmentsController');
+Route::resource('users', '\App\Http\Controllers\User\UsersController');
 
 

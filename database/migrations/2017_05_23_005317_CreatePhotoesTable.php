@@ -6,6 +6,11 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePhotoesTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('photoes', function (Blueprint $table) {

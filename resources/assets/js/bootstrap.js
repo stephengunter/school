@@ -31,11 +31,15 @@ Vue.component('image-upload', require('./components/ImageUpload') )
 Vue.component('role-label', require('./components/RoleLabel') )
 Vue.component('combination-select', require('./components/CombinationSelect') )
 Vue.component('updated', require('./components/Updated') )
+Vue.component('user-card', require('./components/UserCard') )
 Vue.component('tree-view', require('./components/TreeView') )
 Vue.component('tree-item', require('./components/TreeItem') )
 
 
 Vue.component('department-index', require('./views/department/index') )
+Vue.component('department-details', require('./views/department/details') )
+
+
 
 
 
@@ -53,6 +57,9 @@ import Form from './utilities/Form';
 import Helper from './helper.js'
 import Config from './config.js'
 
+import TimeService from './services/time.js'
+import CommonService from './services/common.js'
+
 import Auth from './packages/auth/Auth.js'
 Vue.use(Auth)
 
@@ -60,9 +67,17 @@ window.Form = Form
 window.Helper = Helper
 window.Config = Config
 
+window.TimeService = TimeService
+window.CommonService = CommonService
+
+
+
+
 import Department from './models/department.js'
+import User from './models/user.js'
 
 window.Department = Department
+window.User = User
 
 
 

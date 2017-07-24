@@ -32,7 +32,7 @@
                  <div class="col-sm-3">
                       <label class="label-title">母部門</label>
                      
-                      <p v-html="$options.filters.parents(department.icon)">                       
+                      <p v-text="department.parent">                       
                       </p>                     
                  </div>
                   <div class="col-sm-2">

@@ -1,93 +1,117 @@
 <template>
 <div>
-    <!-- <treeview :model="model"></treeview> -->
-     <div class="panel panel-default show-data">
-        <div class="panel-heading">
-            <span class="panel-title">
-                <h4>
-                    <i class="fa fa-sitemap" aria-hidden="true"></i>
-                    部門管理
-                </h4>
-             </span>
-              
-            <div>
-                <!-- <button v-if="center.canEdit" v-show="canEdit" @click="btnEditCilcked" class="btn btn-primary btn-sm" >
-                    <span class="glyphicon glyphicon-pencil"></span> 編輯
-                </button>
+    
+    <show v-if="readOnly"  :id="id" can_edit="can_edit"  :can_back="can_back"  
+       :version="version"  @begin-edit="beginEdit" @loaded="onDataLoaded"
+       @btn-back-clicked="onBtnBackClicked"   @btn-delete-clicked="beginDelete" >                 
+    </show>
 
-                <button  v-if="center.canDelete" @click="beginDelete" class="btn btn-danger btn-sm" >
-                    <span class="glyphicon glyphicon-trash"></span> 刪除
-                </button> -->
-               
-            </div>
-        </div>  <!-- End panel-heading-->
-        <div class="panel-body">
-            
+    <!-- <edit v-else :id="id" 
+       @saved="onSaved"   @canceled="onEditCanceled" >                 
+    </edit>  -->
 
-       
-        </div>  <!-- End panel-body-->
+    <delete-confirm :showing="deleteConfirm.show" :message="deleteConfirm.msg"
+      @close="closeConfirm" @confirmed="deleteDepartment">        
+    </delete-confirm>
+    
 
-    </div>
 </div>
 </template>
-
 <script>
+    import Show from '../../components/department/show.vue'
+    //import Edit from '../../components/department/edit.vue'
+
+
     export default {
-        name: 'Department',
+        name:'Department',
         components: {
-            
+            Show,
+            // Edit,
         },
-        beforeMount() {
-            this.init()
-        },  
+        props: {
+            id: {
+              type: Number,
+              default: 0
+            },
+            can_edit:{
+               type: Boolean,
+               default: true
+            },          
+            can_back:{
+              type: Boolean,
+              default: true
+            },
+            version: {
+              type: Number,
+              default: 0
+            },
+        },
         data() {
             return {
-                model:{
-                  name: 'My Tree',
-                  children: [
-                    { name: 'hello' },
-                    { name: 'wat' },
-                    {
-                      name: 'child folder',
-                      children: [
-                        {
-                          name: 'child folder',
-                          children: [
-                            { name: 'hello' },
-                            { name: 'wat' }
-                          ]
-                        },
-                        { name: 'hello' },
-                        { name: 'wat' },
-                        {
-                          name: 'child folder',
-                          children: [
-                            { name: 'hello' },
-                            { name: 'wat' }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
+                readOnly:true,
+                deleteConfirm:{
+                    id:0,
+                    show:false,
+                    msg:'',
+
+                }    
             }
         },
-        methods: { 
-            init(){
-                this.fetchData()                
-            },   
-            fetchData() {
-                let url = '/api/departments'
-                axios.get(url)
-                    .then(response => {
-                        this.model=response.data.departmentList
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+        beforeMount(){
+            this.init()
+        },
+        watch: {
+            'id': 'init',
+            'version':'init'
+        },
+        methods: {
+            init() {
+               this.readOnly=true
+               this.deleteConfirm={
+                    id:0,
+                    show:false,
+                    msg:''
+               }
+            },      
+            onDataLoaded(department){
+                this.$emit('loaded',department)
+            },        
+            beginEdit() {
+                this.readOnly=false
+            },
+            onEditCanceled(){
+                this.init()
+            },
+            onSaved(department){
+                this.init()
+                this.$emit('saved',department)
+            },
+            
+            onBtnBackClicked(){
+                this.$emit('btn-back-clicked')
+            },
+            beginDelete(values){
+                this.deleteConfirm.msg= '確定要刪除分類 『' + values.name + '』嗎' 
+                this.deleteConfirm.id=values.id
+                this.deleteConfirm.show=true                
+            },
+            closeConfirm(){
+                this.deleteConfirm.show=false
+            },
+            deleteDepartment(){
+                let id = this.deleteConfirm.id 
+                let remove= Department.delete(id)
+                remove.then(result => {
+                    Helper.BusEmitOK('刪除成功')
+                    this.deleteConfirm.show=false
+                    this.$emit('deleted')
+                })
+                .catch(error => {
+                    Helper.BusEmitError(error,'刪除失敗')
+                    this.closeConfirm()   
+                })
             },
             
         }
-
     }
 </script>

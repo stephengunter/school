@@ -24,6 +24,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token', 
     ];
+	public function profile()
+	{
+		return $this->hasOne(Profile::class);
+	}
 
     public function teacher()
 	{
@@ -55,9 +59,7 @@ class User extends Authenticatable
 	{
 		$this->attributes['password'] = bcrypt($value);
 	}
-	public function test(){
-		return $this->encryptSID('F8888');
-	}
+	
 	
     public function setSIDAttribute($value)
 	{
@@ -76,5 +78,28 @@ class User extends Authenticatable
 
         return $item;
     }
+	public function canViewBy($user)
+	{
+		return true;
+		if($user->id==$this->id) return true;
+          
+	}
+	public function canEditBy($user)
+	{
+		return true;
+		if($user->id==$this->id) return true;
+          
+	}
+	public function canDeleteBy($user)
+	{
+		return true;
+		if(!$this->canEditBy($user)) return false;
+
+		if(count($this->roles)){
+			return false;
+		}
+		return true;
+	}
+
 
 }
