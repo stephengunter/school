@@ -1,5 +1,128 @@
+window.$ = window.jQuery = require('jquery');
+require('../css/app.css');
+require('../css/font-awesome.css');
+require('../css/site.css');
+require('../summernote/summernote.css');
 
-window._ = require('lodash');
+require('bootstrap-sass');
+
+require('../summernote/summernote.js');
+require('../summernote/lang/summernote-zh-TW.js');
+
+import Vue from 'vue';
+Vue.component('modal', require('vue-strap/src/modal') )
+Vue.component('alert', require('vue-strap/src/alert') )
+Vue.component('tooltip', require('vue-strap/src/tooltip') )
+
+
+import vSelect from 'vue-select'
+Vue.component('drop-down', vSelect)
+Vue.component('date-picker', require('vue-datepicker') )
+Vue.component('time-picker', require('vue2-timepicker') )
+Vue.component('pager', require('vue-simple-pager') )
+
+Vue.component('html-editor', require('./components/HtmlEditor') )
+Vue.component('delete-confirm', require('./components/DeleteConfirm') )
+Vue.component('toggle', require('./components/Toggle') )
+Vue.component('checkbox', require('./components/CheckBox') )
+Vue.component('data-viewer', require('./components/DataViewer') )
+Vue.component('photo', require('./components/Photo') )
+Vue.component('image-upload', require('./components/ImageUpload') )
+Vue.component('role-label', require('./components/RoleLabel') )
+Vue.component('combination-select', require('./components/CombinationSelect') )
+Vue.component('updated', require('./components/Updated') )
+Vue.component('tree-view', require('./components/TreeView') )
+Vue.component('tree-item', require('./components/TreeItem') )
+
+
+Vue.component('department-index', require('./views/department/index') )
+
+
+
+import axios from 'axios';
+window.axios = axios;
+window.axios.defaults.headers.common = {   
+    'X-Requested-With': 'XMLHttpRequest' 
+};
+import Moment from 'moment'
+import MomentTimeZone from 'moment-timezone'
+window.Moment = Moment;
+window.MomentTimeZone = MomentTimeZone;
+
+import Form from './utilities/Form';
+import Helper from './helper.js'
+import Config from './config.js'
+
+import Auth from './packages/auth/Auth.js'
+Vue.use(Auth)
+
+window.Form = Form
+window.Helper = Helper
+window.Config = Config
+
+import Department from './models/department.js'
+
+window.Department = Department
+
+
+
+
+window.Vue = Vue
+
+Vue.filter('strTime', function (datetime) {
+    return Helper.tpeTime(datetime)
+})
+Vue.filter('tpeTime', function (datetime) {
+    return Helper.tpeTime(datetime)
+})
+Vue.filter('boolText', function (val) {
+      return Helper.boolText(val)
+})
+Vue.filter('genderText', function (gender) {
+        if (parseInt(gender)) return '男'
+        return '女'
+})
+Vue.filter('activeLabel', function (active) {
+   return   Helper.activeLabel(active)
+   
+})
+Vue.filter('reviewedLabel', function (reviewed) {
+    return Helper.reviewedLabel(reviewed)
+})
+Vue.filter('statusLabel', function (status) {
+    return Helper.reviewedLabel(reviewed)
+})
+Vue.filter('showIcon', function (icon) {
+    if(!icon)  return ''
+    return '<i class="' + icon + '"  aria-hidden="true"></i>'
+})
+Vue.filter('formatMoney', function (val) {
+    return Helper.formatMoney(val)
+})
+Vue.filter('namesText', function (names) {
+    return Helper.namesText(names)
+})
+Vue.filter('titleHtml', function (title) {
+    return Helper.getTitleHtml(title)
+})
+Vue.filter('tryParseInt', function (val) {
+    return Helper.tryParseInt(val)
+})
+Vue.filter('okSign', function (val) {
+     return Helper.okSign(val)
+})
+
+window.Bus = new Vue({});
+
+
+
+
+
+
+
+
+
+//window._ = require('lodash');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,47 +130,10 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-    window.$ = window.jQuery = require('jquery');
+//window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass');
-} catch (e) {}
+// Vue.http.interceptors.push((request, next) => {
+//     request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
 
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-window.axios = require('axios');
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
-
-let token = document.head.querySelector('meta[name="csrf-token"]');
-
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
-
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
-// import Echo from 'laravel-echo'
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
+//     next();
 // });

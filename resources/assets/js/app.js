@@ -1,22 +1,125 @@
+import './bootstrap'
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+   
+new Vue({
 
-require('./bootstrap');
+    el: '#app',
+    data() {
+        return {
+            loaded:false,
+            isAuth:false,
+            showAlert: false,
+            showLogin:false,
+            alertSetting: {
+                type: 'success',
+                title: '資料儲存成功',
+                text: '',
+                dismissable: false,
+                duration: 2500,
+                class: 'fa fa-check-circle-o'
+            },
 
-window.Vue = require('vue');
+            showUpdatedBy:false,
+            editor:{
+                updated_by:'',
+                title:'最後更新者'
+            }
+        }
+    },
+    computed:{
+        showView(){
+            
+            return true
+        }
+    },
+    created() {
+        
+        document.getElementsByTagName("body")[0].removeAttribute("style");
+        Bus.$on('login',this.beginLogin)
+        Bus.$on('errors',this.showErrorMsg)
+        Bus.$on('okmsg',this.showSuccessMsg)       
+         
+        Bus.$on('onShowEditor', function(updated_by,title){
+                 this.editor.updated_by=updated_by
+                 if(title) this.editor.title=title
+                 this.showUpdatedBy=true
+              }.bind(this));
+     
+    },
+    beforeMount() {
+           this.init()
+    },
+    
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+    methods: {
+        init(){
+            
+            this.isAuth=false
 
-Vue.component('example', require('./components/Example.vue'));
+            this.showUpdatedBy=false
+            this.updated_by=''
+        },
+        setAuth(auth){
+            this.isAuth=auth
+        },
+        beginLogin(){
+            this.showLogin=true
+        },
+        logined(){
+            this.showLogin=false
+        },
+        closeAlert() {
+            this.showAlert = false;
+        },
+        setAlertText(msg) {
+            let title = msg.title ? msg.title : '處理您的要求時發生錯誤'
+            let text = msg.text
+            this.alertSetting.title = title
+            this.alertSetting.text = text
+        },
+        showErrorMsg(error) {
+            let msg = {}
+            if (error.status == 500) {
+                msg = {
+                    title: '處理您的要求時發生錯誤',
+                    text: '系統暫時無回應，請稍後再試'
+                }
+            }else if(error.status == 404){
+                msg = {
+                    title: '查無資料',
+                    text: ''
+                }
+            }else {
+                msg = {
+                    title: error.title,
+                    text: error.text
+                }
+            }
+            this.setAlertText(msg);
+            this.alertSetting.class = 'fa fa-exclamation-circle'
+            this.alertSetting.type = 'danger'
 
-const app = new Vue({
-    el: '#app'
-});
+            this.showAlert = true;
+            this.showModal = false;
+        },
+        showSuccessMsg(msg) {
+            this.setAlertText(msg);
+            this.alertSetting.class = 'fa fa-check-circle-o'
+            this.alertSetting.type = 'success'
+
+            this.showAlert = true;
+            this.showModal = false;
+        },
+
+        
+        endShowUpdatedBy(){
+            this.showUpdatedBy=false
+        },
+
+        
+        
+
+    },
+    
+
+})

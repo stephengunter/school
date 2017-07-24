@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +9,17 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+     return view('app');
 });
+Route::get('/test', function () {
+   return view('test');
+});
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::post('login', '\App\Http\Controllers\Auth\SessionsController@store');
+Route::resource('departments', 'DepartmentsController');
+
+
