@@ -10,6 +10,15 @@ class CommonService {
 
         return `<span class="${style}" > ${text} </span>`
     }
+    static removedLabel(removed) {
+         if (parseInt(removed) < 1) return ''
+     
+        let style='label label-danger'
+      
+         let text='已移除'
+
+        return `<span class="${style}" > ${text} </span>`
+    }
 
     static reviewedText(reviewed) {
         if (parseInt(reviewed)) return '已審核'

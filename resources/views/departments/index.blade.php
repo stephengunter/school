@@ -3,11 +3,16 @@
 
 @section('content')
         
-      <department-index></department-index?  
+       <department-index v-show="!selected" 
+           :version="version"
+         @begin-create="onBeginCreate"  @selected="onSelected"  >
+       </department-index> 
 
        
 
-      
+       <department-details v-if="selected"  :id="selected" :can_back="detailsSettings.can_back" 
+          @btn-back-clicked="backToIndex" @department-deleted="backToIndex">
+       </department-details>
       
        
 @endsection

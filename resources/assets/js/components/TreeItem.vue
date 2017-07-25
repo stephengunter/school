@@ -8,7 +8,8 @@
             <tree-item
                 
                 v-for="item in model.children"
-                :model="item" :key="item.id" >
+                :model="item" :key="item.id" 
+                @selected="onSelected">
             </tree-item>
           
         </ul>

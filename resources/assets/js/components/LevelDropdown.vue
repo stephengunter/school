@@ -6,8 +6,9 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <level-dropdown-item v-for="item in options" 
-        :item="item" :viewing="isViewing(item)" @extend="onExtended">
+      <level-dropdown-item v-for="item in options" :key="item.id"
+        :item="item" :viewing="isViewing(item)"
+         @extend="onExtended" @selected="onSelected">
       </level-dropdown-item>
     </ul>
 
@@ -22,42 +23,25 @@
             options: {
               type: Array
             },
-            default: {
-              type: String,
-              default: ''
+            default_item: {
+              type: Object,
+              default: {}
             },
         },
         data() {
             return {
-               selectedItem:{},
-               selectedId:'',
                viewing:'',
                loaded:false,
             }
         },
         computed:{
-           title(){
-               return 'test'
-           }
+            title(){
+               if(this.default_item) return this.default_item.text
+                    else  return '  -----  '
+            }    
         },
         beforeMount() {
-          if(this.options){
-
-          }else{
-
-          }
-            // let item = this.options.find((item)=>{
-            //   return item.id.toString() == this.default
-            // })
-            // if(item){
-            //     this.selectedItem=item
-            //     this.selectedId=item.id
-            // }else{
-            //     this.selectedItem={}
-            //     this.selectedId=''
-            // }
-
-            this.loaded=true
+         
             
         },
         methods: {
@@ -67,8 +51,8 @@
             isViewing(item){
                 return item.value==this.viewing
             },
-            onSelected(id){
-                this.$emit('selected',id)
+            onSelected(item){
+                this.$emit('selected',item)
             }
         }
 

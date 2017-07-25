@@ -29,6 +29,7 @@ class BaseController extends Controller
    
     protected function currentUser()
     {
+        return \App\User::find(51);
         if($this->checkAdmin){
             return $this->checkAdmin->currentUser();
         }else{

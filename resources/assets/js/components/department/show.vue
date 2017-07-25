@@ -35,7 +35,12 @@
                       <p v-text="department.parent">                       
                       </p>                     
                  </div>
-                  <div class="col-sm-2">
+                  <div v-if="entityRemoved" class="col-sm-2" >
+                      <label class="label-title">狀態</label>
+                      <p v-html="$options.filters.removedLabel(department.removed)">                       
+                      </p>
+                  </div>
+                  <div v-else class="col-sm-2">
                       <label class="label-title">狀態</label>
                       <p v-html="$options.filters.activeLabel(department.active)">                       
                       </p>
@@ -87,6 +92,12 @@
                title:Helper.getIcon(Department.title())  + '  部門管理',
                loaded:false,
                department:null,
+            }
+        },
+        computed:{
+            entityRemoved(){
+             
+                return Helper.isTrue(this.department.removed)
             }
         },
         watch:{

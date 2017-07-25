@@ -28,7 +28,9 @@
                         <div class="form-group">                           
                             <label>母部門</label>
                             <div>
-                               <level-dropdown :options="departmentOptions"></level-dropdown>
+                            <input type="hidden" v-model="form.department.parent"  >
+                               <level-dropdown :default_item="selectedDepartment" :options="departmentOptions"
+                                @selected="onDepartmentSelected" ></level-dropdown>
                             </div>
                         </div>  
                     </div>
@@ -36,7 +38,14 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                         <div class="form-group">                           
+                         <div v-if="entityRemoved" class="form-group">                           
+                            <label>已移除</label>
+                            <div>
+                               <input type="hidden" v-model="form.department.removed"  >
+                               <toggle :items="removedOptions"   :default_val="form.department.removed" @selected=setRemoved></toggle>
+                            </div>
+                        </div>
+                        <div v-else class="form-group">                           
                             <label>狀態</label>
                             <div>
                                <input type="hidden" v-model="form.department.active"  >
@@ -88,12 +97,20 @@
                     }
                 }),
                 
+                selectedDepartment:{},
+
+                removedOptions: Helper.boolOptions(),
                 activeOptions: Helper.activeOptions(),
 
                 departmentOptions:[],
             }
         },
-        
+        computed:{
+            entityRemoved(){
+                if(!this.form.department) return false
+                return Helper.isTrue(this.form.department.removed)
+            }
+        },
         beforeMount() {
             this.init()
         },
@@ -122,26 +139,37 @@
                     let department=data.department
                     this.form.department=data.department
                     this.departmentOptions=data.options
+
+                    let rootOption=Department.rootOption()
+                    this.departmentOptions.splice(0, 0, rootOption);
+
+                    if(department.parentDepartment){
+                        this.selectedDepartment={
+                            value:department.parentDepartment.id,
+                            text:department.parentDepartment.name
+                        }
+                    }else{
+                         this.selectedDepartment=rootOption
+                    }
+
                     this.loaded=true
                 }).catch(error=>{
                    Helper.BusEmitError(error)  
                    this.loaded=false
                 })  
             },
-            setPublic(val){
-                this.form.department.public=val
-            },
+          
             setActive(val){
                 this.form.department.active=val
             },
-            setStatus(val) {
-                this.form.department.status = val;
+            setRemoved(val){
+                this.form.department.removed=val
             },
-            
             clearErrorMsg(name) {
                 this.form.errors.clear(name)
             },
             onSubmit() {
+                this.form.department.parent=this.selectedDepartment.value
                 this.submitForm()
             },
             submitForm() {
@@ -163,6 +191,9 @@
             },
             onCanceled(){
                 this.$emit('canceled')
+            },
+            onDepartmentSelected(item){
+                this.selectedDepartment=item
             }
 
 

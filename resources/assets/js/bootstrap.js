@@ -103,6 +103,10 @@ Vue.filter('activeLabel', function (active) {
    return   Helper.activeLabel(active)
    
 })
+Vue.filter('removedLabel', function (removed) {
+   return   Helper.removedLabel(removed)
+   
+})
 Vue.filter('reviewedLabel', function (reviewed) {
     return Helper.reviewedLabel(reviewed)
 })

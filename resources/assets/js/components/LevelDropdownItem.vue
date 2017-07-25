@@ -1,20 +1,16 @@
 <template>
     <li v-if="hasChildren" class="dropdown-submenu">
-       <a href="#">{{ item.text }} <span @mouseover="onExtend" class="caret"></span> </a> 
+       <a href="#" @click.prevent="onSelected">{{ item.text }} <span @mouseover="onExtend" class="caret"></span> </a> 
        <ul class="dropdown-menu" :style="toggleStyle">
-           <!-- <level-dropdown-item v-for="child in item.childrenOptions" 
-           :item="child" :extend="extend">
-             
-           </level-dropdown-item>
- -->
-           <level-dropdown-item v-for="child in item.childrenOptions" 
-            :item="child" :viewing="isViewing(child)" @extend="onChildrenExtended">
+           <level-dropdown-item v-for="child in item.childrenOptions" :key="child.id" 
+            :item="child" :viewing="isViewing(child)" 
+            @extend="onChildrenExtended" @selected="onChildSelected">
            </level-dropdown-item>
        </ul>
     </li>
 
     <li v-else >
-      <a href="#">{{ item.text }}</a>
+      <a href="#" @click.prevent="onSelected">{{ item.text }}</a>
    </li>
 </template>
 
@@ -39,9 +35,6 @@
         },
         data() {
             return {
-               selectedItem:{},
-               selectedId:'',
-               loaded:false,
                viewingId:'',
                extend:false,
             }
@@ -68,28 +61,12 @@
            }
         },
         beforeMount() {
-          if(this.options){
 
-          }else{
-
-          }
-            // let item = this.options.find((item)=>{
-            //   return item.id.toString() == this.default
-            // })
-            // if(item){
-            //     this.selectedItem=item
-            //     this.selectedId=item.id
-            // }else{
-            //     this.selectedItem={}
-            //     this.selectedId=''
-            // }
-
-            this.loaded=true
             
         },
         methods: {
             onExtend(){
-              this.extend=true
+              this.extend=!this.extend
               this.$emit('extend',this.item.value)
             },
             onChildrenExtended(id){
@@ -98,8 +75,11 @@
             isViewing(item){
                 return item.value==this.viewingId
             },
-            onSelected(id){
-                this.$emit('selected',id)
+            onSelected(){
+                this.$emit('selected',  this.item)
+            },
+            onChildSelected(item){
+                this.$emit('selected',  item)
             }
         }
 

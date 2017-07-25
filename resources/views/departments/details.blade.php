@@ -36,7 +36,8 @@
                 this.backToIndex()
             },
             backToIndex(){
-               Helper.redirect('/departments')
+              let url=Department.source()
+               Helper.redirect(url)
             }
 
         },

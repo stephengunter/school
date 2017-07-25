@@ -129,7 +129,9 @@ class Helper {
     static activeLabel(active) {
         return CommonService.activeLabel(active)
     }
-
+    static removedLabel(removed) {
+        return CommonService.removedLabel(removed)
+    }
     static reviewedText(reviewed) {
          return CommonService.reviewedText(reviewed)
        

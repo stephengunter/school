@@ -37,8 +37,11 @@ class Department {
     static deleteUrl(id) {
         return this.source() + '/' + id
     }
-    static index() {
+    static index(removed) {
         let url = this.source()
+        if(Helper.isTrue(removed)){
+            url += '?removed=1'
+        }
         return new Promise((resolve, reject) => {
             axios.get(url)
                 .then(response => {
@@ -147,44 +150,39 @@ class Department {
         })
     }
 
+    static rootOption(){
+        return {
+            text:' ----- ',
+            value:'0',
+        }
+    }
+
     
     static getThead(canSelect) {
         let thead = [{
-            title: '姓名',
-            key: 'fullname',
+            title: '名稱',
+            key: 'name',
             sort: false,
             static: true,
             default: true
 
         }, {
-            title: '報名日期',
-            key: 'date',
+            title: '代碼',
+            key: 'code',
             sort: true,
             static: true,
             default: true
 
         }, {
             title: '狀態',
-            key: 'status',
+            key: 'active',
             sort: true,
             static: true,
             default: true
 
         }, {
-            title: '課程名稱',
-            key: 'course',
-            sort: false,
-            static: true,
-            default: true
-
-        }, {
-            title: '課程費用',
-            key: 'tuition',
-            sort: true,
-            default: true
-        }, {
-            title: '折扣',
-            key: 'discount',
+            title: '最後更新',
+            key: 'updated_by',
             sort: true,
             default: true
         }]

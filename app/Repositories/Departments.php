@@ -11,6 +11,12 @@ class Departments
     {
          return Department::where('removed',false);
     }
+    public function trash()
+    {
+         return Department::where('removed',true)
+                            ->orderBy('updated_at','desc');
+
+    }
     
     public function findOrFail($id)
     {
@@ -24,13 +30,12 @@ class Departments
         if($department->removed) return null;
         return $department;
     }
-
+    
     public function delete($id,$updated_by)
     {
          $department = Department::findOrFail($id);
        
          $values=[
-           
             'removed' => 1,
             'updated_by' => $updated_by
          ];
@@ -63,42 +68,6 @@ class Departments
 
         
         return $this->optionsConverting($departments);
-        // $department=  $departments[1];
-
-        // $children = $department->childs();
-        // $hasChildren=count($children) > 0; 
-        // while ($hasChildren) {
-        //     $parentDepartment=static::find($parentDepartment->parent);
-        //     $parents->push($parentDepartment);
-        //     $hasParent=$parentDepartment->parent > 0;
-		// }
-        // return $hasChildren;
-
-       
-        // foreach ($departments as $department) {
-        //     $children = $department->childs();
-        //     $hasChildren=count($children) > 0; 
-        //     while ($hasChildren) {
-        //         $parentDepartment=static::find($parentDepartment->parent);
-        //         $parents->push($parentDepartment);
-        //         $hasParent=$parentDepartment->parent > 0;
-		//     }
-        // }
-
-        
-
-        // $parentDepartment=static::find($this->parent);
-		// $hasParent=$parentDepartment->parent > 0;
-		// $parents = collect([$parentDepartment]);
-		
-		// while ($hasParent) {
-		// 	$parentDepartment=static::find($parentDepartment->parent);
-		// 	$parents->push($parentDepartment);
-		// 	$hasParent=$parentDepartment->parent > 0;
-		// }
-
-		// $this->parentDepartment=$parents;
-
        
     }
     

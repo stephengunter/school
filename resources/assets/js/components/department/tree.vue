@@ -1,33 +1,10 @@
 <template>
-    <div v-if="loaded" class="panel panel-default show-data">
-      <div class="panel-heading">
-          <span class="panel-title">
-              <h4 v-html="title"></h4>
-          </span>    
-          <div>
-              <!-- <button  v-if="category.canEdit" v-show="can_edit" @click="btnEditClicked" class="btn btn-primary btn-sm" >
-                  <span class="glyphicon glyphicon-pencil"></span> 編輯
-              </button> -->
-          </div>
-      </div>  <!-- End panel-heading--> 
-      <div v-if="loaded" class="panel-body">
-          
-          <tree-view v-for="department in departments" 
-          :model="department" :key="department.id">
-            
-          </tree-view>
-            
-           
-       
-      </div><!-- End panel-body-->
-
-
-    </div>  
-  
-
-
-  
-
+<div v-if="loaded">
+    <tree-view v-for="department in departments" 
+          :model="department" :key="department.id"
+          @selected="onSelected">
+    </tree-view>
+</div>
 
 </template>
 
@@ -35,12 +12,24 @@
    
     export default {
         name: 'DepartmentTree',
+        props:{
+            version:{
+              type:Number,
+              default:0
+            }
+
+        },
         data() {
             return {
-               title:Helper.getIcon(Department.title())  + '  部門管理',
+              
                loaded:false,
                departments:[],
             }
+        },
+        watch: {
+            version: function () {
+                 this.init()
+            },
         },
         beforeMount(){
            this.init()
@@ -64,12 +53,9 @@
                     Helper.BusEmitError(error)
                 })
             },
-            btnEditClicked(){   
-              this.$emit('begin-edit') 
-            },
-            onBtnBackClick(){
-                this.$emit('btn-back-clicked')
-            },
+            onSelected(id){
+               this.$emit('selected',id)
+            }
             
           
         }, 

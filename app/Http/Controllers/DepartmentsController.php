@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Repositories\Departments;
 use App\Department;
+use App\Http\Requests\DepartmentRequest;
 
 class DepartmentsController extends BaseController
 {
@@ -25,18 +26,21 @@ class DepartmentsController extends BaseController
            return $this->tree();
         }
 
-        dd('dsmn');
-        $departments=$this->departments->getAll()
-                                       ->where('active',true)
+        $removed=(int)$request->removed; 
+        $departments=[];
+        if($removed){
+            $departments=$this->departments->trash()
+                                           ->get();  
+        }else{
+            $departments=$this->departments->getAll()
                                        ->where('parent',0)
+                                       ->orderBy('active','desc')
+                                       ->orderBy('order','desc')
+                                       ->orderBy('updated_at','desc')
                                        ->get();  
-        if(count($departments)){
-            foreach ($departments as $department) {
-                $department->getChildren();
-            }
         }
-        // $departments=$this->departments->getById(2);
-        // $departments->getChildren();
+        
+        
         return response()
             ->json([
                 'departments' => $departments
@@ -89,11 +93,41 @@ class DepartmentsController extends BaseController
             return  $this->unauthorized(); 
         }
 
-         $options=$this->departments->options();
+        $department->getParent();
+
+        $options=$this->departments->options();
 
         return response()->json([
                     'department' => $department,
                      'options' => $options
                 ]);        
+    }
+    public function update(DepartmentRequest $request, $id)
+    {
+         $current_user=$this->currentUser();       
+         $department = Department::findOrFail($id);
+         if(!$department->canEditBy($current_user)){
+            return  $this->unauthorized();       
+         }
+         $updated_by=$current_user->id;
+         $removed=false;
+         $values=$request->getValues($updated_by,$removed);  
+
+         $department->update($values);
+         return response()->json($department);
+    }
+    public function destroy($id)
+    {
+        $current_user=$this->currentUser();      
+        $department=$this->departments->findOrFail($id);
+        if(!$department->canDeleteBy($current_user)){
+            return  $this->unauthorized();     
+        }
+        $this->departments->delete($id,$current_user->id);
+
+        return response()
+            ->json([
+                'deleted' => true
+            ]);
     }
 }

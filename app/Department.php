@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
+	protected $fillable = ['name', 'code', 'parent', 'description',
+							// 'order','icon',
+						    'active', 'removed','updated_by'
+						  ];
     public function jobPositions() 
 	{
 		return $this->hasMany(JobPosition::class);
@@ -14,6 +18,7 @@ class Department extends Model
 	public function getParent()
 	{
 		$this->parentDepartment=static::find($this->parent);
+		return $this->parentDepartment;
 	}
 
 	public function getParents()
@@ -66,6 +71,7 @@ class Department extends Model
 				 'childrenOptions' => $childrenOptions
                ];
 	}
+	
 	public function canViewBy($user)
 	{
 		return true;
@@ -79,6 +85,7 @@ class Department extends Model
 	}
 	public function canDeleteBy($user)
 	{
+		if($this->removed)  return false;
 		return true;
 
 		if(!$this->canEditBy($user)) return false;

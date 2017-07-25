@@ -91,7 +91,7 @@
                 this.$emit('btn-back-clicked')
             },
             beginDelete(values){
-                this.deleteConfirm.msg= '確定要刪除分類 『' + values.name + '』嗎' 
+                this.deleteConfirm.msg= '確定要刪除部門 『' + values.name + '』嗎' 
                 this.deleteConfirm.id=values.id
                 this.deleteConfirm.show=true                
             },
