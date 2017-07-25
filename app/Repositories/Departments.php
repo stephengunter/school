@@ -44,27 +44,64 @@ class Departments
         $options=[];
         foreach($departmentList as $department)
         {
-            $item=[ 'text' => $department->name , 
-                     'value' => $department->id , 
-                 ];
-            array_push($options,  $item);
+            array_push($options,  $department->toOption());
         }
-          return $options;
+        return $options;
     }
-
+    public function rootDepartments()
+    {
+         return $this->getAll()->where('active',true)
+                               ->where('parent',0);                     
+    }
     public function options()
     {
-        $departments=$this->departments->getAll()
-                                       ->where('active',true)
-                                       ->where('parent',0)
-                                       ->get(); 
+        $departments=$this->rootDepartments()->get(); 
         foreach ($departments as $department) {
-              $department->getChildren();
+            $department->getChildren();
+            
         }
+
+        
+        return $this->optionsConverting($departments);
+        // $department=  $departments[1];
+
+        // $children = $department->childs();
+        // $hasChildren=count($children) > 0; 
+        // while ($hasChildren) {
+        //     $parentDepartment=static::find($parentDepartment->parent);
+        //     $parents->push($parentDepartment);
+        //     $hasParent=$parentDepartment->parent > 0;
+		// }
+        // return $hasChildren;
+
+       
+        // foreach ($departments as $department) {
+        //     $children = $department->childs();
+        //     $hasChildren=count($children) > 0; 
+        //     while ($hasChildren) {
+        //         $parentDepartment=static::find($parentDepartment->parent);
+        //         $parents->push($parentDepartment);
+        //         $hasParent=$parentDepartment->parent > 0;
+		//     }
+        // }
+
+        
+
+        // $parentDepartment=static::find($this->parent);
+		// $hasParent=$parentDepartment->parent > 0;
+		// $parents = collect([$parentDepartment]);
+		
+		// while ($hasParent) {
+		// 	$parentDepartment=static::find($parentDepartment->parent);
+		// 	$parents->push($parentDepartment);
+		// 	$hasParent=$parentDepartment->parent > 0;
+		// }
+
+		// $this->parentDepartment=$parents;
 
        
     }
-
+    
      
 
      

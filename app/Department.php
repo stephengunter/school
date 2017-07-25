@@ -36,9 +36,7 @@ class Department extends Model
 	}
 
 	public function getChildren(){
-		$children=static::where('removed',false)
-								->where('parent',$this->id)
-								->get();
+		$children=$this->childs();
 
 		if(count($children)){
             foreach ($children as $department) {
@@ -47,18 +45,26 @@ class Department extends Model
         }
 
 		$this->children= $children;
-
-		// if(!$options) return;
-
-		// $options=[];
-        // foreach($this->children as $child)
-        // {
-        //     $item=[ 'text' => $child->name , 
-        //              'value' => $child->id , 
-        //          ];
-        //     array_push($options,  $item);
-        // }
-        // $this->childrenOption= $options;
+		
+	}
+	public function childs()
+	{
+		return static::where('removed',false)
+					  ->where('parent',$this->id)
+					  ->get();
+	}
+	public function toOption()
+	{
+		$childrenOptions=[];
+		if(count($this->children)){
+			foreach ($this->children as $department) {
+				array_push($childrenOptions,  $department->toOption());
+       		}
+		}
+		return [ 'text' => $this->name , 
+                 'value' => $this->id , 
+				 'childrenOptions' => $childrenOptions
+               ];
 	}
 	public function canViewBy($user)
 	{

@@ -28,7 +28,7 @@
                         <div class="form-group">                           
                             <label>母部門</label>
                             <div>
-                               <level-dropdown></level-dropdown>
+                               <level-dropdown :options="departmentOptions"></level-dropdown>
                             </div>
                         </div>  
                     </div>
@@ -90,7 +90,7 @@
                 
                 activeOptions: Helper.activeOptions(),
 
-                publicOptions: Helper.boolOptions(),
+                departmentOptions:[],
             }
         },
         
@@ -121,7 +121,7 @@
                 getData.then(data=>{
                     let department=data.department
                     this.form.department=data.department
-
+                    this.departmentOptions=data.options
                     this.loaded=true
                 }).catch(error=>{
                    Helper.BusEmitError(error)  
