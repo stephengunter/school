@@ -30,7 +30,22 @@ class Departments
         if($department->removed) return null;
         return $department;
     }
-    
+    public function updateDisplayOrder($department ,$up,$updated_by)
+    {
+            $num= rand(1, 10);
+            if($up){
+                $department->order += $num;
+            }else{
+                $department->order -= $num;
+            }
+
+            $department->updated_by=$updated_by;
+            
+            $department->save();
+           
+            return $department;
+
+    }
     public function delete($id,$updated_by)
     {
          $department = Department::findOrFail($id);

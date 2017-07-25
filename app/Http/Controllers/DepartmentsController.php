@@ -32,8 +32,9 @@ class DepartmentsController extends BaseController
             $departments=$this->departments->trash()
                                            ->get();  
         }else{
+            $parent=(int)$request->parent; 
             $departments=$this->departments->getAll()
-                                       ->where('parent',0)
+                                       ->where('parent',$parent)
                                        ->orderBy('active','desc')
                                        ->orderBy('order','desc')
                                        ->orderBy('updated_at','desc')
@@ -52,6 +53,8 @@ class DepartmentsController extends BaseController
         $departments=$this->departments->getAll()
                                        ->where('active',true)
                                        ->where('parent',0)
+                                       ->orderBy('order','desc')
+                                       ->orderBy('updated_at','desc')
                                        ->get();  
         if(count($departments)){
             foreach ($departments as $department) {
@@ -61,6 +64,33 @@ class DepartmentsController extends BaseController
         
         return response()->json(['departments' => $departments ]);
             
+    }
+    public function create()
+    {
+        if(!request()->ajax()){
+            return view('departments.create');                   
+        }  
+
+        $department= Department::initialize();
+       
+        $options=$this->departments->options();
+
+        return response()->json([
+                    'department' => $department,
+                     'options' => $options
+                ]); 
+    }
+    public function store(DepartmentRequest $request)
+    {
+        $current_user=$this->currentUser();
+        $updated_by=$current_user->id;
+        $removed=false;
+        $values=$request->getValues($updated_by,$removed);
+        
+        $department= Department::create($values);
+       
+        return response()->json($department);
+      
     }
     public function show($id)
     {
@@ -116,6 +146,25 @@ class DepartmentsController extends BaseController
          $department->update($values);
          return response()->json($department);
     }
+    public function updateOrder(Request $request, $id)
+    {
+        $department=$this->departments->findOrFail($id);
+        $current_user=$this->currentUser();
+        if(!$department->canEditBy($current_user)){
+            return  $this->unauthorized();         
+        }
+
+        $updated_by=$current_user->id;
+        $up=$request['up'];
+        
+        $department=$this->departments->updateDisplayOrder($department ,$up, $updated_by);
+        
+        return response()
+            ->json([
+                'department' => $department
+            ]);    
+
+    }
     public function destroy($id)
     {
         $current_user=$this->currentUser();      
@@ -129,5 +178,13 @@ class DepartmentsController extends BaseController
             ->json([
                 'deleted' => true
             ]);
+    }
+    public function options()
+    {
+        $options=$this->departments->options();
+
+        return response()->json([
+                     'options' => $options
+                ]);   
     }
 }

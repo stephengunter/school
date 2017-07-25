@@ -53,7 +53,8 @@
              
             },
             onBeginCreate(){
-                Helper.redirect('/courses/create')
+                let url=Department.createUrl()
+                Helper.redirect(url)
             },        
             onSelected(id){
                this.selected=id

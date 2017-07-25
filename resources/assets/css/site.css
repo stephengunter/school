@@ -23,3 +23,14 @@ html * {
 .title {
     text-align: center;
 }
+
+.ctr-label {
+    vertical-align: middle;
+    margin-bottom: 0px;
+    margin-right: 3px;
+}
+
+.inline-ctr {
+    display: inline-block;
+    width: auto;
+}

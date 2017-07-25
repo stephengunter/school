@@ -40,6 +40,7 @@ Vue.component('level-dropdown-item', require('./components/LevelDropdownItem') )
 
 Vue.component('department-index', require('./views/department/index') )
 Vue.component('department-details', require('./views/department/details') )
+Vue.component('department-create', require('./views/department/create') )
 
 
 

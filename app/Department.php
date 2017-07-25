@@ -10,6 +10,23 @@ class Department extends Model
 							// 'order','icon',
 						    'active', 'removed','updated_by'
 						  ];
+	public static function initialize()
+    {
+         return [
+			 'name' => '',
+			 'code' => '',
+			 'parent' => 0,
+			 'description' => '',
+			 
+			 'active' => 1,
+			 'removed' => 0,
+			 'updated_by' => '',
+
+			 'order' => 0,
+			 'icon' => ''
+			 
+        ];
+    }						  
     public function jobPositions() 
 	{
 		return $this->hasMany(JobPosition::class);

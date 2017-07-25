@@ -37,10 +37,12 @@ class Department {
     static deleteUrl(id) {
         return this.source() + '/' + id
     }
-    static index(removed) {
+    static index(removed,parent) {
         let url = this.source()
         if(Helper.isTrue(removed)){
             url += '?removed=1'
+        }else{
+              url += '?parent=' + parent
         }
         return new Promise((resolve, reject) => {
             axios.get(url)
@@ -66,12 +68,9 @@ class Department {
 
         })
     }
-    static create(courseId, userId) {
+    static create() {
         let url = this.createUrl()
-        url += '?course=' + courseId
-        if (userId) {
-            url += '&user_id=' + userId
-        }
+        
         return new Promise((resolve, reject) => {
             axios.get(url)
                 .then(response => {
@@ -136,6 +135,22 @@ class Department {
                 })
         })
     }
+    static updateDisplayOrder(id,up){
+        let url =this.updateUrl(id) + '/update-order'
+        let method='put'
+        let form = new Form({                        
+                         up: up
+                    })
+        return new Promise((resolve, reject) => {
+            form.submit(method,url)
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                })
+        })
+    }
     static delete(id) {
         return new Promise((resolve, reject) => {
             let url = this.deleteUrl(id)
@@ -149,11 +164,23 @@ class Department {
                 })
         })
     }
+    static options() {
+        return new Promise((resolve, reject) => {
+            let url = this.source() + '/options'
+            axios.get(url)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(error => {
+                    reject(error);
+                })
 
+        })
+    }
     static rootOption(){
         return {
             text:' ----- ',
-            value:'0',
+            value: 0,
         }
     }
 
@@ -181,6 +208,11 @@ class Department {
             default: true
 
         }, {
+            title: '顯示順序',
+            key: 'order',
+            sort: false,
+            default:true
+         },{
             title: '最後更新',
             key: 'updated_by',
             sort: true,

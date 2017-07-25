@@ -29,8 +29,9 @@
                             <label>母部門</label>
                             <div>
                             <input type="hidden" v-model="form.department.parent"  >
-                               <level-dropdown :default_item="selectedDepartment" :options="departmentOptions"
-                                @selected="onDepartmentSelected" ></level-dropdown>
+                                <level-dropdown :default_item="selectedDepartment" :options="departmentOptions"
+                                   @selected="onDepartmentSelected" >
+                                </level-dropdown>
                             </div>
                         </div>  
                     </div>
@@ -133,7 +134,7 @@
                 if(this.id){
                     getData=Department.edit(this.id)
                 }else{
-                    getData=Department.create(this.course_id)
+                    getData=Department.create()
                 }
                 getData.then(data=>{
                     let department=data.department

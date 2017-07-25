@@ -4,7 +4,8 @@
       <div v-if="removed" class="panel-heading">
           <span class="panel-title">
               <h4 v-html="title"></h4>
-          </span>    
+          </span>
+            
           <div>
               <button @click="removed=false" class="btn btn-default btn-sm" >
                      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
@@ -17,6 +18,14 @@
           <span class="panel-title">
               <h4 v-html="title"></h4>
           </span>    
+          <div v-if="loaded">
+            <label class="ctr-label">母部門 </label>
+             <div class="inline-ctr" >
+               <level-dropdown :default_item="selectedDepartment" :options="departmentOptions"
+                     @selected="onDepartmentSelected" >
+               </level-dropdown>
+             </div>
+          </div>  
           <div>
               <button  @click="removed=true" class="btn btn-default btn-sm" >
                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -37,13 +46,17 @@
           </div>
       </div>  <!-- End panel-heading--> 
       <div class="panel-body">
+          <div v-if="treeMode">
+            <department-tree :version="treeSettings.version" 
+             @selected="onSelected"></department-tree>
+          </div>
+          <div v-else>
+             <department-list  v-if="loaded" :version="listSettings.version" 
+              :removed="removed" :parent="selectedDepartment.value"
+              @selected="onSelected">
+             </department-list>
+          </div>
           
-          <department-tree v-if="treeMode" :version="treeSettings.version" 
-           @selected="onSelected"></department-tree>
-
-          <department-list v-else  :version="listSettings.version" 
-          :removed="removed" @selected="onSelected">
-          </department-list>
            
        
       </div><!-- End panel-body-->
@@ -78,9 +91,17 @@
                   version:0
                },
 
+               loaded:false,
+               departmentOptions:[],
+               selectedDepartment:{},
+
+
             }
         },
         watch: {
+            treeMode:function(){
+               this.init()
+            },
             version:function(){
                this.listSettings.version+=1
                this.treeSettings.version+=1
@@ -104,9 +125,34 @@
                 else return '樹狀模式'
             }    
         },
+        beforeMount(){
+           this.init()
+        },
         methods: {
+            init(){
+                this.loaded=false
+                if(this.treeMode){
+
+                }else{
+
+                    let options=Department.options()
+                    options.then(data=>{
+                        this.departmentOptions=data.options
+                        let rootOption=Department.rootOption()
+                        this.departmentOptions.splice(0, 0, rootOption)
+                        this.selectedDepartment=rootOption
+
+                        this.loaded=true
+                    }).catch(error =>{
+                        Helper.BusEmitError(error)
+                    })
+                }
+            },
+             onDepartmentSelected(item){
+                this.selectedDepartment=item
+            },
             btnAddClicked(){
-                this.$emit('create')
+                this.$emit('begin-create')
             },
             changeMode(){
                 this.treeMode=!this.treeMode

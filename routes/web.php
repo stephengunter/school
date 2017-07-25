@@ -20,6 +20,10 @@ Route::get('/login', function () {
 });
 
 Route::post('login', '\App\Http\Controllers\Auth\SessionsController@store');
+Route::get('departments/options',['uses'=>'\App\Http\Controllers\DepartmentsController@options']);
+Route::put('departments/{id}/update-order',['uses'=>'\App\Http\Controllers\DepartmentsController@updateOrder']);
+
+
 Route::resource('departments', 'DepartmentsController');
 Route::resource('users', '\App\Http\Controllers\User\UsersController');
 
