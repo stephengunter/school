@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-	protected $fillable = ['name', 'code', 'parent', 'description',
+	protected $fillable = ['name','en_name' ,'code', 'parent', 'description',
 							// 'order','icon',
 						    'active', 'removed','updated_by'
 						  ];
@@ -27,65 +27,16 @@ class Department extends Model
 			 
         ];
     }						  
-    public function jobPositions() 
+    public function students() 
 	{
-		return $this->hasMany(JobPosition::class);
+		return $this->hasMany(Students::class);
 	}
 
-	public function getParent()
-	{
-		$this->parentDepartment=static::find($this->parent);
-		return $this->parentDepartment;
-	}
-
-	public function getParents()
-	{
-		if(!$this->parent){
-			$this->parentDepartment=null;
-			return ;
-		}
-		$parentDepartment=static::find($this->parent);
-		$hasParent=$parentDepartment->parent > 0;
-		$parents = collect([$parentDepartment]);
-		
-		while ($hasParent) {
-			$parentDepartment=static::find($parentDepartment->parent);
-			$parents->push($parentDepartment);
-			$hasParent=$parentDepartment->parent > 0;
-		}
-
-		$this->parentDepartment=$parents;
-	}
-
-	public function getChildren(){
-		$children=$this->childs();
-
-		if(count($children)){
-            foreach ($children as $department) {
-                $department->getChildren();
-            }
-        }
-
-		$this->children= $children;
-		
-	}
-	public function childs()
-	{
-		return static::where('removed',false)
-					  ->where('parent',$this->id)
-					  ->get();
-	}
+	
 	public function toOption()
 	{
-		$childrenOptions=[];
-		if(count($this->children)){
-			foreach ($this->children as $department) {
-				array_push($childrenOptions,  $department->toOption());
-       		}
-		}
 		return [ 'text' => $this->name , 
                  'value' => $this->id , 
-				 'childrenOptions' => $childrenOptions
                ];
 	}
 	
@@ -107,9 +58,7 @@ class Department extends Model
 
 		if(!$this->canEditBy($user)) return false;
 
-		if(count($this->roles)){
-			return false;
-		}
+		
 		return true;
 	}
 }

@@ -4,32 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-use App\Repositories\Departments;
-use App\Department;
-use App\Http\Requests\DepartmentRequest;
+use App\Repositories\Students;
+use App\Student;
+use App\Http\Requests\StudentRequest;
 
-class DepartmentsController extends BaseController
+class StudentsController extends BaseController
 {
-    protected $key='departments';
-    public function __construct(Departments $departments) 
+    protected $key='students';
+    // public function __construct(Students $students) 
+    // {
+	// 	 $this->students=$students;
+	// }
+    public function indexOptions()
     {
-		 $this->departments=$departments;
-	}
+        $departmentOptions=[];//$this->terms->options();
+        return response()
+            ->json([
+                'departmentOptions' => $departmentOptions,
+            ]);
 
+    }
     public function index()
     {
-        if(!request()->ajax()) return view('departments.index');
+        if(!request()->ajax()) return view('students.index');
         
         $request = request();
 
         $removed=(int)$request->removed; 
-        $departments=[];
+        $students=[];
         if($removed){
-            $departments=$this->departments->trash()
+            $students=$this->students->trash()
                                            ->get();  
         }else{
             
-            $departments=$this->departments->getAll()
+            $students=$this->students->getAll()
                                        ->where('parent', 0)
                                        ->orderBy('active','desc')
                                        ->orderBy('order','desc')
@@ -40,7 +48,7 @@ class DepartmentsController extends BaseController
         
         return response()
             ->json([
-                'departments' => $departments
+                'students' => $students
             ]);
         
     }
@@ -48,32 +56,32 @@ class DepartmentsController extends BaseController
     public function create()
     {
         if(!request()->ajax()){
-            return view('departments.create');                   
+            return view('students.create');                   
         }  
 
-        $department= Department::initialize();
+        $student= Student::initialize();
 
         return response()->json([
-                    'department' => $department,
+                    'student' => $student,
                 ]); 
     }
-    public function store(DepartmentRequest $request)
+    public function store(StudentRequest $request)
     {
         $current_user=$this->currentUser();
         $updated_by=$current_user->id;
         $removed=false;
         $values=$request->getValues($updated_by,$removed);
         
-        $department= Department::create($values);
+        $student= Student::create($values);
        
-        return response()->json($department);
+        return response()->json($student);
       
     }
     public function show($id)
     {
         if(!request()->ajax()){
             $menus=$this->menus($this->key);            
-            return view('departments.details')
+            return view('students.details')
                     ->with([ 'menus' => $menus,
                               'id' => $id     
                         ]);
@@ -81,68 +89,68 @@ class DepartmentsController extends BaseController
 
         $current_user=request()->user();
         
-        $department=Department::findOrFail($id);
-        if(!$department->canViewBy($current_user)){
+        $student=Student::findOrFail($id);
+        if(!$student->canViewBy($current_user)){
             return  $this->unauthorized();   
         }
 
-        $department->canEdit=$department->canEditBy($current_user);
-        $department->canDelete=$department->canDeleteBy($current_user);
-        return response()->json(['department' => $department]);
+        $student->canEdit=$student->canEditBy($current_user);
+        $student->canDelete=$student->canDeleteBy($current_user);
+        return response()->json(['student' => $student]);
     }
     public function edit($id)
     {
-        $department=$this->departments->findOrFail($id);    
+        $student=$this->students->findOrFail($id);    
         $current_user=$this->currentUser();
-        if(!$department->canEditBy($current_user)){
+        if(!$student->canEditBy($current_user)){
             return  $this->unauthorized(); 
         }
 
         return response()->json([
-                    'department' => $department,
+                    'student' => $student,
                 ]);        
     }
-    public function update(DepartmentRequest $request, $id)
+    public function update(StudentRequest $request, $id)
     {
          $current_user=$this->currentUser();       
-         $department = Department::findOrFail($id);
-         if(!$department->canEditBy($current_user)){
+         $student = Student::findOrFail($id);
+         if(!$student->canEditBy($current_user)){
             return  $this->unauthorized();       
          }
          $updated_by=$current_user->id;
          $removed=false;
          $values=$request->getValues($updated_by,$removed);  
 
-         $department->update($values);
-         return response()->json($department);
+         $student->update($values);
+         return response()->json($student);
     }
     public function updateOrder(Request $request, $id)
     {
-        $department=$this->departments->findOrFail($id);
+        $student=$this->students->findOrFail($id);
         $current_user=$this->currentUser();
-        if(!$department->canEditBy($current_user)){
+        if(!$student->canEditBy($current_user)){
             return  $this->unauthorized();         
         }
 
         $updated_by=$current_user->id;
         $up=$request['up'];
         
-        $department=$this->departments->updateDisplayOrder($department ,$up, $updated_by);
+        $student=$this->students->updateDisplayOrder($student ,$up, $updated_by);
         
         return response()
             ->json([
-                'department' => $department
+                'student' => $student
             ]);    
 
     }
     public function destroy($id)
     {
         $current_user=$this->currentUser();      
-        $department=$this->departments->findOrFail($id);
-        if(!$department->canDeleteBy($current_user)){
+        $student=$this->students->findOrFail($id);
+        if(!$student->canDeleteBy($current_user)){
             return  $this->unauthorized();     
         }
-        $this->departments->delete($id,$current_user->id);
+        $this->students->delete($id,$current_user->id);
 
         return response()
             ->json([
@@ -151,7 +159,7 @@ class DepartmentsController extends BaseController
     }
     public function options()
     {
-        $options=$this->departments->options();
+        $options=$this->students->options();
 
         return response()->json([
                      'options' => $options

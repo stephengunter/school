@@ -10,26 +10,17 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         $hb = Department::create([
-                'parent' => 0,
                 'code' => 'hb',
+                'name'=> '護理系',
+            ]);
+        $hm = Department::create([
+                'code' => 'hm',
                 'name'=> '醫務管理系',
-            ]);
-
-        $cc = Department::create([
-                'parent' => 0,
-                'code' => 'cc',
-                'name'=> '電算中心',
-            ]);
-
-        $sd = Department::create([
-                'parent' => $cc->id,
-                'code' => 'sd',
-                'name'=> '軟體開發組',
-            ]);
-        $sm = Department::create([
-            'parent' => $cc->id,
-            'code' => 'sm',
-            'name'=> '系統管理組',
-        ]);
+            ]);  
+        $it = Department::create([
+                'code' => 'it',
+                'name'=> '資訊科技管理系',
+            ]);      
+       
     }
 }

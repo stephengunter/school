@@ -1,4 +1,4 @@
-class Department {
+class Unit {
     constructor(data) {
 
         for (let property in data) {
@@ -6,18 +6,18 @@ class Department {
         }
 
         this.parent=''
-        if(data.parentDepartment){
-            this.parent=data.parentDepartment.name
+        if(data.parentUnit){
+            this.parent=data.parentUnit.name
         }
 
      
 
     }
     static title() {
-        return 'Departments'
+        return 'Units'
     }
     static source() {
-        return '/departments'
+        return '/units'
     }
     static createUrl() {
         return this.source() + '/create'
@@ -37,10 +37,12 @@ class Department {
     static deleteUrl(id) {
         return this.source() + '/' + id
     }
-    static index(removed) {
+    static index(removed,parent) {
         let url = this.source()
         if(Helper.isTrue(removed)){
             url += '?removed=1'
+        }else{
+              url += '?parent=' + parent
         }
         return new Promise((resolve, reject) => {
             axios.get(url)
@@ -246,4 +248,4 @@ class Department {
 }
 
 
-export default Department;
+export default Unit;

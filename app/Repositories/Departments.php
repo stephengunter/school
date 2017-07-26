@@ -11,6 +11,14 @@ class Departments
     {
          return Department::where('removed',false);
     }
+    public function activeDepartments()
+    {
+         return $this->getAll()->where('active',true);
+    }
+    public function unActiveDepartments()
+    {
+         return $this->getAll()->where('active',false);
+    }
     public function trash()
     {
          return Department::where('removed',true)
@@ -68,20 +76,10 @@ class Departments
         }
         return $options;
     }
-    public function rootDepartments()
-    {
-         return $this->getAll()->where('active',true)
-                               ->where('parent',0);                     
-    }
+    
     public function options()
     {
-        $departments=$this->rootDepartments()->get(); 
-        foreach ($departments as $department) {
-            $department->getChildren();
-            
-        }
-
-        
+        $departments=$this->activeDepartments()->get(); 
         return $this->optionsConverting($departments);
        
     }

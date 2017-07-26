@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Staff extends Model
+class Student extends Model
 {
-    protected $primaryKey = 'user_id';
-    
-    public function user() 
-    {
+	protected $primaryKey = 'user_id';
+    public function user()
+	{
 		 return $this->belongsTo('App\User');
-    }
+	}
+
     public function canDeleteBy($user)
 	{
         return $true;

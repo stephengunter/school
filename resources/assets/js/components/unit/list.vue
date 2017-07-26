@@ -7,25 +7,25 @@
         </tr>      
     </thead>
     <tbody>
-        <tr v-for="department in departments">
+        <tr v-for="unit in units">
             <td>
-              <a href="#" @click.prevent="selected(department.id)">{{ department.name }}</a>
+              <a href="#" @click.prevent="selected(unit.id)">{{ unit.name }}</a>
             </td>
-            <td v-text="department.code"></td>
+            <td v-text="unit.code"></td>
             
-            <td v-if="removed" v-html="$options.filters.removedLabel(department.removed)" ></td>
-            <td v-else v-html="$options.filters.activeLabel(department.active)" ></td>
+            <td v-if="removed" v-html="$options.filters.removedLabel(unit.removed)" ></td>
+            <td v-else v-html="$options.filters.activeLabel(unit.active)" ></td>
             
             <td v-if="!removed">
-              <button @click="displayUp(department.id)" class="btn btn-default btn-xs">
+              <button @click="displayUp(unit.id)" class="btn btn-default btn-xs">
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
               </button>
-              <button @click="displayDown(department.id)" class="btn btn-default btn-xs">
+              <button @click="displayDown(unit.id)" class="btn btn-default btn-xs">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
               </button>
             </td>
             <td>
-              <updated :entity="department"></updated>
+              <updated :entity="unit"></updated>
             </td>
         </tr>                  
     </tbody>
@@ -36,7 +36,7 @@
 <script>
    
     export default {
-        name: 'DepartmentList',
+        name: 'UnitList',
         props:{
             removed:{
               type:Boolean,
@@ -56,11 +56,14 @@
             return {
                loaded:false,
                thead:[],
-               departments:[],
+               units:[],
             }
         },
         watch: {
             version: function () {
+                 this.fetchData()
+            },
+             parent: function () {
                  this.fetchData()
             },
         },
@@ -70,18 +73,18 @@
         methods: {
            init(){
               this.loaded=false
-              this.departments=[]
-              this.thead=Department.getThead()
+              this.units=[]
+              this.thead=Unit.getThead()
 
               this.fetchData()
               
            },
            fetchData() {
 
-                let getData = Department.index(this.removed)             
+                let getData = Unit.index(this.removed,this.parent)             
              
                 getData.then(data => {
-                   this.departments=data.departments
+                   this.units=data.units
                    this.loaded = true                        
                 })
                 .catch(error=> {
@@ -95,7 +98,7 @@
                 this.updateDisplayOrder(id,false)
             },
             updateDisplayOrder(id,up){
-                let update=Department.updateDisplayOrder(id,up) 
+                let update=Unit.updateDisplayOrder(id,up) 
               
                 update.then(data => {
                    this.loaded=false
