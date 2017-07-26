@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Department;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Unit;
 use App\Support\Helper;
 
-class UnitRequest extends FormRequest
+class ClassRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,28 +14,28 @@ class UnitRequest extends FormRequest
    
     public function rules()
     {
-        $id=$this->getUnitId();
+        $id=$this->getClassId();
         return [
-            'unit.name' => 'required|unique:units,name,'.$id,
-            'unit.code' => 'required|unique:units,code,'.$id,
+            'class.name' => 'required|unique:classs,name,'.$id,
+            'class.code' => 'required|unique:classs,code,'.$id,
           
         ];
     }
     public function messages()
     {
         return [
-            'unit.name.required' => '必須填寫名稱',
-            'unit.name.unique' => '名稱與現存資料重複',
-            'unit.code.required' => '必須填寫代碼',
-            'unit.code.unique' => '代碼與現存資料重複',
+            'class.name.required' => '必須填寫名稱',
+            'class.name.unique' => '名稱與現存資料重複',
+            'class.code.required' => '必須填寫代碼',
+            'class.code.unique' => '代碼與現存資料重複',
          
         ];
     }
     
    
-    public function getUnitId()
+    public function getClassId()
     {
-        $values = $this['unit'];
+        $values = $this['class'];
         $id=0;        
         if(array_key_exists ( 'id' ,$values)){
             $id=(int)$values['id'];
@@ -47,8 +46,8 @@ class UnitRequest extends FormRequest
 
     public function getValues($updated_by,$removed)
     {
-        $request=$this->get('unit');
-        $values=array_except($request, ['parentUnit']);
+        $request=$this->get('class');
+        $values=array_except($request, ['parentClass']);
        
         $values= Helper::setUpdatedBy($values,$updated_by);
         return Helper::setRemoved($values,$removed);

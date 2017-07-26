@@ -50,6 +50,9 @@ class Helper {
             case 'departments':
                 html = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>'
                 break
+            case 'classes':
+                html = '<i class="fa fa-bell-o" aria-hidden="true"></i>'
+                break
             case 'units':
                 html = '<i class="fa fa-sitemap" aria-hidden="true"></i>'
                 break

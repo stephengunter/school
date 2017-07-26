@@ -4,35 +4,31 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Classes extends Model
 {
-	protected $fillable = ['name','en_name' ,'code', 'parent', 'description',
-							
+    protected $table = 'classes';
+    protected $fillable = ['name',
 						    'active', 'removed','updated_by'
 						  ];
-	public static function initialize()
+    public static function initialize($department_id)
     {
          return [
 			 'name' => '',
-			 'code' => '',
-			 'parent' => 0,
-			 'description' => '',
+			 'department_id' => $department_id,
 			 
 			 'active' => 1,
 			 'removed' => 0,
 			 'updated_by' => '',
 
 			 'order' => 0,
-			 'icon' => ''
 			 
         ];
-    }						  
-    public function students() 
+    }
+    public function department() 
 	{
-		return $this->hasMany(Students::class);
+		return $this->belongsTo('App\Department');
 	}
 
-	
 	public function toOption()
 	{
 		return [ 'text' => $this->name , 
@@ -40,7 +36,7 @@ class Department extends Model
                ];
 	}
 	
-	public function canViewBy($user)
+    public function canViewBy($user)
 	{
 		return true;
 		

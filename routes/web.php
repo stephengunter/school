@@ -20,18 +20,22 @@ Route::get('/login', function () {
 });
 
 Route::post('login', '\App\Http\Controllers\Auth\SessionsController@store');
-Route::get('departments/options',['uses'=>'\App\Http\Controllers\DepartmentsController@options']);
-Route::put('departments/{id}/update-order',['uses'=>'\App\Http\Controllers\DepartmentsController@updateOrder']);
+Route::get('departments/options',['uses'=>'\App\Http\Controllers\Department\DepartmentsController@options']);
+Route::put('departments/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\DepartmentsController@updateOrder']);
 
-Route::get('units/options',['uses'=>'\App\Http\Controllers\UnitsController@options']);
-Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\UnitsController@updateOrder']);
+Route::get('units/options',['uses'=>'\App\Http\Controllers\Department\UnitsController@options']);
+Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\UnitsController@updateOrder']);
+
+Route::put('classes/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\ClassesController@updateOrder']);
+
 
 Route::get('students/index-options', '\App\Http\Controllers\Student\StudentsController@indexOptions');
 
 // Route::resource('teamplus-users', '\App\Http\Controllers\Teamplus\UsersController');
 
-Route::resource('departments', 'DepartmentsController');
-Route::resource('units', 'UnitsController');
+Route::resource('departments', '\App\Http\Controllers\Department\DepartmentsController');
+Route::resource('units', '\App\Http\Controllers\Department\UnitsController');
+Route::resource('classes', '\App\Http\Controllers\Department\ClassesController');
 Route::resource('users', '\App\Http\Controllers\User\UsersController');
 Route::resource('students', '\App\Http\Controllers\Student\StudentsController');
 

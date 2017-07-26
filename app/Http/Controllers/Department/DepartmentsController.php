@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Department;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Repositories\Departments;
 use App\Department;
-use App\Http\Requests\DepartmentRequest;
+use App\Http\Requests\Department\DepartmentRequest;
 
 class DepartmentsController extends BaseController
 {
