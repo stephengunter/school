@@ -5,14 +5,19 @@
       :show_title="show_title"  :no_page="no_page"
       @refresh="init" :version="version"   @beginCreate="beginCreate"
        @dataLoaded="onDataLoaded">
-         <div  class="form-inline" slot="header">
+        <!--  <div  class="form-inline" slot="header">
                
                 <button v-show="hasData" class="btn btn-default btn-xs" @click.prevent="onBtnViewMoreClicked">
                     <span v-if="viewMore" class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
                     <span v-if="!viewMore" class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
                 </button>
-         </div>
-         
+         </div> -->
+         <button v-show="hasData" slot="btn"  class="btn btn-warning btn-sm" >
+               <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                 匯出 
+         </button>
+
+       
          
          <template scope="props">
             <row :student="props.item" :more="viewMore" :select="can_select"
@@ -80,14 +85,14 @@
                 loaded:false,
                 source: Student.source(),
                 
-                defaultSearch:'name',
-                defaultOrder:'begin_date',                      
+                defaultSearch:'user.profile.fullname',
+                defaultOrder:'updated_at',                      
                 create: Student.createUrl(),
                 
                 thead:[],
                 filter: [{
-                    title: '名稱',
-                    key: 'name',
+                    title: '姓名',
+                    key: 'user.profile.fullname',
                 },{
                     title: '學號',
                     key: 'number',
@@ -107,7 +112,7 @@
                 this.thead=Student.getThead(this.can_select)  
             },
             onDataLoaded(data){
-                this.hasData=data.model.total
+                this.hasData=data.model.total > 0
             },
             onBtnViewMoreClicked(){
                 this.viewMore=!this.viewMore

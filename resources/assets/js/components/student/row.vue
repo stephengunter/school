@@ -18,7 +18,7 @@
             </a>
         </td> 
         <td v-text="student.number"></td> 
-        <td v-html="$options.filters.activeLabel(student.active)"></td> 
+        <td v-text="student.department.name"></td> 
         <td>
             <updated :entity="student"></updated>
         </td>    

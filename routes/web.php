@@ -28,9 +28,11 @@ Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\UnitsContro
 
 Route::get('students/index-options', '\App\Http\Controllers\Student\StudentsController@indexOptions');
 
+// Route::resource('teamplus-users', '\App\Http\Controllers\Teamplus\UsersController');
 
 Route::resource('departments', 'DepartmentsController');
 Route::resource('units', 'UnitsController');
 Route::resource('users', '\App\Http\Controllers\User\UsersController');
+Route::resource('students', '\App\Http\Controllers\Student\StudentsController');
 
 

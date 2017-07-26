@@ -3,18 +3,18 @@
 
 @section('content')
         
-       <course-index v-show="!selected" :hide_create="indexSettings.hide_create" 
+       <student-index v-show="!selected" :hide_create="indexSettings.hide_create" 
            :version="version"
          @begin-create="onBeginCreate"  @selected="onSelected"  >
-       </course-index> 
+       </student-index> 
 
        
 
-       <course-details v-if="selected"  :id="selected" :can_back="detailsSettings.can_back" 
-          @btn-back-clicked="backToIndex" @course-deleted="onDeleted"
-          @signup-selected="onSignupSelected" 
+       {{-- <student-details v-if="selected"  :id="selected" :can_back="detailsSettings.can_back" 
+          @btn-back-clicked="backToIndex" @student-deleted="onDeleted"
+        
           @edit-user="onEditUser" >
-       </course-details>
+       </student-details> --}}
       
        
 @endsection
@@ -55,7 +55,7 @@
              
             },
             onBeginCreate(){
-                Helper.redirect('/courses/create')
+                Helper.redirect('/students/create')
             },        
             onSelected(id){
                this.selected=id

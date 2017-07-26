@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
+
 use App\Repositories\Students;
+use App\Repositories\Departments;
 use App\Student;
 use App\Http\Requests\StudentRequest;
 
 class StudentsController extends BaseController
 {
     protected $key='students';
-    // public function __construct(Students $students) 
-    // {
-	// 	 $this->students=$students;
-	// }
+    public function __construct(Students $students,Departments $departments) 
+    {
+		 $this->students=$students;
+         $this->departments=$departments;
+	}
     public function indexOptions()
     {
-        $departmentOptions=[];//$this->terms->options();
+        $departmentOptions=$this->departments->options();
         return response()
             ->json([
                 'departmentOptions' => $departmentOptions,
@@ -33,23 +36,24 @@ class StudentsController extends BaseController
         $removed=(int)$request->removed; 
         $students=[];
         if($removed){
-            $students=$this->students->trash()
-                                           ->get();  
+            $students=$this->students->trash()->get();
+                                             
         }else{
-            
-            $students=$this->students->getAll()
-                                       ->where('parent', 0)
-                                       ->orderBy('active','desc')
-                                       ->orderBy('order','desc')
-                                       ->orderBy('updated_at','desc')
-                                       ->get();  
+            $students=$this->students->getAll();
+            $department=(int)$request->department; 
+            if($department){
+                $students=$students->where('department_id', $department);
+            }
+
+            $students=$students->with('department')
+                        ->orderBy('active','desc')->filterPaginateOrder();
+            foreach ($students as $student) {
+                $student->getName();
+            }                                       
+                                       
         }
         
-        
-        return response()
-            ->json([
-                'students' => $students
-            ]);
+        return response() ->json(['model' => $students  ]);  
         
     }
     

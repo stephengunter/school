@@ -62,7 +62,7 @@
                 options.then(data=>{
                     this.departmentOptions=data.departmentOptions
                     let allDepartments={ text:'全部科系' , value:'0' }
-                    this.departmentOptions.splice(0, 0, allCenters);
+                    this.departmentOptions.splice(0, 0, allDepartments);
                     this.params.department=this.departmentOptions[0].value
                     
                     this.ready=true

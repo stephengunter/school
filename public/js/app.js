@@ -40231,6 +40231,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -42079,6 +42080,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_department_js__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_unit_js__ = __webpack_require__(355);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_user_js__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_student_js__ = __webpack_require__(389);
 window.$ = window.jQuery = __webpack_require__(22);
 __webpack_require__(266);
 __webpack_require__(267);
@@ -42125,6 +42127,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-index', __webpack_re
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-details', __webpack_require__(370));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-create', __webpack_require__(369));
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-index', __webpack_require__(385));
+
 
 window.axios = __WEBPACK_IMPORTED_MODULE_2_axios___default.a;
 window.axios.defaults.headers.common = {
@@ -42156,9 +42160,11 @@ window.CommonService = __WEBPACK_IMPORTED_MODULE_9__services_common_js__["a" /* 
 
 
 
+
 window.Department = __WEBPACK_IMPORTED_MODULE_11__models_department_js__["a" /* default */];
 window.Unit = __WEBPACK_IMPORTED_MODULE_12__models_unit_js__["a" /* default */];
 window.User = __WEBPACK_IMPORTED_MODULE_13__models_user_js__["a" /* default */];
+window.Student = __WEBPACK_IMPORTED_MODULE_14__models_student_js__["a" /* default */];
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 
@@ -71085,6 +71091,848 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-93f68aee", module.exports)
   }
 }
+
+/***/ }),
+/* 380 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_row_vue__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_row_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_student_row_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        Row: __WEBPACK_IMPORTED_MODULE_0__components_student_row_vue___default.a
+    },
+    name: 'StudentList',
+    props: {
+        search_params: {
+            type: Object,
+            default: null
+        },
+        hide_create: {
+            type: Boolean,
+            default: false
+        },
+        version: {
+            type: Number,
+            default: 0
+        },
+        can_select: {
+            type: Boolean,
+            default: true
+        },
+        selected_ids: {
+            type: Array,
+            default: null
+        },
+        show_title: {
+            type: Boolean,
+            default: true
+        },
+        no_page: {
+            type: Boolean,
+            default: false
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    watch: {
+        student_id: function student_id(value) {
+            this.searchParams.student = value;
+        }
+    },
+    data: function data() {
+        return {
+            title: Helper.getIcon('Students') + '  學生管理',
+            loaded: false,
+            source: Student.source(),
+
+            defaultSearch: 'user.profile.fullname',
+            defaultOrder: 'updated_at',
+            create: Student.createUrl(),
+
+            thead: [],
+            filter: [{
+                title: '姓名',
+                key: 'user.profile.fullname'
+            }, {
+                title: '學號',
+                key: 'number'
+            }],
+
+            hasData: false,
+            viewMore: false
+
+        };
+    },
+
+
+    methods: {
+        init: function init() {
+            this.thead = Student.getThead(this.can_select);
+        },
+        onDataLoaded: function onDataLoaded(data) {
+            this.hasData = data.model.total > 0;
+        },
+        onBtnViewMoreClicked: function onBtnViewMoreClicked() {
+            this.viewMore = !this.viewMore;
+            for (var i = this.thead.length - 1; i >= 0; i--) {
+                if (!this.thead[i].static) {
+                    this.thead[i].default = !this.thead[i].default;
+                }
+            }
+        },
+        onRowSelected: function onRowSelected(id, number, name) {
+            this.$emit('selected', id, number, name);
+        },
+        onRowUnselected: function onRowUnselected(id) {
+            this.$emit('unselected', id);
+        },
+        beginCreate: function beginCreate() {
+            this.$emit('begin-create');
+        },
+        beenSelected: function beenSelected(id) {
+            if (!this.selected_ids) return false;
+            if (this.selected_ids.length < 1) return false;
+            var index = this.selected_ids.indexOf(id);
+            return index >= 0;
+        }
+    }
+
+});
+
+/***/ }),
+/* 381 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'StudentRow',
+    props: {
+        student: {
+            type: Object,
+            default: null
+        },
+        more: {
+            type: Boolean,
+            default: false
+        },
+        remove: {
+            type: Boolean,
+            default: false
+        },
+        select: {
+            type: Boolean,
+            default: false
+        },
+        been_selected: {
+            type: Boolean,
+            default: false
+        }
+
+    },
+    data: function data() {
+        return {
+            thead: []
+        };
+    },
+    beforeMount: function beforeMount() {},
+
+
+    methods: {
+        removeItem: function removeItem(id, name) {
+            var values = {
+                id: id,
+                name: name
+            };
+            this.$emit('remove-clicked', values);
+        },
+        selected: function selected() {
+            this.$emit('selected', this.student);
+        },
+        unselected: function unselected() {
+            this.$emit('unselected', this.student.id);
+        }
+    }
+
+});
+
+/***/ }),
+/* 382 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_list_vue__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_list_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_student_list_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'StudentIndex',
+    components: {
+        'student-list': __WEBPACK_IMPORTED_MODULE_0__components_student_list_vue___default.a
+    },
+    props: {
+        version: {
+            type: Number,
+            default: 0
+        },
+        hide_create: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data: function data() {
+        return {
+            ready: false,
+            departmentOptions: [],
+            params: {
+                department: 0
+            },
+
+            can_select: false
+
+        };
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            var _this = this;
+
+            var options = Student.indexOptions();
+            options.then(function (data) {
+                _this.departmentOptions = data.departmentOptions;
+                var allDepartments = { text: '全部科系', value: '0' };
+                _this.departmentOptions.splice(0, 0, allDepartments);
+                _this.params.department = _this.departmentOptions[0].value;
+
+                _this.ready = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+                _this.ready = false;
+            });
+        },
+        onSelected: function onSelected(id) {
+            this.$emit('selected', id);
+        },
+        onBeginCreate: function onBeginCreate() {
+            this.$emit('begin-create', this.student_id);
+        }
+    }
+
+});
+
+/***/ }),
+/* 383 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(380),
+  /* template */
+  __webpack_require__(387),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\student\\list.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] list.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3585a21a", Component.options)
+  } else {
+    hotAPI.reload("data-v-3585a21a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 384 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(381),
+  /* template */
+  __webpack_require__(388),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\student\\row.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] row.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-965e35e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-965e35e4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 385 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(382),
+  /* template */
+  __webpack_require__(386),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\student\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1ef5ac6c", Component.options)
+  } else {
+    hotAPI.reload("data-v-1ef5ac6c", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 386 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.params.department),
+      expression: "params.department"
+    }],
+    staticClass: "form-control selectWidth",
+    staticStyle: {
+      "width": "auto"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.params.department = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.departmentOptions), function(item) {
+    return _c('option', {
+      domProps: {
+        "value": item.value,
+        "textContent": _vm._s(item.text)
+      }
+    })
+  }))])])])]), _vm._v(" "), (_vm.ready) ? _c('student-list', {
+    attrs: {
+      "search_params": _vm.params,
+      "hide_create": _vm.hide_create,
+      "version": _vm.version,
+      "can_select": _vm.can_select
+    },
+    on: {
+      "selected": _vm.onSelected,
+      "begin-create": _vm.onBeginCreate
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1ef5ac6c", module.exports)
+  }
+}
+
+/***/ }),
+/* 387 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('data-viewer', {
+    attrs: {
+      "default_search": _vm.defaultSearch,
+      "default_order": _vm.defaultOrder,
+      "source": _vm.source,
+      "search_params": _vm.search_params,
+      "thead": _vm.thead,
+      "no_search": _vm.can_select,
+      "filter": _vm.filter,
+      "title": _vm.title,
+      "create_text": "",
+      "show_title": _vm.show_title,
+      "no_page": _vm.no_page,
+      "version": _vm.version
+    },
+    on: {
+      "refresh": _vm.init,
+      "beginCreate": _vm.beginCreate,
+      "dataLoaded": _vm.onDataLoaded
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(props) {
+        return [_c('row', {
+          attrs: {
+            "student": props.item,
+            "more": _vm.viewMore,
+            "select": _vm.can_select,
+            "been_selected": _vm.beenSelected(props.item.id)
+          },
+          on: {
+            "selected": _vm.onRowSelected,
+            "unselected": _vm.onRowUnselected
+          }
+        })]
+      }
+    }])
+  }, [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.hasData),
+      expression: "hasData"
+    }],
+    staticClass: "btn btn-warning btn-sm",
+    slot: "btn"
+  }, [_c('i', {
+    staticClass: "fa fa-file-excel-o",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n             匯出 \n     ")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3585a21a", module.exports)
+  }
+}
+
+/***/ }),
+/* 388 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [(_vm.remove) ? _c('td', [_c('button', {
+    staticClass: "btn btn-danger btn-xs",
+    on: {
+      "click": function($event) {
+        _vm.removeItem(_vm.student.id, _vm.student.name)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-remove",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]) : _vm._e(), _vm._v(" "), (_vm.select) ? _c('td', [_c('checkbox', {
+    attrs: {
+      "default": _vm.been_selected
+    },
+    on: {
+      "selected": _vm.selected,
+      "unselected": _vm.unselected
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('td', [_c('a', {
+    attrs: {
+      "herf": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.selected($event)
+      }
+    }
+  }, [_vm._v("\n                " + _vm._s(_vm.student.name) + "\n         ")])]), _vm._v(" "), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.number)
+    }
+  }), _vm._v(" "), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.department.name)
+    }
+  }), _vm._v(" "), _c('td', [_c('updated', {
+    attrs: {
+      "entity": _vm.student
+    }
+  })], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-965e35e4", module.exports)
+  }
+}
+
+/***/ }),
+/* 389 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Student = function () {
+    function Student(data) {
+        _classCallCheck(this, Student);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(Student, null, [{
+        key: 'title',
+        value: function title() {
+            return 'Students';
+        }
+    }, {
+        key: 'source',
+        value: function source() {
+            return '/students';
+        }
+    }, {
+        key: 'createUrl',
+        value: function createUrl() {
+            return this.source() + '/create';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'showUrl',
+        value: function showUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'editUrl',
+        value: function editUrl(id) {
+            return this.showUrl(id) + '/edit';
+        }
+    }, {
+        key: 'updateUrl',
+        value: function updateUrl(id) {
+            return this.showUrl(id);
+        }
+    }, {
+        key: 'deleteUrl',
+        value: function deleteUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'create',
+        value: function create() {
+            var url = this.createUrl();
+
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(form) {
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'import',
+        value: function _import(form) {
+            var url = this.storeUrl() + '/import';
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'show',
+        value: function show(id) {
+            var _this = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this.showUrl(id);
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'edit',
+        value: function edit(id) {
+            var url = this.editUrl(id);
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'update',
+        value: function update(form, id) {
+            var url = this.updateUrl(id);
+            var method = 'put';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(id) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this2.deleteUrl(id);
+                var form = new Form();
+                form.delete(url).then(function (response) {
+                    resolve(true);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'updatePhoto',
+        value: function updatePhoto(studentId, photoId) {
+            var form = new Form({
+                photo_id: photoId
+            });
+            var url = '/students/' + studentId + '/update-photo';
+            var method = 'put';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (saved) {
+                    resolve(saved);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'indexOptions',
+        value: function indexOptions() {
+            var url = this.source() + '/index-options';
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'getThead',
+        value: function getThead(canSelect) {
+            var thead = [{
+                title: '姓名',
+                key: 'name',
+                sort: false,
+                default: true
+            }, {
+                title: '學號',
+                key: 'number',
+                sort: true,
+                default: true
+            }, {
+                title: '科系',
+                key: 'department_id',
+                sort: false,
+                default: true
+            }, {
+                title: '更新時間',
+                key: 'updated_at',
+                sort: true,
+                default: true
+            }];
+            if (canSelect) {
+                var selectColumn = {
+                    title: '',
+                    key: '',
+                    sort: false,
+                    static: true,
+                    default: true
+                };
+                thead.splice(0, 0, selectColumn);
+            }
+            return thead;
+        }
+    }]);
+
+    return Student;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Student);
 
 /***/ })
 /******/ ]);

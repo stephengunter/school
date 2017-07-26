@@ -46,6 +46,8 @@ Vue.component('unit-index', require('./views/unit/index') )
 Vue.component('unit-details', require('./views/unit/details') )
 Vue.component('unit-create', require('./views/unit/create') )
 
+Vue.component('student-index', require('./views/student/index') )
+
 
 
 
@@ -83,10 +85,12 @@ window.CommonService = CommonService
 import Department from './models/department.js'
 import Unit from './models/unit.js'
 import User from './models/user.js'
+import Student from './models/student.js'
 
 window.Department = Department
 window.Unit = Unit
 window.User = User
+window.Student = Student
 
 
 

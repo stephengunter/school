@@ -166,12 +166,12 @@ class Student {
                         key: 'number',
                         sort: true,
                         default:true
-                    },  {
-                        title: '狀態',
-                        key: 'active',
-                        sort: true,
-                        default:true
                     },{
+                        title: '科系',
+                        key: 'department_id',
+                        sort: false,
+                        default:true
+                    }, {
                         title: '更新時間',
                         key: 'updated_at',
                         sort: true,

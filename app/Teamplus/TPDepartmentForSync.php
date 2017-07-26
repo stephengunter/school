@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Teamplus;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Teamplus\TPModel;
 
-class DepartmentForSync extends Model
+class TPDepartmentForSync extends TPModel
 {
-    protected $connection = 'sqlsrv_teamplus';
+    
     protected $table = 'DepartmentForSync';
     public $timestamps = false;
 
