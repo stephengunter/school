@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     protected $table = 'classes';
-    protected $fillable = ['name', 'department_id',
+    protected $fillable = ['name', 'department_id', 'grade_id',
 						    'active', 'removed','updated_by'
 						  ];
     public static function initialize($department)
@@ -16,6 +16,7 @@ class Classes extends Model
 			 'name' => '',
 			 'department_id' => $department->id,
 			 'departmentName'=>$department->name,
+			 'grade_id' => 0,
 			 'active' => 1,
 			 'removed' => 0,
 			 'updated_by' => '',
@@ -27,6 +28,10 @@ class Classes extends Model
     public function department() 
 	{
 		return $this->belongsTo('App\Department');
+	}
+	public function grade() 
+	{
+		return $this->belongsTo('App\Grade');
 	}
 
 	public function toOption()

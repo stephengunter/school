@@ -1,4 +1,4 @@
-class Classes {
+class Grade {
     constructor(data) {
        
         for (let property in data) {
@@ -8,10 +8,10 @@ class Classes {
 
     }
     static title(){
-       return 'Classes'
+       return 'grades'
     }
     static source(){
-        return '/classes'
+        return '/grades'
     }
     static createUrl(){
          return this.source() + '/create' 
@@ -45,9 +45,8 @@ class Classes {
            
         })
     }
-    static index(department_id){
+    static index(){
         let url = this.source() 
-        url += '?department=' + department_id
         return new Promise((resolve, reject) => {
             axios.get(url)
                 .then(response => {
@@ -59,9 +58,8 @@ class Classes {
            
         })
     }
-    static create(department_id){
+    static create(){
         let url = this.createUrl() 
-        url += '?department=' + department_id
         return new Promise((resolve, reject) => {
             axios.get(url)
                 .then(response => {
@@ -158,51 +156,13 @@ class Classes {
     
     
 
-    static getThead(canSelect){
-      let thead=  [{
-                        title: '名稱',
-                        key: 'name',
-                        sort: false,
-                        static:true,
-                        default:true
-                    },{
-                        title: '狀態',
-                        key: 'active',
-                        sort: false,
-                        static:true,
-                        default:true
-                    }, {
-                        title: '順序',
-                        key: 'order',
-                        sort: false,
-                        static:false,
-                        default:true
-                    },{
-                        title: '更新時間',
-                        key: 'updated_at',
-                        sort: true,
-                        default:true
-                    }]
-                if(canSelect){
-                   let selectColumn={
-                        title: '',
-                        key: '',
-                        sort: false,
-                        static:true,
-                        default:true
-                   }
-                   thead.splice(0, 0, selectColumn);
-                }
-            return thead
-    }
     
     
-    static gradeOptions(){
-        return Helper.numberOptions(1,5)
-    }
+    
+    
     
 
 }
 
 
-export default Classes;
+export default Grade;

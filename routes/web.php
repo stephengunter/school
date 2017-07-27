@@ -27,6 +27,7 @@ Route::get('units/options',['uses'=>'\App\Http\Controllers\Department\UnitsContr
 Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\UnitsController@updateOrder']);
 
 Route::put('classes/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\ClassesController@updateOrder']);
+Route::put('grades/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\GradesController@updateOrder']);
 
 
 Route::get('students/index-options', '\App\Http\Controllers\Student\StudentsController@indexOptions');
@@ -34,6 +35,7 @@ Route::get('students/index-options', '\App\Http\Controllers\Student\StudentsCont
 // Route::resource('teamplus-users', '\App\Http\Controllers\Teamplus\UsersController');
 
 Route::resource('departments', '\App\Http\Controllers\Department\DepartmentsController');
+Route::resource('grades', '\App\Http\Controllers\Department\GradesController');
 Route::resource('units', '\App\Http\Controllers\Department\UnitsController');
 Route::resource('classes', '\App\Http\Controllers\Department\ClassesController');
 Route::resource('users', '\App\Http\Controllers\User\UsersController');

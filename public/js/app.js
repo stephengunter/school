@@ -43493,10 +43493,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_common_js__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__packages_auth_Auth_js__ = __webpack_require__(209);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__models_department_js__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_class_js__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_unit_js__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_user_js__ = __webpack_require__(208);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models_student_js__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__models_grade_js__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__models_class_js__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__models_unit_js__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models_user_js__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models_student_js__ = __webpack_require__(206);
 window.$ = window.jQuery = __webpack_require__(22);
 __webpack_require__(280);
 __webpack_require__(281);
@@ -43539,6 +43540,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('department-index', __webp
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('department-details', __webpack_require__(314));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('department-create', __webpack_require__(313));
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('grade-index', __webpack_require__(398));
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-index', __webpack_require__(319));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-details', __webpack_require__(318));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('unit-create', __webpack_require__(317));
@@ -43578,11 +43581,13 @@ window.CommonService = __WEBPACK_IMPORTED_MODULE_9__services_common_js__["a" /* 
 
 
 
+
 window.Department = __WEBPACK_IMPORTED_MODULE_11__models_department_js__["a" /* default */];
-window.Classes = __WEBPACK_IMPORTED_MODULE_12__models_class_js__["a" /* default */];
-window.Unit = __WEBPACK_IMPORTED_MODULE_13__models_unit_js__["a" /* default */];
-window.User = __WEBPACK_IMPORTED_MODULE_14__models_user_js__["a" /* default */];
-window.Student = __WEBPACK_IMPORTED_MODULE_15__models_student_js__["a" /* default */];
+window.Grade = __WEBPACK_IMPORTED_MODULE_12__models_grade_js__["a" /* default */];
+window.Classes = __WEBPACK_IMPORTED_MODULE_13__models_class_js__["a" /* default */];
+window.Unit = __WEBPACK_IMPORTED_MODULE_14__models_unit_js__["a" /* default */];
+window.User = __WEBPACK_IMPORTED_MODULE_15__models_user_js__["a" /* default */];
+window.Student = __WEBPACK_IMPORTED_MODULE_16__models_student_js__["a" /* default */];
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 
@@ -43757,6 +43762,9 @@ var Helper = function () {
             switch (title) {
                 case 'departments':
                     html = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>';
+                    break;
+                case 'grades':
+                    html = '<i class="fa fa-flag" aria-hidden="true"></i>';
                     break;
                 case 'classes':
                     html = '<i class="fa fa-bell-o" aria-hidden="true"></i>';
@@ -44337,6 +44345,11 @@ var Classes = function () {
                 thead.splice(0, 0, selectColumn);
             }
             return thead;
+        }
+    }, {
+        key: 'gradeOptions',
+        value: function gradeOptions() {
+            return Helper.numberOptions(1, 5);
         }
     }]);
 
@@ -73139,6 +73152,1093 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-68b16a7a", module.exports)
+  }
+}
+
+/***/ }),
+/* 397 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Grade = function () {
+    function Grade(data) {
+        _classCallCheck(this, Grade);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(Grade, null, [{
+        key: 'title',
+        value: function title() {
+            return 'grades';
+        }
+    }, {
+        key: 'source',
+        value: function source() {
+            return '/grades';
+        }
+    }, {
+        key: 'createUrl',
+        value: function createUrl() {
+            return this.source() + '/create';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'showUrl',
+        value: function showUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'editUrl',
+        value: function editUrl(id) {
+            return this.showUrl(id) + '/edit';
+        }
+    }, {
+        key: 'updateUrl',
+        value: function updateUrl(id) {
+            return this.showUrl(id);
+        }
+    }, {
+        key: 'deleteUrl',
+        value: function deleteUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'trash',
+        value: function trash() {
+            var url = this.source();
+            url += '?removed=1';
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'index',
+        value: function index() {
+            var url = this.source();
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'create',
+        value: function create() {
+            var url = this.createUrl();
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(form) {
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'show',
+        value: function show(id) {
+            var _this = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this.showUrl(id);
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'edit',
+        value: function edit(id) {
+            var url = this.editUrl(id);
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'update',
+        value: function update(form, id) {
+            var url = this.updateUrl(id);
+            var method = 'put';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'updateDisplayOrder',
+        value: function updateDisplayOrder(id, up) {
+            var url = this.updateUrl(id) + '/update-order';
+            var method = 'put';
+            var form = new Form({
+                up: up
+            });
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(id) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this2.deleteUrl(id);
+                var form = new Form();
+                form.delete(url).then(function (response) {
+                    resolve(true);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }]);
+
+    return Grade;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Grade);
+
+/***/ }),
+/* 398 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(399),
+  /* template */
+  __webpack_require__(400),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\grade\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bef256f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-bef256f0", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 399 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_grade_list_vue__ = __webpack_require__(403);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_grade_list_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_grade_list_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'GradeIndexView',
+    components: {
+        'grade-list': __WEBPACK_IMPORTED_MODULE_0__components_grade_list_vue___default.a
+    },
+    props: {
+        version: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            removed: false,
+            listSettings: {
+                version: 0,
+                creating: false
+            }
+
+        };
+    },
+
+    watch: {
+
+        version: function version() {
+            this.listSettings.version += 1;
+        },
+        removed: function removed(val) {
+            this.listSettings.version += 1;
+        }
+    },
+    computed: {
+        title: function title() {
+            var text = Helper.getIcon(Grade.title()) + '  年級管理';
+            if (this.removed) text += ' (資源回收桶)';
+            return text;
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {},
+        onGradeSelected: function onGradeSelected(item) {
+            this.selectedGrade = item;
+        },
+        beginCreate: function beginCreate() {
+            this.listSettings.creating = true;
+        },
+        onCreateCanceled: function onCreateCanceled() {
+            this.listSettings.creating = false;
+        },
+        onGradeCreated: function onGradeCreated() {
+            this.listSettings.creating = false;
+        },
+        onRefresh: function onRefresh() {
+            this.listSettings.version += 1;
+        },
+        onSelected: function onSelected(id) {
+            this.$emit('selected', Number(id));
+        }
+    }
+});
+
+/***/ }),
+/* 400 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [(_vm.removed) ? _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = false
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-left",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n                  返回\n           ")])])]) : _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = true
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n               資源回收桶\n           ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.onRefresh($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.beginCreate
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  }), _vm._v(" 新增\n           ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('grade-list', {
+    attrs: {
+      "version": _vm.listSettings.version,
+      "creating": _vm.listSettings.creating,
+      "removed": _vm.removed
+    },
+    on: {
+      "selected": _vm.onSelected,
+      "create-canceled": _vm.onCreateCanceled,
+      "grade-created": _vm.onGradeCreated
+    }
+  })], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-bef256f0", module.exports)
+  }
+}
+
+/***/ }),
+/* 401 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__row_vue__ = __webpack_require__(404);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__row_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__row_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'GradeList',
+    components: {
+        Row: __WEBPACK_IMPORTED_MODULE_0__row_vue___default.a
+    },
+    props: {
+        creating: {
+            type: Boolean,
+            default: false
+        },
+        removed: {
+            type: Boolean,
+            default: false
+        },
+        version: {
+            type: Number,
+            default: 0
+        }
+
+    },
+    data: function data() {
+        return {
+            loaded: false,
+
+            gradeList: [],
+
+            createReady: false,
+            newEntity: {},
+
+            deleteConfirm: {
+                id: 0,
+                show: false,
+                msg: ''
+            }
+        };
+    },
+
+    watch: {
+        version: function version() {
+            this.fetchData();
+        },
+        creating: function creating(val) {
+            if (val) {
+                this.beginCreate();
+            } else {
+                this.createReady = false;
+            }
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.createReady = false;
+
+            this.fetchData();
+
+            if (this.creating) {
+                this.beginCreate();
+            }
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            this.classList = [];
+            var getData = null;
+            if (this.removed) {
+                getData = Grade.trash();
+            } else {
+                getData = Grade.index();
+            }
+            getData.then(function (data) {
+                _this.gradeList = data.gradeList;
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        displayUp: function displayUp(id) {
+            this.updateDisplayOrder(id, true);
+        },
+        displayDown: function displayDown(id) {
+            this.updateDisplayOrder(id, false);
+        },
+        updateDisplayOrder: function updateDisplayOrder(id, up) {
+            var _this2 = this;
+
+            var update = Grade.updateDisplayOrder(id, up);
+
+            update.then(function (data) {
+                _this2.loaded = false;
+                _this2.fetchData();
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        selected: function selected(id) {
+            this.$emit('selected', id);
+        },
+        beginCreate: function beginCreate() {
+            var _this3 = this;
+
+            var getData = Grade.create();
+            getData.then(function (data) {
+                _this3.newEntity = data.grade;
+                _this3.createReady = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        onCreateCanceled: function onCreateCanceled() {
+            this.$emit('create-canceled');
+        },
+        onGradeCreated: function onGradeCreated() {
+            this.fetchData();
+            this.$emit('grade-created');
+        },
+        beginDelete: function beginDelete(values) {
+
+            this.deleteConfirm.msg = '確定要刪除年級 『' + values.name + '』嗎';
+            this.deleteConfirm.id = values.id;
+            this.deleteConfirm.show = true;
+        },
+        closeConfirm: function closeConfirm() {
+            this.deleteConfirm.show = false;
+        },
+        deleteGrade: function deleteGrade() {
+            var _this4 = this;
+
+            var id = this.deleteConfirm.id;
+            var remove = Grade.delete(id);
+            remove.then(function (result) {
+                _this4.init();
+                Helper.BusEmitOK('刪除成功');
+                _this4.deleteConfirm.show = false;
+                _this4.$emit('deleted');
+            }).catch(function (error) {
+                Helper.BusEmitError(error, '刪除失敗');
+                _this4.closeConfirm();
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 402 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'ClassRow',
+    props: {
+        grade: {
+            type: Object,
+            default: {}
+        },
+        removed: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data: function data() {
+        return {
+            readOnly: true,
+
+            loaded: false,
+            form: {},
+            removedOptions: Helper.removedOptions()
+        };
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        getId: function getId() {
+            if (this.grade) return Helper.tryParseInt(this.grade.id);
+            return 0;
+        },
+        init: function init() {
+            var id = this.getId();
+            this.readOnly = id > 0;
+
+            if (!this.readOnly) {
+                this.form = new Form({
+                    grade: this.grade
+                });
+
+                this.loaded = true;
+            }
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var id = this.getId();
+            var getData = Grade.edit(id);
+            getData.then(function (data) {
+                var grade = data.grade;
+
+                _this.form = new Form({
+                    grade: grade
+                });
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        beginEdit: function beginEdit() {
+
+            this.loaded = false;
+            this.readOnly = false;
+            this.fetchData();
+        },
+        cancelEdit: function cancelEdit() {
+            var id = this.getId();
+            if (id) {
+                this.readOnly = true;
+            } else {
+                this.$emit('canceled');
+            }
+        },
+        btnDeleteClicked: function btnDeleteClicked() {
+            var values = {
+                id: this.getId(),
+                name: this.grade.name
+            };
+            this.$emit('btn-delete-clicked', values);
+        },
+        clearErrorMsg: function clearErrorMsg(name) {
+            this.form.errors.clear(name);
+        },
+        setRemoved: function setRemoved(val) {
+            this.form.grade.removed = val;
+        },
+        onSubmit: function onSubmit() {
+            this.submitForm();
+        },
+        submitForm: function submitForm() {
+            var _this2 = this;
+
+            var save = null;
+            var id = Number(this.form.grade.id);
+            if (id > 0) {
+                save = Grade.update(this.form, id);
+            } else {
+                save = Grade.store(this.form);
+            }
+
+            save.then(function (result) {
+                Helper.BusEmitOK();
+                _this2.readOnly = true;
+
+                _this2.$emit('saved');
+            }).catch(function (error) {
+                Helper.BusEmitError(error, '存檔失敗');
+            });
+        },
+        displayUp: function displayUp(id) {
+            this.$emit('order-up', id);
+        },
+        displayDown: function displayDown(id) {
+            this.$emit('order-down', id);
+        }
+    }
+});
+
+/***/ }),
+/* 403 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(401),
+  /* template */
+  __webpack_require__(405),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\grade\\list.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] list.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5372d7fe", Component.options)
+  } else {
+    hotAPI.reload("data-v-5372d7fe", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(402),
+  /* template */
+  __webpack_require__(406),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\grade\\row.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] row.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-633362aa", Component.options)
+  } else {
+    hotAPI.reload("data-v-633362aa", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('table', {
+    staticClass: "table table-striped"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("名稱")]), _vm._v(" "), (_vm.removed) ? _c('th', [_vm._v("狀態")]) : _vm._e(), _vm._v(" "), (!_vm.removed) ? _c('th', [_vm._v("順序")]) : _vm._e(), _vm._v(" "), _c('th', [_vm._v("更新時間")]), _vm._v(" "), _c('th', [_vm._v(" ")])])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.gradeList), function(grade) {
+    return _c('row', {
+      key: "grade.id",
+      attrs: {
+        "grade": grade,
+        "removed": _vm.removed
+      },
+      on: {
+        "saved": _vm.init,
+        "btn-delete-clicked": _vm.beginDelete,
+        "order-up": _vm.displayUp,
+        "order-down": _vm.displayDown
+      }
+    })
+  }), _vm._v(" "), (_vm.createReady) ? _c('row', {
+    attrs: {
+      "grade": _vm.newEntity
+    },
+    on: {
+      "canceled": _vm.onCreateCanceled,
+      "saved": _vm.onGradeCreated
+    }
+  }) : _vm._e()], 2)]), _vm._v(" "), _c('delete-confirm', {
+    attrs: {
+      "showing": _vm.deleteConfirm.show,
+      "message": _vm.deleteConfirm.msg
+    },
+    on: {
+      "close": _vm.closeConfirm,
+      "confirmed": _vm.deleteGrade
+    }
+  })], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5372d7fe", module.exports)
+  }
+}
+
+/***/ }),
+/* 406 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.readOnly) ? _c('tr', [_c('td', [_vm._v("\n      " + _vm._s(_vm.grade.name) + "\n    ")]), _vm._v(" "), (_vm.removed) ? _c('td', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.$options.filters.removedLabel(_vm.grade.removed))
+    }
+  }) : _vm._e(), _vm._v(" "), (!_vm.removed) ? _c('td', [_c('button', {
+    staticClass: "btn btn-default btn-xs",
+    on: {
+      "click": function($event) {
+        _vm.displayUp(_vm.grade.id)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-up",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default btn-xs",
+    on: {
+      "click": function($event) {
+        _vm.displayDown(_vm.grade.id)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-down",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]) : _vm._e(), _vm._v(" "), _c('td', [_c('updated', {
+    attrs: {
+      "entity": _vm.grade
+    }
+  })], 1), _vm._v(" "), _c('td', [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.grade.canEdit),
+      expression: "grade.canEdit"
+    }],
+    staticClass: "btn btn-primary btn-xs",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.beginEdit($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-pencil",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), (_vm.grade.canDelete) ? _c('button', {
+    staticClass: "btn btn-danger btn-xs",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.btnDeleteClicked($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]) : _vm._e()])]) : _c('tr', [(_vm.loaded) ? _c('td', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.grade.name),
+      expression: "form.grade.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "grade.name"
+    },
+    domProps: {
+      "value": (_vm.form.grade.name)
+    },
+    on: {
+      "keydown": function($event) {
+        _vm.clearErrorMsg('grade.name')
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.grade.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.form.errors.has('grade.name')) ? _c('small', {
+    staticClass: "text-danger",
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('grade.name'))
+    }
+  }) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.loaded) ? _c('td', [(_vm.removed) ? _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.grade.removed),
+      expression: "form.grade.removed"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.form.grade.removed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.grade.removed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('toggle', {
+    attrs: {
+      "items": _vm.removedOptions,
+      "default_val": _vm.form.grade.removed
+    },
+    on: {
+      "selected": _vm.setRemoved
+    }
+  })], 1) : _vm._e()]) : _vm._e(), _vm._v(" "), (!_vm.removed) ? _c('td', [_vm._v(" ")]) : _vm._e(), _vm._v(" "), (_vm.loaded) ? _c('td', [_c('button', {
+    staticClass: "btn btn-success btn-xs",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-floppy-disk",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default btn-xs",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.cancelEdit($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-633362aa", module.exports)
   }
 }
 

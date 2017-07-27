@@ -4,7 +4,7 @@ namespace App\Teamplus;
 
 use App\Teamplus\TPModel;
 
-class TPDepartmentForSync extends TPModel
+class TPUserForSync extends TPModel
 {
     
     protected $table = 'UserForSync';

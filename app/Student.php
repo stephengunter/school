@@ -16,9 +16,9 @@ class Student extends Model
 	{
 		 return $this->belongsTo('App\User');
 	}
-	public function department()
+	public function class()
 	{
-		 return $this->belongsTo('App\Department');
+		 return $this->belongsTo('App\Classes','class_id');
 	}
 	public function getName()
 	{

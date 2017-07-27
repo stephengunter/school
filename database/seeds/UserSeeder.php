@@ -5,7 +5,7 @@ use App\User;
 use App\Profile;
 use App\Student;
 use App\Staff;
-use App\Department;
+use App\Classes;
 use App\Unit;
 
 use Faker\Factory;
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$departments=Department::all();
+		$classList=Classes::all();
 		$units=Unit::all();
         $faker = Factory::create();
 		//  User::truncate();
@@ -44,13 +44,13 @@ class UserSeeder extends Seeder
             ]);
 
 			if($i %2 == 0 ){
-				$department=$departments[mt_rand(0, count($departments)-1)];
-				Student::create([
-					'user_id' => $user->id,		
-                    'department_id' => $department->id,					
-					'number'=> (string)1061000 + $i,
-                    'join_date' =>'2017-7-15',
-               ]);
+			// 	$class=$classList[mt_rand(0, count($classList)-1)];
+			// 	Student::create([
+			// 		'user_id' => $user->id,		
+            //         'class_id' => $class->id,					
+			// 		'number'=> (string)1061000 + $i,
+            //         'join_date' =>'2017-7-15',
+            //    ]);
 			}else{
 				$unit=$units[mt_rand(0, count($units)-1)];
 				Staff::create([
