@@ -10,15 +10,21 @@
      <div class="panel-heading">
          <ul class="nav nav-tabs">
             <li class="active">
-               <a @click="activeIndex=0" href="#classes" data-toggle="tab">班級</a>
+                <a @click="activeIndex=0" href="#grades" data-toggle="tab">年級</a>
+            </li>
+            <li>
+                <a @click="activeIndex=1" href="#classes" data-toggle="tab">班級</a>
             </li>
          </ul>
      </div>
      <div class="panel-body">
         <div class="tab-content">
-            <div class="tab-pane fade active in" id="classes">
-                 <class-list :department_id="id"></class-list> 
+            <div class="tab-pane fade active in" id="grades">
+                 <grades-view :department_id="id" v-if="activeIndex==0"></grades-view>
             </div>
+            <div class="tab-pane fade" id="classes">
+                 <class-list v-if="activeIndex==1" :department_id="id"></class-list>
+             </div>
         </div>
      </div>
   </div>
@@ -28,12 +34,14 @@
 
 <script>
     import DepartmentComponent from '../../components/department/department.vue'
+    import GradesView from '../../components/department/grades/view.vue'
     import ClassList from '../../components/class/list.vue'
     
     export default {
         name: 'DepartmentDetails',
         components: {
             'department':DepartmentComponent,
+            'grades-view':GradesView,
             'class-list':ClassList,
         },
         props: {

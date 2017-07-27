@@ -20,13 +20,7 @@
               </tbody> 
           </table>
        </div> <!-- End panel-body-->
-       <modal  :showbtn="false"   :title="editor.title" :show.sync="editor.show" 
-            effect="fade" :width="editor.width"  
-            @closed="editor.show=false">
-            <div slot="modal-body" class="modal-body">
-                
-            </div>
-       </modal>
+       
   </div>
 </template>
 
@@ -50,11 +44,7 @@
                removed:false,
              
                gradeList:[],
-               editor:{
-                    title:0,
-                    show:false,
-                    msg:'',
-                }  
+
             }
         },
         computed:{
@@ -74,19 +64,17 @@
            init(){
               this.loaded=false
               this.adding=false
-              this.classList=[]
+             
 
               this.fetchData()
               
            },
            fetchData() {
-
+                this.grades=[]
+                this.loaded = true  
+                return
                 let getData =null          
-                if(this.removed){
-                    getData=Classes.trash()
-                }else{
-                   getData=Classes.index(this.department_id)
-                }
+                
                 getData.then(data => {
                    this.entityList=data.classList
                    this.loaded = true                        
@@ -94,12 +82,6 @@
                 .catch(error=> {
                     Helper.BusEmitError(error)
                 })
-            },
-            displayUp(id){
-                this.updateDisplayOrder(id,true)
-            },
-            displayDown(id){
-                this.updateDisplayOrder(id,false)
             },
             updateDisplayOrder(id,up){
                 let update=Classes.updateDisplayOrder(id,up) 
@@ -117,15 +99,16 @@
 
             },
             beginEdit(){
-                let getData=Classes.create(this.department_id)
-                getData.then(data => {
-                    this.newEntity = data.entity
-                    this.adding=true
+                this.$emit('begin-edit')
+                // let getData=Classes.create(this.department_id)
+                // getData.then(data => {
+                //     this.newEntity = data.entity
+                //     this.adding=true
                     
-                })
-                .catch(error=> {
-                    Helper.BusEmitError(error)
-                })
+                // })
+                // .catch(error=> {
+                //     Helper.BusEmitError(error)
+                // })
                 
             },
             onAddCanceled(){
