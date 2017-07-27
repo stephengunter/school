@@ -1,4 +1,4 @@
-class Class {
+class Classes {
     constructor(data) {
        
         for (let property in data) {
@@ -31,9 +31,37 @@ class Class {
     static deleteUrl(id){
          return this.source() + '/' + id
     }
-    static create(){
+    static trash(){
+        let url = this.source() 
+        url += '?removed=1'
+        return new Promise((resolve, reject) => {
+            axios.get(url)
+                .then(response => {
+                   resolve(response.data)
+                })
+                .catch(error=> {
+                     reject(error)
+                })
+           
+        })
+    }
+    static index(department_id){
+        let url = this.source() 
+        url += '?department=' + department_id
+        return new Promise((resolve, reject) => {
+            axios.get(url)
+                .then(response => {
+                   resolve(response.data)
+                })
+                .catch(error=> {
+                     reject(error)
+                })
+           
+        })
+    }
+    static create(department_id){
         let url = this.createUrl() 
-      
+        url += '?department=' + department_id
         return new Promise((resolve, reject) => {
             axios.get(url)
                 .then(response => {
@@ -98,6 +126,22 @@ class Class {
                 })
         })
     }
+    static updateDisplayOrder(id,up){
+        let url =this.updateUrl(id) + '/update-order'
+        let method='put'
+        let form = new Form({                        
+                         up: up
+                    })
+        return new Promise((resolve, reject) => {
+            form.submit(method,url)
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                })
+        })
+    }
     static delete(id) {
         return new Promise((resolve, reject) => {
             let url =this.deleteUrl(id) 
@@ -119,13 +163,21 @@ class Class {
                         title: '名稱',
                         key: 'name',
                         sort: false,
+                        static:true,
                         default:true
                     },{
-                        title: '科系',
-                        key: 'department_id',
+                        title: '狀態',
+                        key: 'active',
                         sort: false,
+                        static:true,
                         default:true
                     }, {
+                        title: '順序',
+                        key: 'order',
+                        sort: false,
+                        static:false,
+                        default:true
+                    },{
                         title: '更新時間',
                         key: 'updated_at',
                         sort: true,
@@ -133,11 +185,11 @@ class Class {
                     }]
                 if(canSelect){
                    let selectColumn={
-                    title: '',
-                    key: '',
-                    sort: false,
-                    static:true,
-                    default:true
+                        title: '',
+                        key: '',
+                        sort: false,
+                        static:true,
+                        default:true
                    }
                    thead.splice(0, 0, selectColumn);
                 }
@@ -151,4 +203,4 @@ class Class {
 }
 
 
-export default Class;
+export default Classes;

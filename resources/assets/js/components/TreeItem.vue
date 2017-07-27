@@ -1,7 +1,7 @@
 <template>
    <li>
         <div>
-            <a @click.prevent="onSelected(model.id)"> {{model.name}}  </a>
+            <a @click.prevent="onSelected(model)"> {{model.name}}  </a>
           
         </div>
         <ul  v-if="isFolder">
@@ -35,8 +35,8 @@
             }
         },
         methods: {
-            onSelected(id){
-                this.$emit('selected',id)
+            onSelected(model){
+                this.$emit('selected',model)
             }
         }
 

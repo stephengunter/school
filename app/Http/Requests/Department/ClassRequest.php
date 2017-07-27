@@ -14,28 +14,25 @@ class ClassRequest extends FormRequest
    
     public function rules()
     {
-        $id=$this->getClassId();
+        $id=$this->getEntityId();
         return [
-            'class.name' => 'required|unique:classs,name,'.$id,
-            'class.code' => 'required|unique:classs,code,'.$id,
+            'entity.name' => 'required|unique:classes,name,'.$id,
           
         ];
     }
     public function messages()
     {
         return [
-            'class.name.required' => '必須填寫名稱',
-            'class.name.unique' => '名稱與現存資料重複',
-            'class.code.required' => '必須填寫代碼',
-            'class.code.unique' => '代碼與現存資料重複',
+            'entity.name.required' => '必須填寫名稱',
+            'entity.name.unique' => '名稱與現存資料重複',
          
         ];
     }
     
    
-    public function getClassId()
+    public function getEntityId()
     {
-        $values = $this['class'];
+        $values = $this['entity'];
         $id=0;        
         if(array_key_exists ( 'id' ,$values)){
             $id=(int)$values['id'];
@@ -44,13 +41,12 @@ class ClassRequest extends FormRequest
     }
     
 
-    public function getValues($updated_by,$removed)
+    public function getValues($updated_by)
     {
-        $request=$this->get('class');
-        $values=array_except($request, ['parentClass']);
+        $values=$this->get('entity');
        
         $values= Helper::setUpdatedBy($values,$updated_by);
-        return Helper::setRemoved($values,$removed);
+        return $values;
     }
     
 

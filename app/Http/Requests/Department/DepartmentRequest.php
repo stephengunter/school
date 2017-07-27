@@ -45,13 +45,13 @@ class DepartmentRequest extends FormRequest
     }
     
 
-    public function getValues($updated_by,$removed)
+    public function getValues($updated_by)
     {
         $request=$this->get('department');
         $values=array_except($request, ['parentDepartment']);
        
         $values= Helper::setUpdatedBy($values,$updated_by);
-        return Helper::setRemoved($values,$removed);
+        return $values;
     }
     
 

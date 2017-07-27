@@ -140,8 +140,7 @@ class UnitsController extends BaseController
             return  $this->unauthorized();       
          }
          $updated_by=$current_user->id;
-         $removed=false;
-         $values=$request->getValues($updated_by,$removed);  
+         $values=$request->getValues($updated_by);  
 
          $unit->update($values);
          return response()->json($unit);

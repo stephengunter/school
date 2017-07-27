@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Repositories\Departments;
+use App\Repositories\ClassesRepository;
 use App\Department;
 use App\Http\Requests\Department\DepartmentRequest;
 
 class DepartmentsController extends BaseController
 {
     protected $key='departments';
-    public function __construct(Departments $departments) 
+    public function __construct(Departments $departments,ClassesRepository $classesRepository) 
     {
 		 $this->departments=$departments;
+         $this->classesRepository=$classesRepository;
 	}
 
     public function index()
@@ -21,6 +23,11 @@ class DepartmentsController extends BaseController
         if(!request()->ajax()) return view('departments.index');
         
         $request = request();
+        $mode=$request->mode; 
+       
+        if($mode=='tree'){
+           return $this->tree();
+        }
 
         $removed=(int)$request->removed; 
         $departments=[];
@@ -44,7 +51,24 @@ class DepartmentsController extends BaseController
             ]);
         
     }
-    
+    private function tree()
+    {
+        $departments=$this->departments->getAll()
+                                       ->where('parent', 0)
+                                       ->orderBy('active','desc')
+                                       ->orderBy('order','desc')
+                                       ->orderBy('updated_at','desc')
+                                       ->get(); 
+
+        foreach ($departments as $department) {
+            $children=$this->classesRepository->activeClasses($department->id)->get();
+            $department->children=$children;
+           
+        }
+        
+        return response()->json(['departments' => $departments ]);
+            
+    }
     public function create()
     {
         if(!request()->ajax()){
@@ -110,8 +134,7 @@ class DepartmentsController extends BaseController
             return  $this->unauthorized();       
          }
          $updated_by=$current_user->id;
-         $removed=false;
-         $values=$request->getValues($updated_by,$removed);  
+         $values=$request->getValues($updated_by);  
 
          $department->update($values);
          return response()->json($department);

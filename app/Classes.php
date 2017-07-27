@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     protected $table = 'classes';
-    protected $fillable = ['name',
+    protected $fillable = ['name', 'department_id',
 						    'active', 'removed','updated_by'
 						  ];
-    public static function initialize($department_id)
+    public static function initialize($department)
     {
          return [
 			 'name' => '',
-			 'department_id' => $department_id,
-			 
+			 'department_id' => $department->id,
+			 'departmentName'=>$department->name,
 			 'active' => 1,
 			 'removed' => 0,
 			 'updated_by' => '',

@@ -58,6 +58,15 @@ class CommonService {
                     value: '0'
                 }]
     }
+    static removedOptions(){
+      return  [{
+                    text: '已移除',
+                    value: '1'
+                }, {
+                    text: '未移除',
+                    value: '0'
+                }]
+    }
     static genderOptions() {
         return [{
             text: '先生',

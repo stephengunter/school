@@ -45,13 +45,13 @@ class UnitRequest extends FormRequest
     }
     
 
-    public function getValues($updated_by,$removed)
+    public function getValues($updated_by)
     {
         $request=$this->get('unit');
         $values=array_except($request, ['parentUnit']);
        
         $values= Helper::setUpdatedBy($values,$updated_by);
-        return Helper::setRemoved($values,$removed);
+        return $values;
     }
     
 

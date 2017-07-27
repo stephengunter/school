@@ -1,7 +1,7 @@
 <template>
 <div v-if="loaded">
-    <tree-view v-for="unit in units" 
-          :model="unit" :key="unit.id"
+    <tree-view v-for="department in departments" 
+          :model="department" :key="department.id"
           @selected="onSelected">
     </tree-view>
 </div>
@@ -11,7 +11,7 @@
 <script>
    
     export default {
-        name: 'UnitTree',
+        name: 'DepartmentTree',
         props:{
             version:{
               type:Number,
@@ -21,9 +21,8 @@
         },
         data() {
             return {
-              
                loaded:false,
-               units:[],
+               departments:[],
             }
         },
         watch: {
@@ -38,15 +37,15 @@
            init(){
             
               this.loaded=false
-              this.units=[]
+              this.departments=[]
               this.fetchData()
               
            },
            fetchData() {
-                let getData = Unit.tree()             
+                let getData = Department.tree()             
              
                 getData.then(data => {
-                   this.units=data.units
+                   this.departments=data.departments
                    this.loaded = true                        
                 })
                 .catch(error=> {
@@ -54,7 +53,12 @@
                 })
             },
             onSelected(model){
-               this.$emit('selected',model.id)
+                if(model.department_id){
+                   this.$emit('selected', model.department_id)
+                }else{
+                    this.$emit('selected',model.id)
+                }
+              
             }
             
           

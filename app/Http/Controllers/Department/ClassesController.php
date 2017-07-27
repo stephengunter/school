@@ -7,17 +7,21 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Department\ClassRequest;
 use App\Classes;
 use App\Repositories\ClassesRepository;
+use App\Repositories\Departments;
 
 class ClassesController extends BaseController
 {
     
-    public function __construct(ClassesRepository $classesRepository) 
+    public function __construct(ClassesRepository $classesRepository, Departments $departments) 
     {
-		 $this->classesRepository=$classesRepository;
+		$this->classesRepository=$classesRepository;
+        $this->departments=$departments;
 	}
 
     public function index()
     {
+        $current_user=$this->currentUser();
+
         $request = request();
 
         $removed=(int)$request->removed; 
@@ -26,13 +30,16 @@ class ClassesController extends BaseController
             $classList=$this->classesRepository->trash() ->get();  
                                           
         }else{
-            
-            $classList=$this->classesRepository->getAll()
-                                       ->where('parent', 0)
-                                       ->orderBy('active','desc')
-                                       ->orderBy('order','desc')
-                                       ->orderBy('updated_at','desc')
-                                       ->get();  
+            $department_id=(int)$request->department; 
+            $classList=$this->classesRepository->activeClasses($department_id)
+                                                ->orderBy('order','desc')
+                                                ->orderBy('updated_at','desc')
+                                                ->get();  
+        }
+
+        foreach ($classList as $entity) {
+             $entity->canEdit=$entity->canEditBy($current_user);
+             $entity->canDelete=$entity->canDeleteBy($current_user);    
         }
         
         
@@ -48,11 +55,12 @@ class ClassesController extends BaseController
         $request = request();
         $department_id=(int)$request->department;
         if(!$department_id) abort(404);
-
-        $entity= Classes::initialize();
+        $department=$this->departments->findOrFail($department_id);
+       
+        $entity= Classes::initialize($department);
 
         return response()->json([
-                    'entity' => $entity,
+                    'entity' => $entity
                 ]); 
     }
     public function store(ClassRequest $request)
@@ -100,8 +108,7 @@ class ClassesController extends BaseController
             return  $this->unauthorized();       
          }
          $updated_by=$current_user->id;
-         $removed=false;
-         $values=$request->getValues($updated_by,$removed);  
+         $values=$request->getValues($updated_by);  
 
          $entity->update($values);
          return response()->json($entity);

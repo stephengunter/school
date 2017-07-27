@@ -22,8 +22,8 @@
             
         },
         methods: {
-            onSelected(id){
-                this.$emit('selected',id)
+            onSelected(model){
+                this.$emit('selected',model)
             }
         }
 

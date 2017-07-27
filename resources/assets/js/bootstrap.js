@@ -83,13 +83,13 @@ window.CommonService = CommonService
 
 
 import Department from './models/department.js'
-import Class from './models/class.js'
+import Classes from './models/class.js'
 import Unit from './models/unit.js'
 import User from './models/user.js'
 import Student from './models/student.js'
 
 window.Department = Department
-window.Class = Class
+window.Classes = Classes
 window.Unit = Unit
 window.User = User
 window.Student = Student

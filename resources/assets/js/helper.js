@@ -157,6 +157,9 @@ class Helper {
     static boolOptions() {
          return CommonService.boolOptions()
     }
+    static removedOptions() {
+         return CommonService.removedOptions()
+    }
     static datetimePickerOption() {
         return TimeService.datetimePickerOption()
     }

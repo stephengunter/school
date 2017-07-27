@@ -6,18 +6,35 @@
 
   </department>
   
-  
+  <div v-if="loaded" class="panel with-nav-tabs panel-default">
+     <div class="panel-heading">
+         <ul class="nav nav-tabs">
+            <li class="active">
+               <a @click="activeIndex=0" href="#classes" data-toggle="tab">班級</a>
+            </li>
+         </ul>
+     </div>
+     <div class="panel-body">
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="classes">
+                 <class-list :department_id="id"></class-list> 
+            </div>
+        </div>
+     </div>
+  </div>
   
 </div>
 </template>
 
 <script>
     import DepartmentComponent from '../../components/department/department.vue'
+    import ClassList from '../../components/class/list.vue'
     
     export default {
         name: 'DepartmentDetails',
         components: {
             'department':DepartmentComponent,
+            'class-list':ClassList,
         },
         props: {
             id: {
@@ -42,6 +59,8 @@
                loaded:false,
                department:null,
                current_version:0,
+
+               activeIndex:0,
 
             }
         },

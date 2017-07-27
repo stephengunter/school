@@ -148,7 +148,7 @@
                     })
                 }
             },
-             onUnitSelected(item){
+            onUnitSelected(item){
                 this.selectedUnit=item
             },
             btnAddClicked(){

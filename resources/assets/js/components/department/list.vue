@@ -2,8 +2,11 @@
 <table v-if="loaded" class="table table-striped">
      <thead>
         <tr>
-            <th v-for="item in thead" v-text="item.title" >
-            </th>
+            <th>名稱</th>
+            <th>代碼</th>
+            <th>狀態</th>
+            <th v-if="!removed">顯示順序</th>
+            <th>最後更新</th>
         </tr>      
     </thead>
     <tbody>
