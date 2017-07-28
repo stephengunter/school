@@ -6,18 +6,36 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Department\ClassRequest;
 use App\Classes;
+use App\Grade;
+use App\Department;
 use App\Repositories\ClassesRepository;
 use App\Repositories\Departments;
+use App\Repositories\Grades;
 
 class ClassesController extends BaseController
 {
     
-    public function __construct(ClassesRepository $classesRepository, Departments $departments) 
+    public function __construct(ClassesRepository $classesRepository, Departments $departments,
+                                Grades $grades) 
     {
 		$this->classesRepository=$classesRepository;
         $this->departments=$departments;
+        $this->grades=$grades;
 	}
+    public function indexOptions()
+    {
+        $request = request();
+        $department_id=(int)$request->department;
+        if(!$department_id) abort(404);
+        $department=Department::findOrFail($department_id);
 
+        $gradeOptions=$this->grades->optionsConverting($department->grades);
+        return response()
+            ->json([
+                'gradeOptions' => $gradeOptions,
+            ]);
+
+    }
     public function index()
     {
         $current_user=$this->currentUser();
@@ -27,14 +45,17 @@ class ClassesController extends BaseController
         $removed=(int)$request->removed; 
         $classList=[];
         if($removed){
-            $classList=$this->classesRepository->trash() ->get();  
+            $classList=$this->classesRepository->trash()
+                                            ->with('grade')->get();  
                                           
         }else{
             $department_id=(int)$request->department; 
-            $classList=$this->classesRepository->activeClasses($department_id)
-                                                ->orderBy('order','desc')
-                                                ->orderBy('updated_at','desc')
-                                                ->get();  
+            
+            $grade_id=(int)$request->grade; 
+
+            $classList=$this->classesRepository
+                            ->activeClasses($department_id,$grade_id);
+                                                
         }
 
         foreach ($classList as $entity) {
@@ -57,19 +78,21 @@ class ClassesController extends BaseController
         if(!$department_id) abort(404);
         $department=$this->departments->findOrFail($department_id);
        
-        $entity= Classes::initialize($department);
+        $entity=new Classes(Classes::initialize($department));
 
+        $gradeOptions=$this->grades->optionsConverting($department->grades);
+        $entity->gradeOptions=$gradeOptions;
+        $entity->grade_id=$gradeOptions[0]['value'];
         return response()->json([
-                    'entity' => $entity
+                    'entity' => $entity,
                 ]); 
     }
     public function store(ClassRequest $request)
     {
         $current_user=$this->currentUser();
         $updated_by=$current_user->id;
-        $removed=false;
-        $values=$request->getValues($updated_by,$removed);
-        
+        $values=$request->getValues($updated_by);
+       
         $entity= Classes::create($values);
        
         return response()->json($entity);
@@ -95,7 +118,8 @@ class ClassesController extends BaseController
         if(!$entity->canEditBy($current_user)){
             return  $this->unauthorized(); 
         }
-
+        $gradeOptions=$this->grades->optionsConverting($entity->department->grades);
+        $entity->gradeOptions=$gradeOptions;
         return response()->json([
                     'entity' => $entity,
                 ]);        

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Classes;
+use App\Grade;
 use Carbon\Carbon;
 
 class ClassesRepository 
@@ -11,10 +12,42 @@ class ClassesRepository
     {
          return Classes::where('removed',false);
     }
-    public function activeClasses($department_id)
-    {
-         return $this->getAll()->where('department_id',$department_id)
+    private function departmentActiveClasses(int $department_id){
+          return $this->getAll()->where('department_id',$department_id)
                                 ->where('active',true);
+    }
+    public function activeClasses(int $department_id, int $grade_id=0)
+    {
+        if($grade_id){
+            return $this->departmentActiveClasses($department_id)
+                        ->where('grade_id',$grade_id)
+                        ->orderBy('order')
+                        ->with('grade')
+                        ->get(); 
+        }
+
+        $distinct_grade=$this->departmentActiveClasses($department_id)
+                                        ->distinct()->get(['grade_id'])->toArray();
+        $distinct_grade_ids=array_pluck($distinct_grade, 'grade_id');
+
+        $grades=Grade::whereIn('id',$distinct_grade_ids)
+                               ->orderBy('order')->get();
+
+        $classList=collect([]);
+        for($i = 0; $i < count($grades); ++$i) {
+            $grade_id=$grades[$i]->id;
+            $classList = $classList->merge($this->departmentActiveClasses($department_id)
+                                                ->where('grade_id',$grade_id)
+                                                ->orderBy('order')
+                                                ->with('grade')
+                                                ->get() 
+                                          );
+
+                   
+        }
+
+        return $classList;
+
     }
     public function unActiveClasses($department_id)
     {
@@ -44,9 +77,9 @@ class ClassesRepository
     {
             $num= rand(1, 10);
             if($up){
-                $entity->order += $num;
-            }else{
                 $entity->order -= $num;
+            }else{
+                $entity->order += $num;
             }
 
             $entity->updated_by=$updated_by;

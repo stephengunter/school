@@ -2,7 +2,7 @@
 
     <div class="panel panel-default">
         <div  v-if="loaded"  class="panel-body">  
-            <form class="form" @submit.prevent="onSubmit" @keydown="clearErrorMsg($event.target.name)">
+            <form class="form" @submit.prevent="onSubmit" >
                 <div class="row">
                     <div v-for="option in gradeOptions" class="col-sm-3">
                         <checkbox-label :option="option"
@@ -47,6 +47,7 @@
                 selectedIds:[],
             }
         },
+        
         computed:{
             loaded(){
                 return this.gradeOptions.length > 0
@@ -58,6 +59,7 @@
         methods: {
             init() {
                 this.gradeOptions=[]
+                this.selectedIds=[]
                 this.form = new Form({
                     department:this.department_id,
                     grades:''
@@ -71,6 +73,7 @@
                 let getData=DepartmentGrades.edit(this.department_id)
                 getData.then(data=>{
                     this.gradeOptions=data.gradeOptions
+                    this.selectedIds=data.selected_ids
                 }).catch(error=>{
                    Helper.BusEmitError(error)  
                    this.loaded=false
@@ -94,17 +97,11 @@
                 this.form.errors.clear(name)
             },
             onSubmit() {
-                
+                this.form.grades=this.selectedIds
                 this.submitForm()
             },
             submitForm() {
-                let store=null
-                
-                if(this.id){
-                    store=Department.update(this.form , this.id)
-                }else{
-                    store=Department.store(this.form)
-                }
+                let store=DepartmentGrades.store(this.form)
                
                 store.then(data => {
                    Helper.BusEmitOK()
@@ -117,9 +114,6 @@
             onCanceled(){
                 this.$emit('canceled')
             },
-            onDepartmentSelected(item){
-                this.selectedDepartment=item
-            }
 
 
 

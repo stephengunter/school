@@ -14,8 +14,8 @@
       <div v-if="loaded" class="panel-body">
           <table class="table table-striped">
               <tbody>
-                   <tr>
-                      <td>名稱</td>
+                   <tr v-for="grade in gradeList">
+                      <td>{{ grade.name }}</td>
                   </tr> 
               </tbody> 
           </table>
@@ -41,8 +41,6 @@
         data() {
             return {
                loaded:false,
-               removed:false,
-             
                gradeList:[],
 
             }
@@ -63,59 +61,24 @@
         methods: {
            init(){
               this.loaded=false
-              this.adding=false
-             
 
               this.fetchData()
               
            },
            fetchData() {
-                this.grades=[]
-                this.loaded = true  
-                return
-                let getData =null          
+               
+                let getData =DepartmentGrades.index(this.department_id)          
                 
                 getData.then(data => {
-                   this.entityList=data.classList
+                   this.gradeList=data.grades
                    this.loaded = true                        
                 })
                 .catch(error=> {
                     Helper.BusEmitError(error)
                 })
             },
-            updateDisplayOrder(id,up){
-                let update=Classes.updateDisplayOrder(id,up) 
-              
-                update.then(data => {
-                   this.loaded=false
-                   this.fetchData()                         
-                })
-                .catch(error => {
-                    Helper.BusEmitError(error) 
-                })
-            },
-            selected(id){
-               this.$emit('selected',id)
-
-            },
             beginEdit(){
-                this.$emit('begin-edit')
-                // let getData=Classes.create(this.department_id)
-                // getData.then(data => {
-                //     this.newEntity = data.entity
-                //     this.adding=true
-                    
-                // })
-                // .catch(error=> {
-                //     Helper.BusEmitError(error)
-                // })
-                
-            },
-            onAddCanceled(){
-                this.adding=false
-            },
-            closeConfirm(){
-                this.deleteConfirm.show=false
+                this.$emit('begin-edit')                
             },
             
             

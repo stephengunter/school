@@ -43,7 +43,8 @@ class ClassRequest extends FormRequest
 
     public function getValues($updated_by)
     {
-        $values=$this->get('entity');
+        $request=$this->get('entity');
+        $values=array_except($request, ['gradeOptions','grades']);
        
         $values= Helper::setUpdatedBy($values,$updated_by);
         return $values;

@@ -41,19 +41,13 @@ class DepartmentGradesController extends BaseController
             return  $this->unauthorized(); 
         }
         $selected_ids = $department->grades->pluck('id')->toArray();
-
-        // $all_grades=$this->grades->getAll()->get();
-        // $gradeOptions=$this->grades->optionsConverting($all_grades);
-        // for($i = 0; $i < count($gradeOptions); ++$i) {
-        //     $gradeOptions[$i]['selected']=in_array($gradeOptions[$i]['value'], $selected_ids);
-           
-        // }
-
+       
+        
         $gradeOptions=$this->grades->options($selected_ids);
        
         
         return response()->json([
-                    'department' => $department,
+                    'selected_ids' => $selected_ids,
                     'gradeOptions' => $gradeOptions,
                 ]);        
     }
@@ -61,6 +55,7 @@ class DepartmentGradesController extends BaseController
     {
         $department_id=$request['department'];
         $grade_ids=$request['grades'];
+       
 
         $department=Department::findOrFail($department_id);
         $current_user=$this->currentUser();
@@ -68,8 +63,7 @@ class DepartmentGradesController extends BaseController
             return  $this->unauthorized();       
         }
         
-        
-        $department= Department::create($values);
+        $department->grades()->sync($grade_ids);
        
         return response()->json($department);
       

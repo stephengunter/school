@@ -2,6 +2,9 @@
    
     <tr v-if="readOnly">
         <td>
+          {{ entity.grade.name }}
+        </td>
+        <td>
           {{ entity.name }}
         </td>
         
@@ -32,6 +35,11 @@
         </td>
     </tr>  
     <tr v-else>
+       <td v-if="loaded">
+          <select  v-model="form.entity.grade_id" class="form-control">
+             <option v-for="item in gradeOptions" :value="item.value" v-text="item.text"></option>
+          </select>
+       </td>
        <td v-if="loaded">
           <input type="text" name="entity.name" @keydown="clearErrorMsg('entity.name')" class="form-control" v-model="form.entity.name">
           <small class="text-danger" v-if="form.errors.has('entity.name')" v-text="form.errors.get('entity.name')"></small>
@@ -76,6 +84,7 @@
 
                 loaded:false,
                 form:{},
+                gradeOptions:[],
                 removedOptions: Helper.removedOptions(),
             }
         },
@@ -95,7 +104,7 @@
                     this.form=new Form({
                         entity: this.entity
                     }) 
-
+                    this.gradeOptions=this.entity.gradeOptions
                     this.loaded=true
                 }
                           
@@ -110,6 +119,8 @@
                     this.form=new Form({
                         entity: entity
                     }) 
+
+                    this.gradeOptions=entity.gradeOptions
                     this.loaded=true
                     
                 })

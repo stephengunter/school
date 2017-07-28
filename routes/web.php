@@ -27,6 +27,9 @@ Route::get('units/options',['uses'=>'\App\Http\Controllers\Department\UnitsContr
 Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\UnitsController@updateOrder']);
 
 Route::put('classes/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\ClassesController@updateOrder']);
+Route::get('classes/index-options',['uses'=>'\App\Http\Controllers\Department\ClassesController@indexOptions']);
+
+
 Route::put('grades/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\GradesController@updateOrder']);
 
 

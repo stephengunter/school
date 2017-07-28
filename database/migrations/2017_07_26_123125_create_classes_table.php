@@ -21,7 +21,6 @@ class CreateClassesTable extends Migration
             $table->integer('grade_id')->unsigned();
             	
 			$table->string('name');	
-            $table->integer('grade');
             $table->integer('order')->default(0);
 
             $table->boolean('active')->default(true);

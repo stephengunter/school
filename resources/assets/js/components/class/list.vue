@@ -4,7 +4,7 @@
           <span class="panel-title">
               <h4 v-html="title"></h4>
           </span>
-            
+         
           <div>
               <button @click="removed=false" class="btn btn-default btn-sm" >
                      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
@@ -16,7 +16,16 @@
       <div v-else class="panel-heading">
           <span class="panel-title">
               <h4 v-html="title"></h4>
-          </span>    
+          </span>
+           <div class="form-inline">
+                <div class="form-group">
+                   <label class="ctr-label">年級</label>
+                    <select  v-model="params.grade"   style="width:auto;" class="form-control selectWidth"
+                      @change="onParamChanged">
+                        <option v-for="item in gradeOptions" :value="item.value" v-text="item.text"></option>
+                    </select>
+                </div>
+          </div>    
           <div>
               <button  @click="removed=true" class="btn btn-default btn-sm" >
                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -33,6 +42,7 @@
           <table class="table table-striped">
                <thead>
                   <tr>
+                      <th>年級</th>
                       <th>名稱</th>
                       <th>狀態</th>
                       <th v-if="!removed">順序</th>
@@ -43,12 +53,12 @@
               <tbody>
                    <row v-for="entity in entityList" key="entity.id"
                      :entity="entity" :removed="removed"
-                     @saved="init" @btn-delete-clicked="beginDelete"
+                     @saved="onClassUpdated" @btn-delete-clicked="beginDelete"
                      @order-up="displayUp" @order-down="displayDown">
                    </row>  
                    <row v-if="adding" :entity="newEntity" 
                      @canceled="onAddCanceled" 
-                     @saved="init"  >
+                     @saved="onClassAdded"  >
                     
                    </row>         
               </tbody> 
@@ -85,6 +95,10 @@
                loaded:false,
                removed:false,
 
+               params:{
+                  department:0,
+                  grade:0
+               },
              
                entityList:[],
 
@@ -122,8 +136,22 @@
               this.loaded=false
               this.adding=false
               this.classList=[]
+              this.params.department=this.department_id
 
-              this.fetchData()
+              let options=Classes.indexOptions(this.department_id)
+                options.then(data=>{
+                    this.gradeOptions=data.gradeOptions
+                    let allGrades={ text:'全部年級' , value:'0' }
+                    this.gradeOptions.splice(0, 0, allGrades);
+                    this.params.grade=this.gradeOptions[0].value
+                    
+                    this.fetchData()
+                }).catch(error=>{
+                    Helper.BusEmitError(error)
+                    this.ready=false
+                })
+
+              
               
            },
            fetchData() {
@@ -132,7 +160,7 @@
                 if(this.removed){
                     getData=Classes.trash()
                 }else{
-                   getData=Classes.index(this.department_id)
+                   getData=Classes.index(this.params)
                 }
                 getData.then(data => {
                    this.entityList=data.classList
@@ -141,6 +169,9 @@
                 .catch(error=> {
                     Helper.BusEmitError(error)
                 })
+            },
+            onParamChanged(){
+                this.fetchData()
             },
             displayUp(id){
                 this.updateDisplayOrder(id,true)
@@ -166,7 +197,9 @@
             onBtnAddClicked(){
                 let getData=Classes.create(this.department_id)
                 getData.then(data => {
-                    this.newEntity = data.entity
+                    let entity=data.entity
+                    entity.grade_id=this.params.grade
+                    this.newEntity = entity
                     this.adding=true
                     
                 })
@@ -174,6 +207,13 @@
                     Helper.BusEmitError(error)
                 })
                 
+            },
+            onClassUpdated(){
+              this.fetchData()
+            },
+            onClassAdded(){
+              this.fetchData()
+              this.adding=false
             },
             onAddCanceled(){
                 this.adding=false
@@ -190,10 +230,10 @@
                 let id = this.deleteConfirm.id 
                 let remove= Classes.delete(id)
                 remove.then(result => {
-                    this.init()
+                    this.fetchData()
                     Helper.BusEmitOK('刪除成功')
                     this.deleteConfirm.show=false
-                    this.$emit('deleted')
+                    
                 })
                 .catch(error => {
                     Helper.BusEmitError(error,'刪除失敗')
