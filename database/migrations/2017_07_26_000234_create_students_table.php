@@ -18,8 +18,8 @@ class CreateStudentsTable extends Migration
 			$table->primary('user_id');
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->integer('department_id')->unsigned();
             $table->integer('class_id')->unsigned();
-            
 
             $table->string('number')->nullable();
             $table->date('join_date');

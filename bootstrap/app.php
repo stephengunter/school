@@ -41,6 +41,10 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->singleton(
+    App\Http\Middleware\CheckAdmin::class    
+);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

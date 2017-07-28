@@ -1,12 +1,12 @@
 <template>
    
     
-    <course-import v-if="importing"
+    <!-- <course-import v-if="importing"
       @canceled="endImport"
       @imported="onImported">
-    </course-import>
+    </course-import> -->
 
-    <edit-course v-else :course_id="course_id" 
+    <edit-course :course_id="course_id" 
       @import="beginImport"
       @canceled="onCanceled" @saved="onSaved">
     </edit-course>

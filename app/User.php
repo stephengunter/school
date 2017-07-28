@@ -6,24 +6,33 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
+use App\Support\FilterPaginateOrder;
+use App\Support\Helper;
+
 use App\Photo;
 use App\Role;
 use Crypt;
 
 class User extends Authenticatable
 {
+	
     use Notifiable;
     use EntrustUserTrait;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'contact_info',
-        'fullname', 'SID', 'gender', 'dob',
-        'photo_id', 'title_id', 'removed', 'updated_by',
-    ];
+	use FilterPaginateOrder;
 
     protected $hidden = [
-        'password', 'remember_token', 
+		'password', 'remember_token'
+	];
+
+	protected $fillable = ['name', 'email', 'password', 
+						    'phone', 'updated_by','contact_info'
+						  ];
+
+    protected $filter = [
+        'email', 'name', 'phone', 'profile.fullname','updated_at'
     ];
+	
 	public function profile()
 	{
 		return $this->hasOne(Profile::class);

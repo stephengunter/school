@@ -21,12 +21,12 @@ class CheckAdmin
     public function handle($request, Closure $next)
     {
         $user=request()->user();
-        if(!$user){
-           throw new AuthenticationException();
-        }  
-        if(!$user->isAdmin()){
-            throw new AuthenticationException();
-        }
+        // if(!$user){
+        //    throw new AuthenticationException();
+        // }  
+        // if(!$user->isAdmin()){
+        //     throw new AuthenticationException();
+        // }
         // if(!$user->email_confirmed){
         //     $email=$user->email;
         //     auth()->logout();

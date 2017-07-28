@@ -27,16 +27,21 @@ class UsersController extends BaseController
  {
     protected $key='users';
     
-    public function __construct(Users $users)
+    public function __construct(Users $users, Titles $titles, 
+                                Registrations $registrations, CheckAdmin $checkAdmin)
     {
-        
+        //   $exceptAdmin=['show','edit','update','updateContactInfo','updatePhoto'];
           $exceptAdmin=[];
           $allowVisitors=[];
 
-        //   $this->setMiddleware( $exceptAdmin, $allowVisitors);
+          $this->setMiddleware( $exceptAdmin, $allowVisitors);
         
           $this->users=$users;
-          
+          $this->titles=$titles;
+         
+          $this->registrations=$registrations;
+
+          $this->setCheckAdmin($checkAdmin);
           
 	}
 
@@ -110,25 +115,27 @@ class UsersController extends BaseController
 
     public function show($id)
     {
-        // if(!request()->ajax()){
-        //     $menus=$this->menus($this->key);            
-        //     return view('users.details')
-        //             ->with([ 'menus' => $menus,
-        //                       'id' => $id     
-        //                 ]);
-        // }  
+        if(!request()->ajax()){
+            $menus=$this->menus($this->key);            
+            return view('users.details')
+                    ->with([ 'menus' => $menus,
+                              'id' => $id     
+                        ]);
+        }  
 
         $current_user=request()->user();
         
-        $user = User::with('profile','roles')->findOrFail($id);
+        $user = User::with('profile.title','roles')->findOrFail($id);
         if(!$user->canViewBy($current_user)){
             return  $this->unauthorized();   
         }
 
-       
+        if($user->admin){
+           $user->admin->validCenters = $user->admin->validCenters();
+        }
         
 
-        // $user->defaultRole=$user->defaultRole();
+        $user->defaultRole=$user->defaultRole();
         $user->canEdit=$user->canEditBy($current_user);
         $user->canDelete=$user->canDeleteBy($current_user);
         

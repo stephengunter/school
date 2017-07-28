@@ -49,6 +49,10 @@ Vue.component('unit-index', require('./views/unit/index') )
 Vue.component('unit-details', require('./views/unit/details') )
 Vue.component('unit-create', require('./views/unit/create') )
 
+Vue.component('user-index', require('./views/users/index') )
+Vue.component('user-create', require('./views/users/create') )
+Vue.component('user-details', require('./views/users/details') )
+
 Vue.component('student-index', require('./views/student/index') )
 
 

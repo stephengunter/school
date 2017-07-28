@@ -2,9 +2,8 @@
 
 @section('content')
 
-    <student-create @canceled="onCanceled" 
-    @saved="onSaved" @imported="onImported">
-    </student-create>
+    <user-create @canceled="onCanceled" @saved="onSaved">
+    </user-create>
 
 @endsection
 
@@ -26,15 +25,12 @@
             onCanceled(){
                this.backToIndex()
             },
-            onSaved(course){
-               let url='/courses/' + course.id
+            onSaved(user){
+               let url='/users/' + user.id
                Helper.redirect(url)
             },            
             backToIndex(){
-                Helper.redirect('/courses')
-            },
-            onImported(){
-               this.backToIndex()
+                Helper.redirect('/users')
             }
 
         },
