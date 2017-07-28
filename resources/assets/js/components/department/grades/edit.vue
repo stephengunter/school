@@ -4,8 +4,11 @@
         <div  v-if="loaded"  class="panel-body">  
             <form class="form" @submit.prevent="onSubmit" @keydown="clearErrorMsg($event.target.name)">
                 <div class="row">
-                    <div class="col-sm-3">
-                        <checkbox-list></checkbox-list>
+                    <div v-for="option in gradeOptions" class="col-sm-3">
+                        <checkbox-label :option="option"
+                         @selected="gradeSelected" @unselected="gradeUnSelected">
+                            
+                        </checkbox-label>
                     </div>
                     
                 </div>
@@ -39,50 +42,54 @@
         },
         data() {
             return {
-                loaded:false,
-                form: new Form({
-                    department:this.department_id,
-                    grades:''
-                }),
+                form: {},
+                gradeOptions:[],
+                selectedIds:[],
             }
         },
         computed:{
-            
+            loaded(){
+                return this.gradeOptions.length > 0
+            }
         },
         beforeMount() {
             this.init()
         },
         methods: {
             init() {
-                this.loaded=false
+                this.gradeOptions=[]
                 this.form = new Form({
-                    department: {}
+                    department:this.department_id,
+                    grades:''
                     
                 })
                
                 this.fetchData() 
             },
             fetchData() {
-                 this.loaded=true
-                return false
-                let getData=null
-                if(this.id){
-                    getData=Department.edit(this.id)
-                }else{
-                    getData=Department.create()
-                }
+              
+                let getData=DepartmentGrades.edit(this.department_id)
                 getData.then(data=>{
-                    let department=data.department
-                    this.form.department=data.department
-
-                    this.loaded=true
+                    this.gradeOptions=data.gradeOptions
                 }).catch(error=>{
                    Helper.BusEmitError(error)  
                    this.loaded=false
                 })  
             },
-          
-            
+            gradeSelected(option){
+                let id=option.value
+                let i = this.selectedIds.indexOf(id);
+                if( i < 0){
+                    this.selectedIds.push(id)
+                }
+            },
+            gradeUnSelected(option){
+                let id=option.value
+                let i = this.selectedIds.indexOf(id);
+                if( i >= 0){
+                    this.selectedIds.splice(i, 1);
+                }
+            },
             clearErrorMsg(name) {
                 this.form.errors.clear(name)
             },

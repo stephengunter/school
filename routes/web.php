@@ -36,7 +36,7 @@ Route::get('students/index-options', '\App\Http\Controllers\Student\StudentsCont
 
 Route::resource('departments', '\App\Http\Controllers\Department\DepartmentsController');
 Route::resource('grades', '\App\Http\Controllers\Department\GradesController');
-Route::resource('department-grades', '\App\Http\Controllers\Department\DepartmentGradesController', ['only' => ['index','store']]);
+Route::resource('department-grades', '\App\Http\Controllers\Department\DepartmentGradesController', ['only' => ['index','edit','store']]);
 Route::resource('units', '\App\Http\Controllers\Department\UnitsController');
 Route::resource('classes', '\App\Http\Controllers\Department\ClassesController');
 Route::resource('users', '\App\Http\Controllers\User\UsersController');

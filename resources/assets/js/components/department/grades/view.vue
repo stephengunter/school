@@ -9,7 +9,10 @@
             effect="fade" :width="editor.width"  
             @closed="editor.show=false">
         <div slot="modal-body" class="modal-body">
-            <edit></edit>
+            <edit v-if="this.editor.show" :department_id="department_id"
+            @canceled="onEditCanceled">
+                
+            </edit>
         </div>
     </modal>
     
@@ -72,7 +75,7 @@
                 this.editor.show=true
             },
             onEditCanceled(){
-                this.init()
+                this.editor.show=false
             },
             onSaved(department){
                 this.init()

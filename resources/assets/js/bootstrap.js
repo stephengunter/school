@@ -25,7 +25,7 @@ Vue.component('html-editor', require('./components/HtmlEditor') )
 Vue.component('delete-confirm', require('./components/DeleteConfirm') )
 Vue.component('toggle', require('./components/Toggle') )
 Vue.component('checkbox', require('./components/CheckBox') )
-Vue.component('checkbox-list', require('./components/CheckBoxList') )
+Vue.component('checkbox-label', require('./components/CheckBoxLabel') )
 Vue.component('data-viewer', require('./components/DataViewer') )
 Vue.component('photo', require('./components/Photo') )
 Vue.component('image-upload', require('./components/ImageUpload') )
@@ -87,6 +87,7 @@ window.CommonService = CommonService
 
 import Department from './models/department.js'
 import Grade from './models/grade.js'
+import DepartmentGrades from './models/department-grades.js'
 import Classes from './models/class.js'
 import Unit from './models/unit.js'
 import User from './models/user.js'
@@ -94,6 +95,7 @@ import Student from './models/student.js'
 
 window.Department = Department
 window.Grade = Grade
+window.DepartmentGrades = DepartmentGrades
 window.Classes = Classes
 window.Unit = Unit
 window.User = User

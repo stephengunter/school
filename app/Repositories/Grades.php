@@ -69,6 +69,22 @@ class Grades
         }
         return $options;
     }
+
+    public function options($selected_ids=null)
+    {
+        $all_grades=$this->getAll()->get();
+        $gradeOptions=$this->optionsConverting($all_grades);
+
+        if($selected_ids){
+            for($i = 0; $i < count($gradeOptions); ++$i) {
+                $gradeOptions[$i]['selected']=in_array($gradeOptions[$i]['value'], $selected_ids);
+           
+            }
+        }
+
+        return $gradeOptions;
+    }
+    
     
     
     

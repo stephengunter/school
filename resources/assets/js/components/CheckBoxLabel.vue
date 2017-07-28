@@ -1,10 +1,15 @@
 <template>
       <div class="checkbox">
           <label style="font-size: 1.2em">
-            <input data-name="護理系" id="SelectedDepartments_29" name="SelectedDepartments" type="checkbox" value="29" checked>
+            <!-- <input data-name="護理系" id="SelectedDepartments_29" name="SelectedDepartments" type="checkbox" value="29" checked> -->
+
+           <input :data-name="option.text"   type="checkbox" 
+           :value="option.value" :checked="selected"
+           @click="selectedChange">
+          
             <span class="cr">
                <i class="cr-icon fa fa-check"></i>
-            </span>護理系
+            </span>{{ option.text }}
           </label>
       </div>
 
@@ -12,32 +17,42 @@
 
 <script>
     export default {
-      // props: {
-      //     option: {
-      //        type: Object,
-      //        default: {}
-      //     },
-      // },
-      name: 'CheckBoxList',
+      props: {
+          option: {
+             type: Object,
+             default: {}
+          },
+      },
+      name: 'CheckBoxLabel',
       data() {
           return {
               selected: false,
           }
       },
-     
+      watch: {
+          option: {
+            handler: function () {
+               this.init()
+            },
+            deep: true
+          },
+           
+      },
       beforeMount() {
-        // if(Helper.isTrue(this.default)) this.selected=true
-        //   else this.selected=false
+          this.init()
       },
       methods:{
-        selectedChange(){
-          this.selected = !this.selected
-          if(this.selected){
-              this.$emit('selected',this.value)
-          }else{
-              this.$emit('unselected',this.value)
+          init(){
+             this.selected=Helper.isTrue(this.option.selected)
+          },
+          selectedChange(){
+              this.selected = !this.selected
+              if(this.selected){
+                  this.$emit('selected',this.option)
+              }else{
+                  this.$emit('unselected',this.option)
+              }
           }
-        }
       }
       
       
