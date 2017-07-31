@@ -56,6 +56,8 @@ class ContactInfo extends Model {
 	}
 	public function canViewBy($user)
 	{
+		return true;
+
 		if(!$user) return false;
 		if($this->getUser()){
 			return $this->getUser()->canViewBy($user);
@@ -66,6 +68,8 @@ class ContactInfo extends Model {
 
 	public function canEditBy($user)
 	{
+		return true;
+		
 		if(!$user) return false;
 		if($this->getUser()){
 			return $this->getUser()->canEditBy($user);

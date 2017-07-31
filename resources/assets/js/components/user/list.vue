@@ -17,7 +17,7 @@
                           <span class="glyphicon glyphicon-plus"></span>
                       </button>
                       
-                    <role-label v-for="role in props.item.roles" :labelstyle="role.style" :labeltext="role.display_name"></role-label>
+                    <!-- <role-label v-for="role in props.item.roles" :labelstyle="role.style" :labeltext="role.display_name"></role-label> -->
                 </td>
                
                 <td>{{ props.item.updated_at | tpeTime }}</td>    

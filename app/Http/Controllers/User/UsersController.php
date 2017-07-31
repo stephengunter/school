@@ -28,9 +28,9 @@ class UsersController extends BaseController
     protected $key='users';
     
     public function __construct(Users $users, Titles $titles, 
-                                Registrations $registrations, CheckAdmin $checkAdmin)
+                                Registrations $registrations)
     {
-        //   $exceptAdmin=['show','edit','update','updateContactInfo','updatePhoto'];
+        
           $exceptAdmin=[];
           $allowVisitors=[];
 
@@ -41,7 +41,7 @@ class UsersController extends BaseController
          
           $this->registrations=$registrations;
 
-          $this->setCheckAdmin($checkAdmin);
+        //   $this->setCheckAdmin($checkAdmin);
           
 	}
 
@@ -83,19 +83,15 @@ class UsersController extends BaseController
 
     public function store(UserRequest $request)
     {
-        
-        $admin_id=$this->checkAdmin->getAdminId();
+        $current_user=$this->currentUser(); 
 
-        $removed=false;
-        $updated_by=$admin_id;
-
-        $userValues=$request->getUserValues($updated_by,$removed);
+        $userValues=$request->getUserValues($current_user->id);
         
         if(!$userValues['email'] && !$userValues['phone'] ){
             abort(404);
         }
 
-        $profileValues=$request->getProfileValues($updated_by);        
+        $profileValues=$request->getProfileValues($current_user->id);        
         
         $user= DB::transaction(function() 
         use($userValues,$profileValues){
@@ -107,7 +103,7 @@ class UsersController extends BaseController
               
         });
       
-        event(new UserRegistered($user));
+        //event(new UserRegistered($user));
 
         return response()->json($user);
             

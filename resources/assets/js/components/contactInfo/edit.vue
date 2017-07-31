@@ -5,7 +5,7 @@
              <span class="panel-title">
                    <h4 v-html="title"></h4>                  
              </span>           
-        </div>
+        </div>  <!-- panel-heading -->
         <div v-if="loaded" class="panel-body">
             <form class="form-horizontal" @submit.prevent="onSubmit" @keydown="clearErrorMsg($event.target.name)">
                 <div class="row">
@@ -42,7 +42,7 @@
                             </address-info>                    
                         </div>
                     </div>   <!--end 戶籍地址 -->
-                  <div class="form-group">
+                    <div class="form-group">
                         <div class="col-md-2">
                           <input type="hidden" name="contactInfo.user_id" v-model="form.contactInfo.user_id">
                           <input type="hidden" name="contactInfo.center_id" v-model="form.contactInfo.center_id">
@@ -53,9 +53,9 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <button class="btn btn-default"  @click.prevent="cancelEdit">取消</button>
                         </div>   
-                  </div>  
+                    </div>  
                     
-                
+                 </div>   <!-- row -->
             </form>
         </div>  <!-- panel-body -->
     </div>

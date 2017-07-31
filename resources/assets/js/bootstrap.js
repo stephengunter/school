@@ -97,6 +97,11 @@ import Unit from './models/unit.js'
 import User from './models/user.js'
 import Student from './models/student.js'
 
+import Photo from './models/photo.js'
+import ContactInfo from './models/contactInfo.js'
+import Address from './models/address.js'
+
+
 window.Department = Department
 window.Grade = Grade
 window.DepartmentGrades = DepartmentGrades
@@ -104,6 +109,10 @@ window.Classes = Classes
 window.Unit = Unit
 window.User = User
 window.Student = Student
+
+window.Photo = Photo
+window.ContactInfo = ContactInfo
+window.Address = Address
 
 
 

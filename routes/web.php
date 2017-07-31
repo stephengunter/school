@@ -45,4 +45,7 @@ Route::resource('classes', '\App\Http\Controllers\Department\ClassesController')
 Route::resource('users', '\App\Http\Controllers\User\UsersController');
 Route::resource('students', '\App\Http\Controllers\Student\StudentsController');
 
-
+Route::resource('contactinfoes', '\App\Http\Controllers\Contact\ContactInfoesController');
+Route::resource('address', '\App\Http\Controllers\Contact\AddressController');
+Route::resource('cities', '\App\Http\Controllers\Contact\CitiesController', ['only' => ['index']]);
+Route::resource('districts', '\App\Http\Controllers\Contact\DistrictsController', ['only' => ['index']]);
