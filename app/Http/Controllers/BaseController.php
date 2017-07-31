@@ -91,18 +91,6 @@ class BaseController extends Controller
                     'path' => '/users/create',
                     'active' => $current=='users/create'
                 ],
-                [
-                    'id' => 3,
-                    'text' => '志工管理',
-                    'path' => '/volunteers',
-                    'active' => $current=='volunteers'
-                ],
-                [
-                    'id' => 4,
-                    'text' => '新增志工',
-                    'path' => '/volunteers/create',
-                    'active' => $current=='volunteers/create'
-                ],
                
             );
         }

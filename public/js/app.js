@@ -40391,11 +40391,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'CombinationSelect',
     props: {
-        with_course: {
+        with_classes: {
             type: Boolean,
             default: false
         },
-        empty_course: {
+        empty_department: {
+            type: Boolean,
+            default: false
+        },
+        empty_grade: {
+            type: Boolean,
+            default: false
+        },
+        empty_classes: {
             type: Boolean,
             default: false
         },
@@ -40407,25 +40415,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             ready: false,
-            termOptions: [],
-            centerOptions: [],
-            courseOptions: [],
+            departmentOptions: [],
+            gradeOptions: [],
+            classOptions: [],
             params: {
-                term: 0,
-                center: 0,
-                course: 0
+                department: 0,
+                grade: 0,
+                classes: 0
             }
 
         };
     },
 
+    computed: {
+        showClass: function showClass() {
+            if (!this.params.department) return false;
+            return this.params.grade > 0;
+        }
+    },
     watch: {
         ready: function ready(val) {
             if (this.ready) {
                 this.$emit('ready', this.params);
             }
         }
-
     },
     beforeMount: function beforeMount() {
         this.init();
@@ -40435,68 +40448,86 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         init: function init() {
             var _this = this;
 
-            var options = Signup.indexOptions();
+            this.ready = false;
+
+            var options = Student.indexOptions(this.params);
             options.then(function (data) {
-                _this.termOptions = data.termOptions;
-                var term = _this.termOptions[0].value;
-                _this.params.term = term;
-
-                _this.centerOptions = data.centerOptions;
-                var center = _this.centerOptions[0].value;
-                _this.params.center = center;
-
-                if (_this.with_course) {
-                    _this.loadCourses();
-                } else {
-                    _this.ready = true;
+                _this.departmentOptions = data.departmentOptions;
+                if (_this.empty_department) {
+                    var allDepartments = { text: '全部科系', value: '0' };
+                    _this.departmentOptions.splice(0, 0, allDepartments);
                 }
+                // let department=this.departmentOptions[0].value
+                // this.params.department=department
+
+                _this.gradeOptions = data.gradeOptions;
+                if (_this.empty_grade) {
+                    var allGrades = { text: '所有年級', value: '0' };
+                    _this.gradeOptions.splice(0, 0, allGrades);
+                }
+                // let grade=this.gradeOptions[0].value
+                // this.params.grade=grade
+
+                _this.classOptions = data.classOptions;
+                if (_this.empty_classes) {
+                    var allClasses = { text: '所有班級', value: '0' };
+                    _this.classOptions.splice(0, 0, allClasses);
+                }
+
+                _this.ready = true;
+
+                // if(this.with_classes){
+                //     this.loadClassess()
+                // }else{
+                //   this.ready=true
+                // }
+
             }).catch(function (error) {
                 Helper.BusEmitError(error);
                 _this.ready = false;
             });
         },
-        loadCourses: function loadCourses() {
+        loadClassess: function loadClassess() {
             var _this2 = this;
 
             this.ready = false;
-            var options = Course.options(this.params);
+            var options = Classes.options(this.params);
             options.then(function (data) {
-                _this2.courseOptions = data.options;
-                if (_this2.empty_course) {
+                _this2.classesOptions = data.options;
+                if (_this2.empty_classes) {
                     var empty = {
                         text: '-------',
                         value: 0
                     };
-                    _this2.courseOptions.splice(0, 0, empty);
+                    _this2.classesOptions.splice(0, 0, empty);
                 }
 
                 _this2.ready = true;
 
-                var course = _this2.courseOptions[0];
-                if (course) {
-                    _this2.params.course = course.value;
+                var classes = _this2.classesOptions[0];
+                if (classes) {
+                    _this2.params.classes = classes.value;
                 } else {
-                    _this2.params.course = 0;
+                    _this2.params.classes = 0;
                 }
             }).catch(function (error) {
                 _this2.ready = false;
                 Helper.BusEmitError(error);
             });
         },
-        onTermChanged: function onTermChanged() {
-            this.$emit('term-changed', this.params.term);
-            if (this.with_course) {
-                this.loadCourses();
-            }
+        onDepartmentChanged: function onDepartmentChanged() {
+            this.params.grade = 0;
+            this.params.classes = 0;
+            this.init();
         },
-        onCenterChanged: function onCenterChanged() {
-            this.$emit('center-changed', this.params.center);
-            if (this.with_course) {
-                this.loadCourses();
-            }
+        onGradeChanged: function onGradeChanged() {
+
+            this.params.classes = 0;
+            this.init();
         },
-        onCourseChanged: function onCourseChanged() {
-            this.$emit('course-changed', this.params.course);
+        onClassChanged: function onClassChanged() {
+
+            this.init();
         }
     }
 
@@ -46316,10 +46347,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -46341,7 +46368,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             ready: false,
-            departmentOptions: [],
+            optionsSettings: {
+                empty_department: true,
+                empty_grade: true,
+                with_classes: true,
+                empty_classes: true
+            },
             params: {
                 department: 0
             },
@@ -46351,25 +46383,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     beforeMount: function beforeMount() {
-        this.init();
+        //this.init()
     },
 
     methods: {
         init: function init() {
-            var _this = this;
+            // let options=Student.indexOptions()
+            // options.then(data=>{
+            //     this.departmentOptions=data.departmentOptions
+            //     let allDepartments={ text:'全部科系' , value:'0' }
+            //     this.departmentOptions.splice(0, 0, allDepartments);
+            //     this.params.department=this.departmentOptions[0].value
 
-            var options = Student.indexOptions();
-            options.then(function (data) {
-                _this.departmentOptions = data.departmentOptions;
-                var allDepartments = { text: '全部科系', value: '0' };
-                _this.departmentOptions.splice(0, 0, allDepartments);
-                _this.params.department = _this.departmentOptions[0].value;
+            //     this.ready=true
+            // }).catch(error=>{
+            //     Helper.BusEmitError(error)
+            //     this.ready=false
+            // })
 
-                _this.ready = true;
-            }).catch(function (error) {
-                Helper.BusEmitError(error);
-                _this.ready = false;
-            });
         },
         onSelected: function onSelected(id) {
             this.$emit('selected', id);
@@ -46745,14 +46776,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_user_user_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_user_user_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_contactInfo_contactInfo_vue__ = __webpack_require__(335);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_contactInfo_contactInfo_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_contactInfo_contactInfo_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -48591,8 +48614,9 @@ var Student = function () {
         }
     }, {
         key: 'indexOptions',
-        value: function indexOptions() {
+        value: function indexOptions(params) {
             var url = this.source() + '/index-options';
+            url = Helper.buildQuery(url, params);
             return new Promise(function (resolve, reject) {
                 axios.get(url).then(function (response) {
                     resolve(response.data);
@@ -63911,51 +63935,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('div', {
-    staticClass: "form-inline"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.params.department),
-      expression: "params.department"
-    }],
-    staticClass: "form-control selectWidth",
-    staticStyle: {
-      "width": "auto"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.params.department = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.departmentOptions), function(item) {
-    return _c('option', {
-      domProps: {
-        "value": item.value,
-        "textContent": _vm._s(item.text)
-      }
-    })
-  }))])])])]), _vm._v(" "), (_vm.ready) ? _c('student-list', {
+  }, [_c('combination-select', {
     attrs: {
-      "search_params": _vm.params,
-      "hide_create": _vm.hide_create,
-      "version": _vm.version,
-      "can_select": _vm.can_select
-    },
-    on: {
-      "selected": _vm.onSelected,
-      "begin-create": _vm.onBeginCreate
+      "with_classes": _vm.optionsSettings.with_classes,
+      "empty_classes": _vm.optionsSettings.empty_classes,
+      "empty_department": _vm.optionsSettings.empty_department,
+      "empty_grade": _vm.optionsSettings.empty_grade
     }
-  }) : _vm._e()], 1)
+  })], 1)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -64383,17 +64370,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.activeIndex = 0
       }
     }
-  }, [_vm._v("聯絡資訊")])]), _vm._v(" "), _c('li', {}, [_c('a', {
-    attrs: {
-      "href": "#signupRecord",
-      "data-toggle": "tab"
-    },
-    on: {
-      "click": function($event) {
-        _vm.activeIndex = 1
-      }
-    }
-  }, [_vm._v("報名紀錄")])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("聯絡資訊")])])])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "tab-content"
@@ -64412,19 +64389,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "created": _vm.onContactInfoCreated,
       "deleted": _vm.onContactInfoDeleted
-    }
-  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
-    staticClass: "tab-pane fade",
-    attrs: {
-      "id": "signupRecord"
-    }
-  }, [(_vm.activeIndex == 1) ? _c('signup-view', {
-    attrs: {
-      "user_id": _vm.id,
-      "disable_edit": _vm.signupSettings.disable_edit
-    },
-    on: {
-      "selected": _vm.onSignupSelected
     }
   }) : _vm._e()], 1)])])]) : _vm._e()], 1)
 },staticRenderFns: []}
@@ -64951,8 +64915,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.params.term),
-      expression: "params.term"
+      value: (_vm.params.department),
+      expression: "params.department"
     }],
     staticClass: "form-control selectWidth",
     staticStyle: {
@@ -64966,10 +64930,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.params.term = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.onTermChanged]
+        _vm.params.department = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }, _vm.onDepartmentChanged]
     }
-  }, _vm._l((_vm.termOptions), function(item) {
+  }, _vm._l((_vm.departmentOptions), function(item) {
     return _c('option', {
       domProps: {
         "value": item.value,
@@ -64982,8 +64946,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.params.center),
-      expression: "params.center"
+      value: (_vm.params.grade),
+      expression: "params.grade"
     }],
     staticClass: "form-control selectWidth",
     staticStyle: {
@@ -64997,24 +64961,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.params.center = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.onCenterChanged]
+        _vm.params.grade = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }, _vm.onGradeChanged]
     }
-  }, _vm._l((_vm.centerOptions), function(item) {
+  }, _vm._l((_vm.gradeOptions), function(item) {
     return _c('option', {
       domProps: {
         "value": item.value,
         "textContent": _vm._s(item.text)
       }
     })
-  }))]), _vm._v(" "), (_vm.with_course) ? _c('div', {
+  }))]), _vm._v(" "), (_vm.with_classes) ? _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showClass),
+      expression: "showClass"
+    }],
     staticClass: "form-group"
   }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.params.course),
-      expression: "params.course"
+      value: (_vm.params.classes),
+      expression: "params.classes"
     }],
     staticClass: "form-control selectWidth",
     staticStyle: {
@@ -65028,10 +64998,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.params.course = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.onCourseChanged]
+        _vm.params.classes = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }, _vm.onClassChanged]
     }
-  }, _vm._l((_vm.courseOptions), function(item) {
+  }, _vm._l((_vm.classOptions), function(item) {
     return _c('option', {
       domProps: {
         "value": item.value,

@@ -7,23 +7,52 @@ use App\Http\Controllers\BaseController;
 
 use App\Repositories\Students;
 use App\Repositories\Departments;
+use App\Repositories\grades;
+use App\Repositories\ClassesRepository;
+
 use App\Student;
 use App\Http\Requests\StudentRequest;
 
 class StudentsController extends BaseController
 {
     protected $key='students';
-    public function __construct(Students $students,Departments $departments) 
+    public function __construct(Students $students,Departments $departments,
+                                    Grades $grades, ClassesRepository $classesRepository) 
     {
 		 $this->students=$students;
          $this->departments=$departments;
+         $this->grades=$grades;
+         $this->classesRepository=$classesRepository;
 	}
+    
     public function indexOptions()
     {
+        $request = request();
         $departmentOptions=$this->departments->options();
+
+        $gradeOptions=[];
+        $classOptions=[];
+        $department_id=(int)$request->department;
+        $grade_id=(int)$request->grade; 
+
+       
+        if($department_id){
+            $department=$this->departments->findOrFail($department_id);
+            $gradeOptions=$this->grades->optionsConverting($department->grades);
+            $classList=$this->classesRepository->activeClasses($department_id,$grade_id);
+            $classOptions=$this->classesRepository
+                                ->optionsConverting($classList);
+        }else{
+            $gradeOptions=$this->grades->options();
+        }
+        
+        //$classOptions=$this->grades->options();
+
         return response()
             ->json([
                 'departmentOptions' => $departmentOptions,
+                'gradeOptions' => $gradeOptions,
+                'classOptions' => $classOptions,
             ]);
 
     }

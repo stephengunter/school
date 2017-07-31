@@ -140,8 +140,9 @@ class Student {
         })
        
     }
-    static indexOptions(){
+    static indexOptions(params){
         let url =this.source() + '/index-options' 
+        url=Helper.buildQuery(url,params)
         return new Promise((resolve, reject) => {
                      axios.get(url)
                     .then(response => {

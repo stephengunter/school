@@ -1,18 +1,18 @@
 <template>
     <div v-show="ready" class="form-inline">
        <div class="form-group">
-            <select  v-model="params.term" @change="onTermChanged"   style="width:auto;" class="form-control selectWidth">
-                <option v-for="item in termOptions" :value="item.value" v-text="item.text"></option>
+            <select  v-model="params.department" @change="onDepartmentChanged"  style="width:auto;" class="form-control selectWidth">
+                <option v-for="item in departmentOptions" :value="item.value" v-text="item.text"></option>
             </select>
        </div>
        <div class="form-group">
-            <select  v-model="params.center" @change="onCenterChanged" style="width:auto;" class="form-control selectWidth">
-                 <option v-for="item in centerOptions" :value="item.value" v-text="item.text"></option>
+            <select  v-model="params.grade" @change="onGradeChanged"    style="width:auto;" class="form-control selectWidth">
+                 <option v-for="item in gradeOptions" :value="item.value" v-text="item.text"></option>
             </select>
        </div>
-       <div v-if="with_course" class="form-group">
-            <select  v-model="params.course" @change="onCourseChanged" style="width:auto;" class="form-control selectWidth">
-                 <option v-for="item in courseOptions" :value="item.value" v-text="item.text"></option>
+       <div v-if="with_classes" v-show="showClass" class="form-group">
+            <select  v-model="params.classes" @change="onClassChanged"    style="width:auto;" class="form-control selectWidth">
+                 <option v-for="item in classOptions" :value="item.value" v-text="item.text"></option>
             </select>
        </div>
        
@@ -24,11 +24,19 @@
     export default {
         name: 'CombinationSelect',  
         props: {
-            with_course: {
+            with_classes: {
               type: Boolean,
               default: false
             },
-            empty_course: {
+            empty_department: {
+              type: Boolean,
+              default: false
+            },
+            empty_grade: {
+              type: Boolean,
+              default: false
+            },
+            empty_classes: {
               type: Boolean,
               default: false
             },
@@ -40,46 +48,68 @@
         data() {
             return {
                 ready:false,
-                termOptions:[],
-                centerOptions:[],
-                courseOptions:[],
+                departmentOptions:[],
+                gradeOptions:[],
+                classOptions:[],
                 params:{
-                    term:0,
-                    center:0,
-                    course:0,
+                    department:0,
+                    grade:0,
+                    classes:0,
                 },
              
             }
         },
+        computed:{
+           showClass(){
+             if(!this.params.department) return false
+              return this.params.grade > 0
+           }
+        },
         watch: {
-          ready: function (val) {
+            ready: function (val) {
               if(this.ready){
                  this.$emit('ready', this.params)
               }
-          },
-          
+            },
         },
         beforeMount() {
-             this.init()
+            this.init()
         },
         methods: {
             init(){
+                this.ready=false
 
-                let options=Signup.indexOptions()
+                let options=Student.indexOptions(this.params)
                 options.then(data => {
-                    this.termOptions = data.termOptions
-                    let term=this.termOptions[0].value
-                    this.params.term=term
-
-                    this.centerOptions = data.centerOptions                        
-                    let center=this.centerOptions[0].value
-                    this.params.center=center
-
-                    if(this.with_course){
-                        this.loadCourses()
-                    }else{
-                      this.ready=true
+                    this.departmentOptions = data.departmentOptions
+                    if(this.empty_department){
+                       let allDepartments={ text:'全部科系' , value:'0' }
+                       this.departmentOptions.splice(0, 0, allDepartments)
                     }
+                    // let department=this.departmentOptions[0].value
+                    // this.params.department=department
+
+                    this.gradeOptions = data.gradeOptions 
+                    if(this.empty_grade){
+                       let allGrades={ text:'所有年級' , value:'0' }
+                       this.gradeOptions.splice(0, 0, allGrades)
+                    }                       
+                    // let grade=this.gradeOptions[0].value
+                    // this.params.grade=grade
+
+                    this.classOptions = data.classOptions 
+                    if(this.empty_classes){
+                       let allClasses={ text:'所有班級' , value:'0' }
+                       this.classOptions.splice(0, 0, allClasses)
+                    }       
+
+                     this.ready=true
+
+                    // if(this.with_classes){
+                    //     this.loadClassess()
+                    // }else{
+                    //   this.ready=true
+                    // }
 
 
                 })
@@ -89,26 +119,26 @@
                 })
              
             },
-            loadCourses(){
+            loadClassess(){
                 this.ready=false
-                let options=Course.options(this.params)
+                let options=Classes.options(this.params)
                 options.then(data => {
-                    this.courseOptions =data.options
-                    if(this.empty_course){
+                    this.classesOptions =data.options
+                    if(this.empty_classes){
                        let empty={
                           text:'-------',
                           value: 0
                        }
-                       this.courseOptions.splice(0, 0, empty);
+                       this.classesOptions.splice(0, 0, empty);
                     }
 
                     this.ready=true
 
-                    let course=this.courseOptions[0]
-                    if(course){
-                        this.params.course=course.value
+                    let classes=this.classesOptions[0]
+                    if(classes){
+                        this.params.classes=classes.value
                     }else{
-                        this.params.course=0
+                        this.params.classes=0
                     }
                    
                 })
@@ -118,22 +148,23 @@
                 })
                 
             },
-            onTermChanged(){
-               this.$emit('term-changed', this.params.term)
-               if(this.with_course){
-                   this.loadCourses()
-               }
+            onDepartmentChanged(){
+              this.params.grade=0
+              this.params.classes=0
+              this.init()
+             
             },
-            onCenterChanged(){
-                this.$emit('center-changed', this.params.center)
-                if(this.with_course){
-                   this.loadCourses()
-               }
+            onGradeChanged(){
+              
+              this.params.classes=0
+              this.init()
+             
             },
-            onCourseChanged(){
-                this.$emit('course-changed', this.params.course)
-            }
-            
+            onClassChanged(){
+             
+              this.init()
+             
+            },
             
         },
 

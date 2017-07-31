@@ -61,7 +61,8 @@ class DepartmentsController extends BaseController
                                        ->get(); 
 
         foreach ($departments as $department) {
-            $children=$this->classesRepository->activeClasses($department->id)->get();
+            $children=$this->classesRepository->activeClasses($department->id);
+            
             $department->children=$children;
            
         }
@@ -109,6 +110,7 @@ class DepartmentsController extends BaseController
         if(!$department->canViewBy($current_user)){
             return  $this->unauthorized();   
         }
+        
 
         $department->canEdit=$department->canEditBy($current_user);
         $department->canDelete=$department->canDeleteBy($current_user);

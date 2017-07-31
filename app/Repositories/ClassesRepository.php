@@ -28,23 +28,31 @@ class ClassesRepository
 
         $distinct_grade=$this->departmentActiveClasses($department_id)
                                         ->distinct()->get(['grade_id'])->toArray();
-        $distinct_grade_ids=array_pluck($distinct_grade, 'grade_id');
 
+                                      
+        $distinct_grade_ids=array_pluck($distinct_grade, 'grade_id');
+       
         $grades=Grade::whereIn('id',$distinct_grade_ids)
                                ->orderBy('order')->get();
-
+          
         $classList=collect([]);
-        for($i = 0; $i < count($grades); ++$i) {
-            $grade_id=$grades[$i]->id;
-            $classList = $classList->merge($this->departmentActiveClasses($department_id)
-                                                ->where('grade_id',$grade_id)
-                                                ->orderBy('order')
-                                                ->with('grade')
-                                                ->get() 
-                                          );
+
+        if(count($grades)){
+            for($i = 0; $i < count($grades); ++$i) {
+                $grade_id=$grades[$i]->id;
+                $classList = $classList->merge($this->departmentActiveClasses($department_id)
+                                                    ->where('grade_id',$grade_id)
+                                                    ->orderBy('order')
+                                                    ->with('grade')
+                                                    ->get() 
+                                            );
 
                    
+            }
         }
+
+        
+        
 
         return $classList;
 

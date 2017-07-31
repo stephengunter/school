@@ -12,9 +12,7 @@
                     <li class="active">
                         <a @click="activeIndex=0" href="#contactinfo" data-toggle="tab">聯絡資訊</a>
                     </li>
-                    <li class="">
-                         <a @click="activeIndex=1" href="#signupRecord" data-toggle="tab">報名紀錄</a>
-                    </li>
+                    
                 </ul>
         </div>
         <div class="panel-body">
@@ -26,13 +24,7 @@
                      @created="onContactInfoCreated" @deleted="onContactInfoDeleted" >             
                     </contact-info>
                 </div>
-                <div class="tab-pane fade" id="signupRecord">
-                      <signup-view v-if="activeIndex==1" :user_id="id" 
-                          :disable_edit="signupSettings.disable_edit"
-                          @selected="onSignupSelected">
-                          
-                      </signup-view>  
-                </div>              
+                           
             </div>
         </div>
     </div> 

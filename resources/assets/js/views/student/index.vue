@@ -2,21 +2,17 @@
 <div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="form-inline">
-                
-                <div class="form-group">
-                    <select  v-model="params.department"    style="width:auto;" class="form-control selectWidth">
-                        <option v-for="item in departmentOptions" :value="item.value" v-text="item.text"></option>
-                    </select>
-                </div>
-            </div>
+            <combination-select
+            :with_classes="optionsSettings.with_classes" :empty_classes="optionsSettings.empty_classes"
+            :empty_department="optionsSettings.empty_department" :empty_grade="optionsSettings.empty_grade"
+            ></combination-select>
         </div>
     </div>
      
-    <student-list v-if="ready" :search_params="params"  :hide_create="hide_create" :version="version"  
+   <!--  <student-list v-if="ready" :search_params="params"  :hide_create="hide_create" :version="version"  
         :can_select="can_select"
         @selected="onSelected" @begin-create="onBeginCreate">
-    </student-list>
+    </student-list> -->
 
 </div>
 
@@ -44,7 +40,12 @@
         data() {
             return {
                 ready:false,
-                departmentOptions:[],
+                optionsSettings:{
+                    empty_department:true,
+                    empty_grade:true,
+                    with_classes:true,
+                    empty_classes:true
+                },
                 params:{
                     department:0,
                 },
@@ -54,22 +55,22 @@
             }
         },
         beforeMount() {
-             this.init()
+             //this.init()
         },
         methods: {
             init(){
-                let options=Student.indexOptions()
-                options.then(data=>{
-                    this.departmentOptions=data.departmentOptions
-                    let allDepartments={ text:'全部科系' , value:'0' }
-                    this.departmentOptions.splice(0, 0, allDepartments);
-                    this.params.department=this.departmentOptions[0].value
+                // let options=Student.indexOptions()
+                // options.then(data=>{
+                //     this.departmentOptions=data.departmentOptions
+                //     let allDepartments={ text:'全部科系' , value:'0' }
+                //     this.departmentOptions.splice(0, 0, allDepartments);
+                //     this.params.department=this.departmentOptions[0].value
                     
-                    this.ready=true
-                }).catch(error=>{
-                    Helper.BusEmitError(error)
-                    this.ready=false
-                })
+                //     this.ready=true
+                // }).catch(error=>{
+                //     Helper.BusEmitError(error)
+                //     this.ready=false
+                // })
              
             },
             onSelected(id){

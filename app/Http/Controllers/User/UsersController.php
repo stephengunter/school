@@ -41,20 +41,20 @@ class UsersController extends BaseController
          
           $this->registrations=$registrations;
 
-        //   $this->setCheckAdmin($checkAdmin);
           
 	}
 
 	public function index()
     {
          
-        if(!request()->ajax()){
-            $menus=$this->menus($this->key);            
-            return view('users.index')
-                    ->with(['menus' => $menus]);
-        }  
+        // if(!request()->ajax()){
+        //     $menus=$this->menus($this->key);            
+        //     return view('users.index')
+        //             ->with(['menus' => $menus]);
+        // }  
 
         $users=$this->users->getAll()->with('roles');
+       
         return response()
             ->json([
                 'model' => $users -> filterPaginateOrder()
