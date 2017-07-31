@@ -153,6 +153,17 @@ class Student {
                     })
                 })  
     }
+    static activeText(active) {
+        if (parseInt(active)) return '在學中'
+        return '非在學'
+    }
+    static activeLabel(active) {
+        let style='label label-default'
+        if (parseInt(active)) style= 'label label-info'
+         let text=this.activeText(active)
+
+        return `<span class="${style}" > ${text} </span>`
+    }
     
     
 
@@ -170,6 +181,11 @@ class Student {
                     },{
                         title: '科系',
                         key: 'department_id',
+                        sort: false,
+                        default:true
+                    }, {
+                        title: '狀態',
+                        key: 'active',
                         sort: false,
                         default:true
                     }, {

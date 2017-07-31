@@ -46,8 +46,6 @@ class StudentsController extends BaseController
             $gradeOptions=$this->grades->options();
         }
         
-        //$classOptions=$this->grades->options();
-
         return response()
             ->json([
                 'departmentOptions' => $departmentOptions,
@@ -59,28 +57,39 @@ class StudentsController extends BaseController
     public function index()
     {
         if(!request()->ajax()) return view('students.index');
-        
+       
         $request = request();
 
         $removed=(int)$request->removed; 
+       
         $students=[];
         if($removed){
-            $students=$this->students->trash()->get();
+            $students=$this->students->trash()->with('department')
+                                     ->filterPaginateOrder();
                                              
         }else{
             $students=$this->students->getAll();
-            $department=(int)$request->department; 
-            if($department){
-                $students=$students->where('department_id', $department);
+            $department_id=(int)$request->department; 
+            if($department_id){
+                $students=$students->where('department_id', $department_id);
+            }
+            $grade_id=(int)$request->grade; 
+            if($grade_id){
+                $activeClasses=$this->classesRepository->activeClasses($department_id, $grade_id)
+                                                        ->pluck('id')->toArray();
+
+                $students=$students->whereIn('class_id', $activeClasses);
             }
 
             $students=$students->with('department')
-                        ->orderBy('active','desc')->filterPaginateOrder();
-            foreach ($students as $student) {
-                $student->getName();
-            }                                       
+                               ->orderBy('active','desc')->filterPaginateOrder();
+                                                
                                        
         }
+
+        foreach ($students as $student) {
+             $student->getName();
+        }   
         
         return response() ->json(['model' => $students  ]);  
         

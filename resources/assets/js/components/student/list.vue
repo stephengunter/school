@@ -2,7 +2,7 @@
     <data-viewer  :default_search="defaultSearch" :default_order="defaultOrder"
       :source="source" :search_params="search_params"  :thead="thead" :no_search="can_select"  
       :filter="filter"  :title="title" create_text="" 
-      :show_title="show_title"  :no_page="no_page"
+      :show_title="show_title"  :no_page="no_page" 
       @refresh="init" :version="version"   @beginCreate="beginCreate"
        @dataLoaded="onDataLoaded">
         <!--  <div  class="form-inline" slot="header">
@@ -12,7 +12,7 @@
                     <span v-if="!viewMore" class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
                 </button>
          </div> -->
-         <button v-show="hasData" slot="btn"  class="btn btn-warning btn-sm" >
+         <button v-if="!search_params.removed" v-show="hasData" slot="btn"  class="btn btn-warning btn-sm" >
                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                  匯出 
          </button>
@@ -21,6 +21,7 @@
          
          <template scope="props">
             <row :student="props.item" :more="viewMore" :select="can_select"
+               :removed="removed"
                :been_selected="beenSelected(props.item.id)"       
                @selected="onRowSelected"
                @unselected ="onRowUnselected">
@@ -66,6 +67,10 @@
                type: Boolean,
                default: true
             },
+            title:{
+               type: String,
+               default: ''
+            },
             no_page:{
                type: Boolean,
                default: false
@@ -74,14 +79,8 @@
         beforeMount() {
            this.init()
         },
-        watch: {
-            student_id: function (value) {
-               this.searchParams.student=value
-            }
-        },
         data() {
             return {
-                title:Helper.getIcon('Students')  + '  學生管理',
                 loaded:false,
                 source: Student.source(),
                 
@@ -102,11 +101,16 @@
                 hasData:false,
                 viewMore:false,
 
+
               
              
             }
         },
-        
+        computed:{
+           removed(){
+               return  Helper.isTrue(this.search_params.removed)
+           }
+        },     
         methods: {
             init() {
                 this.thead=Student.getThead(this.can_select)  

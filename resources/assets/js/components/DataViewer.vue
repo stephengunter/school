@@ -308,15 +308,12 @@
             buildURL() {
                 if(!this.source) return false
                     
-                let url=this.source + '?'
+                let url=this.source 
                 if(this.search_params){
-                    let searchParams=this.search_params
-                    for (let field in searchParams) {
-
-                      let value=searchParams[field]
-                      url += field + '=' + value + '&'
-
-                    }
+                    url=Helper.buildQuery(url,this.search_params)
+                    url += '&'
+                }else{
+                    url += '?'
                 }
                 var p = this.params
                

@@ -86,16 +86,14 @@
                        let allDepartments={ text:'全部科系' , value:'0' }
                        this.departmentOptions.splice(0, 0, allDepartments)
                     }
-                    // let department=this.departmentOptions[0].value
-                    // this.params.department=department
+                   
 
                     this.gradeOptions = data.gradeOptions 
                     if(this.empty_grade){
                        let allGrades={ text:'所有年級' , value:'0' }
                        this.gradeOptions.splice(0, 0, allGrades)
                     }                       
-                    // let grade=this.gradeOptions[0].value
-                    // this.params.grade=grade
+                    
 
                     this.classOptions = data.classOptions 
                     if(this.empty_classes){
@@ -103,14 +101,7 @@
                        this.classOptions.splice(0, 0, allClasses)
                     }       
 
-                     this.ready=true
-
-                    // if(this.with_classes){
-                    //     this.loadClassess()
-                    // }else{
-                    //   this.ready=true
-                    // }
-
+                    this.ready=true
 
                 })
                 .catch(error => {
@@ -119,51 +110,20 @@
                 })
              
             },
-            loadClassess(){
-                this.ready=false
-                let options=Classes.options(this.params)
-                options.then(data => {
-                    this.classesOptions =data.options
-                    if(this.empty_classes){
-                       let empty={
-                          text:'-------',
-                          value: 0
-                       }
-                       this.classesOptions.splice(0, 0, empty);
-                    }
-
-                    this.ready=true
-
-                    let classes=this.classesOptions[0]
-                    if(classes){
-                        this.params.classes=classes.value
-                    }else{
-                        this.params.classes=0
-                    }
-                   
-                })
-                .catch(error => {
-                    this.ready=false
-                    Helper.BusEmitError(error)
-                })
-                
-            },
+           
             onDepartmentChanged(){
-              this.params.grade=0
-              this.params.classes=0
-              this.init()
+               this.params.grade=0
+               this.params.classes=0
+               this.init()
              
             },
             onGradeChanged(){
-              
-              this.params.classes=0
-              this.init()
+               this.params.classes=0
+               this.init()
              
             },
             onClassChanged(){
-             
-              this.init()
-             
+               this.init()
             },
             
         },

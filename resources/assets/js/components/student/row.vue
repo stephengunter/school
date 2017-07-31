@@ -1,6 +1,6 @@
 <template>
    <tr>
-        <td v-if="remove">
+        <td v-if="can_remove">
             <button @click="removeItem(student.id,student.name)" class="btn btn-danger btn-xs">
              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
@@ -19,6 +19,8 @@
         </td> 
         <td v-text="student.number"></td> 
         <td v-text="student.department.name"></td> 
+        <td v-if="removed" v-html="$options.filters.removedLabel(student.removed)" ></td>
+        <td v-else v-html="studentActiveLabel()" ></td> 
         <td>
             <updated :entity="student"></updated>
         </td>    
@@ -41,7 +43,11 @@
                type: Boolean,
                default: false
             },
-            remove:{
+            can_remove:{
+               type: Boolean,
+               default: false
+            },
+            removed:{
                type: Boolean,
                default: false
             },
@@ -72,6 +78,10 @@
                     name:name
                 }
                 this.$emit('remove-clicked',values)
+            },
+            studentActiveLabel(){
+                let active=this.student.active
+                 return Student.activeLabel(active)
             },
             selected(){
                 this.$emit('selected',this.student)

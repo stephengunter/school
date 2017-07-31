@@ -2,17 +2,39 @@
 <div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <combination-select
+            <combination-select v-show="!removed"
             :with_classes="optionsSettings.with_classes" :empty_classes="optionsSettings.empty_classes"
             :empty_department="optionsSettings.empty_department" :empty_grade="optionsSettings.empty_grade"
-            ></combination-select>
+             @ready="onOptionsReady"  >
+                
+            </combination-select>
+            <div v-if="removed">
+                <button @click="removed=false" class="btn btn-default btn-sm" >
+                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                     返回
+                </button>
+
+            </div>
+            <div v-else>
+              <button  @click="removed=true" class="btn btn-default btn-sm" >
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                  資源回收桶
+              </button>
+              &nbsp;
+              
+              <button  @click="onBtnAddClicked" class="btn btn-primary btn-sm" >
+                  <span class="glyphicon glyphicon-plus"></span> 新增
+              </button>
+
+          </div>
         </div>
+        
     </div>
      
-   <!--  <student-list v-if="ready" :search_params="params"  :hide_create="hide_create" :version="version"  
-        :can_select="can_select"
+    <student-list v-if="ready" :search_params="params"  :hide_create="hide_create" :version="version"  
+        :can_select="listSettings.can_select" :title="listSettings.title"
         @selected="onSelected" @begin-create="onBeginCreate">
-    </student-list> -->
+    </student-list>
 
 </div>
 
@@ -48,36 +70,58 @@
                 },
                 params:{
                     department:0,
+                    grade:0,
+                    classes:0,
+                    removed:0
                 },
+
+                removed:false,
+
+                listSettings:{
+                    title:'',
+                    can_select:false,
+                }
               
-                can_select:false,
+                
              
             }
         },
+        watch: {
+            removed: function (value) {
+                if(value){
+                    this.params.removed=1
+                }else{
+                    this.params.removed=0
+                } 
+               this.setTitle()
+            },
+        },
         beforeMount() {
-             //this.init()
+            this.init()
         },
         methods: {
             init(){
-                // let options=Student.indexOptions()
-                // options.then(data=>{
-                //     this.departmentOptions=data.departmentOptions
-                //     let allDepartments={ text:'全部科系' , value:'0' }
-                //     this.departmentOptions.splice(0, 0, allDepartments);
-                //     this.params.department=this.departmentOptions[0].value
-                    
-                //     this.ready=true
-                // }).catch(error=>{
-                //     Helper.BusEmitError(error)
-                //     this.ready=false
-                // })
-             
+                this.setTitle()
+            },
+            setTitle(){
+                 let text=  '  學生管理'
+                 if(this.removed) text += ' (資源回收桶)'   
+                 this.listSettings.title=Helper.getIcon(Student.title()) + text
+            },
+            onOptionsReady(params){
+                this.params.department=params.department 
+                this.params.grade=params.grade
+                this.params.classes=params.classes
+                this.ready=true
             },
             onSelected(id){
                 this.$emit('selected',id)
             },
             onBeginCreate(){
                 this.$emit('begin-create',this.student_id)
+            },
+            onBtnAddClicked(){
+
             }
             
             

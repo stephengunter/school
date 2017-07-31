@@ -40457,16 +40457,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     var allDepartments = { text: '全部科系', value: '0' };
                     _this.departmentOptions.splice(0, 0, allDepartments);
                 }
-                // let department=this.departmentOptions[0].value
-                // this.params.department=department
 
                 _this.gradeOptions = data.gradeOptions;
                 if (_this.empty_grade) {
                     var allGrades = { text: '所有年級', value: '0' };
                     _this.gradeOptions.splice(0, 0, allGrades);
                 }
-                // let grade=this.gradeOptions[0].value
-                // this.params.grade=grade
 
                 _this.classOptions = data.classOptions;
                 if (_this.empty_classes) {
@@ -40475,44 +40471,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 _this.ready = true;
-
-                // if(this.with_classes){
-                //     this.loadClassess()
-                // }else{
-                //   this.ready=true
-                // }
-
             }).catch(function (error) {
                 Helper.BusEmitError(error);
                 _this.ready = false;
-            });
-        },
-        loadClassess: function loadClassess() {
-            var _this2 = this;
-
-            this.ready = false;
-            var options = Classes.options(this.params);
-            options.then(function (data) {
-                _this2.classesOptions = data.options;
-                if (_this2.empty_classes) {
-                    var empty = {
-                        text: '-------',
-                        value: 0
-                    };
-                    _this2.classesOptions.splice(0, 0, empty);
-                }
-
-                _this2.ready = true;
-
-                var classes = _this2.classesOptions[0];
-                if (classes) {
-                    _this2.params.classes = classes.value;
-                } else {
-                    _this2.params.classes = 0;
-                }
-            }).catch(function (error) {
-                _this2.ready = false;
-                Helper.BusEmitError(error);
             });
         },
         onDepartmentChanged: function onDepartmentChanged() {
@@ -40521,12 +40482,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.init();
         },
         onGradeChanged: function onGradeChanged() {
-
             this.params.classes = 0;
             this.init();
         },
         onClassChanged: function onClassChanged() {
-
             this.init();
         }
     }
@@ -40845,14 +40804,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         buildURL: function buildURL() {
             if (!this.source) return false;
 
-            var url = this.source + '?';
+            var url = this.source;
             if (this.search_params) {
-                var searchParams = this.search_params;
-                for (var field in searchParams) {
-
-                    var value = searchParams[field];
-                    url += field + '=' + value + '&';
-                }
+                url = Helper.buildQuery(url, this.search_params);
+                url += '&';
+            } else {
+                url += '?';
             }
             var p = this.params;
 
@@ -43971,6 +43928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -44004,6 +43962,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: Boolean,
             default: true
         },
+        title: {
+            type: String,
+            default: ''
+        },
         no_page: {
             type: Boolean,
             default: false
@@ -44012,15 +43974,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     beforeMount: function beforeMount() {
         this.init();
     },
-
-    watch: {
-        student_id: function student_id(value) {
-            this.searchParams.student = value;
-        }
-    },
     data: function data() {
         return {
-            title: Helper.getIcon('Students') + '  學生管理',
             loaded: false,
             source: Student.source(),
 
@@ -44043,7 +43998,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-
+    computed: {
+        removed: function removed() {
+            return Helper.isTrue(this.search_params.removed);
+        }
+    },
     methods: {
         init: function init() {
             this.thead = Student.getThead(this.can_select);
@@ -44114,6 +44073,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -44127,7 +44088,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: Boolean,
             default: false
         },
-        remove: {
+        can_remove: {
+            type: Boolean,
+            default: false
+        },
+        removed: {
             type: Boolean,
             default: false
         },
@@ -44156,6 +44121,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: name
             };
             this.$emit('remove-clicked', values);
+        },
+        studentActiveLabel: function studentActiveLabel() {
+            var active = this.student.active;
+            return Student.activeLabel(active);
         },
         selected: function selected() {
             this.$emit('selected', this.student);
@@ -46347,6 +46316,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -46375,39 +46366,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 empty_classes: true
             },
             params: {
-                department: 0
+                department: 0,
+                grade: 0,
+                classes: 0,
+                removed: 0
             },
 
-            can_select: false
+            removed: false,
+
+            listSettings: {
+                title: '',
+                can_select: false
+            }
 
         };
     },
+
+    watch: {
+        removed: function removed(value) {
+            if (value) {
+                this.params.removed = 1;
+            } else {
+                this.params.removed = 0;
+            }
+            this.setTitle();
+        }
+    },
     beforeMount: function beforeMount() {
-        //this.init()
+        this.init();
     },
 
     methods: {
         init: function init() {
-            // let options=Student.indexOptions()
-            // options.then(data=>{
-            //     this.departmentOptions=data.departmentOptions
-            //     let allDepartments={ text:'全部科系' , value:'0' }
-            //     this.departmentOptions.splice(0, 0, allDepartments);
-            //     this.params.department=this.departmentOptions[0].value
-
-            //     this.ready=true
-            // }).catch(error=>{
-            //     Helper.BusEmitError(error)
-            //     this.ready=false
-            // })
-
+            this.setTitle();
+        },
+        setTitle: function setTitle() {
+            var text = '  學生管理';
+            if (this.removed) text += ' (資源回收桶)';
+            this.listSettings.title = Helper.getIcon(Student.title()) + text;
+        },
+        onOptionsReady: function onOptionsReady(params) {
+            this.params.department = params.department;
+            this.params.grade = params.grade;
+            this.params.classes = params.classes;
+            this.ready = true;
         },
         onSelected: function onSelected(id) {
             this.$emit('selected', id);
         },
         onBeginCreate: function onBeginCreate() {
             this.$emit('begin-create', this.student_id);
-        }
+        },
+        onBtnAddClicked: function onBtnAddClicked() {}
     }
 
 });
@@ -48626,6 +48636,21 @@ var Student = function () {
             });
         }
     }, {
+        key: 'activeText',
+        value: function activeText(active) {
+            if (parseInt(active)) return '在學中';
+            return '非在學';
+        }
+    }, {
+        key: 'activeLabel',
+        value: function activeLabel(active) {
+            var style = 'label label-default';
+            if (parseInt(active)) style = 'label label-info';
+            var text = this.activeText(active);
+
+            return '<span class="' + style + '" > ' + text + ' </span>';
+        }
+    }, {
         key: 'getThead',
         value: function getThead(canSelect) {
             var thead = [{
@@ -48641,6 +48666,11 @@ var Student = function () {
             }, {
                 title: '科系',
                 key: 'department_id',
+                sort: false,
+                default: true
+            }, {
+                title: '狀態',
+                key: 'active',
                 sort: false,
                 default: true
             }, {
@@ -63936,13 +63966,65 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "panel-heading"
   }, [_c('combination-select', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.removed),
+      expression: "!removed"
+    }],
     attrs: {
       "with_classes": _vm.optionsSettings.with_classes,
       "empty_classes": _vm.optionsSettings.empty_classes,
       "empty_department": _vm.optionsSettings.empty_department,
       "empty_grade": _vm.optionsSettings.empty_grade
+    },
+    on: {
+      "ready": _vm.onOptionsReady
     }
-  })], 1)])])
+  }), _vm._v(" "), (_vm.removed) ? _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = false
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-left",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\r\n                     返回\r\n                ")])]) : _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = true
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\r\n                  資源回收桶\r\n              ")]), _vm._v("\r\n               \r\n              \r\n              "), _c('button', {
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.onBtnAddClicked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  }), _vm._v(" 新增\r\n              ")])])], 1)]), _vm._v(" "), (_vm.ready) ? _c('student-list', {
+    attrs: {
+      "search_params": _vm.params,
+      "hide_create": _vm.hide_create,
+      "version": _vm.version,
+      "can_select": _vm.listSettings.can_select,
+      "title": _vm.listSettings.title
+    },
+    on: {
+      "selected": _vm.onSelected,
+      "begin-create": _vm.onBeginCreate
+    }
+  }) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -65262,6 +65344,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             "student": props.item,
             "more": _vm.viewMore,
             "select": _vm.can_select,
+            "removed": _vm.removed,
             "been_selected": _vm.beenSelected(props.item.id)
           },
           on: {
@@ -65271,7 +65354,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         })]
       }
     }])
-  }, [_c('button', {
+  }, [(!_vm.search_params.removed) ? _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -65285,7 +65368,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v("\n             匯出 \n     ")])])
+  }), _vm._v("\n             匯出 \n     ")]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -67986,7 +68069,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [(_vm.remove) ? _c('td', [_c('button', {
+  return _c('tr', [(_vm.can_remove) ? _c('td', [_c('button', {
     staticClass: "btn btn-danger btn-xs",
     on: {
       "click": function($event) {
@@ -68023,6 +68106,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('td', {
     domProps: {
       "textContent": _vm._s(_vm.student.department.name)
+    }
+  }), _vm._v(" "), (_vm.removed) ? _c('td', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.$options.filters.removedLabel(_vm.student.removed))
+    }
+  }) : _c('td', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.studentActiveLabel())
     }
   }), _vm._v(" "), _c('td', [_c('updated', {
     attrs: {

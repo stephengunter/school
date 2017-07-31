@@ -21,8 +21,7 @@ class Students
     }
     public function trash()
     {
-         return Student::where('removed',true)
-                            ->orderBy('updated_at','desc');
+         return Student::where('removed',true);
 
     }
     
