@@ -7,6 +7,7 @@ use App\Student;
 use App\Staff;
 use App\Department;
 use App\Unit;
+use App\UserUpdateRecord;
 
 use Faker\Factory;
 use Illuminate\Database\Seeder;

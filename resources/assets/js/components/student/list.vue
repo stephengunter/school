@@ -5,13 +5,7 @@
       :show_title="show_title"  :no_page="no_page" 
       @refresh="init" :version="version"   @beginCreate="beginCreate"
        @dataLoaded="onDataLoaded">
-        <!--  <div  class="form-inline" slot="header">
-               
-                <button v-show="hasData" class="btn btn-default btn-xs" @click.prevent="onBtnViewMoreClicked">
-                    <span v-if="viewMore" class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
-                    <span v-if="!viewMore" class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
-                </button>
-         </div> -->
+      
          <button v-if="!search_params.removed" v-show="hasData" slot="btn"  class="btn btn-warning btn-sm" >
                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                  匯出 

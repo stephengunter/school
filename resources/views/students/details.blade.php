@@ -2,12 +2,12 @@
 
 @section('content')
 
-   <course-details   :id="id" :can_back="can_back" 
+   <student-details   :id="id" :can_back="can_back" 
      @btn-back-clicked="backToIndex" @course-deleted="onCourseDeleted"
      @signup-selected="onSignupSelected" 
      @edit-user="onEditUser">
      
-   </course-details>
+   </student-details>
 
    
 

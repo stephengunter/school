@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Students 
 {
+
     public function getAll()
     {
          return Student::where('removed',false);

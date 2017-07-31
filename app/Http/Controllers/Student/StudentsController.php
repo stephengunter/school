@@ -11,7 +11,7 @@ use App\Repositories\grades;
 use App\Repositories\ClassesRepository;
 
 use App\Student;
-use App\Http\Requests\StudentRequest;
+use App\Http\Requests\User\StudentRequest;
 
 class StudentsController extends BaseController
 {
@@ -129,25 +129,27 @@ class StudentsController extends BaseController
                         ]);
         }
 
-        $current_user=request()->user();
+        $current_user=$this->currentUser();
         
-        $student=Student::findOrFail($id);
+        $student=Student::with(['department','class'])
+                        ->findOrFail($id);
         if(!$student->canViewBy($current_user)){
             return  $this->unauthorized();   
         }
-
+        $student->getName();
         $student->canEdit=$student->canEditBy($current_user);
         $student->canDelete=$student->canDeleteBy($current_user);
         return response()->json(['student' => $student]);
     }
     public function edit($id)
     {
-        $student=$this->students->findOrFail($id);    
+        $student=Student::with(['department','class'])
+                        ->findOrFail($id);    
         $current_user=$this->currentUser();
         if(!$student->canEditBy($current_user)){
             return  $this->unauthorized(); 
         }
-
+        $student->getName();
         return response()->json([
                     'student' => $student,
                 ]);        
@@ -160,8 +162,7 @@ class StudentsController extends BaseController
             return  $this->unauthorized();       
          }
          $updated_by=$current_user->id;
-         $removed=false;
-         $values=$request->getValues($updated_by,$removed);  
+         $values=$request->getValues($updated_by);  
 
          $student->update($values);
          return response()->json($student);

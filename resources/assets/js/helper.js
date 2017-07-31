@@ -22,6 +22,9 @@ class Helper {
       
         return false
     }
+    static onViewMore(thead){
+         return CommonService.onViewMore(thead)
+    }
     static replaceAll(strVal, oldVal, newVal){
       
        return strVal.replace( new RegExp(oldVal,'g'), newVal)

@@ -1,4 +1,12 @@
 class CommonService {
+    static onViewMore(thead){
+        for (let i = thead.length - 1; i >= 0; i--) {
+            if(!thead[i].static){
+               thead[i].default = !thead[i].default
+            }
+                    
+        }
+    }
     static activeText(active) {
         if (parseInt(active)) return '上架中'
         return '已下架'

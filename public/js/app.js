@@ -43923,12 +43923,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -47092,6 +47086,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-create', __webpack_r
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-details', __webpack_require__(367));
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-index', __webpack_require__(362));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-details', __webpack_require__(471));
 
 
 window.axios = __WEBPACK_IMPORTED_MODULE_2_axios___default.a;
@@ -47282,6 +47277,11 @@ var Helper = function () {
             }
 
             return false;
+        }
+    }, {
+        key: 'onViewMore',
+        value: function onViewMore(thead) {
+            return CommonService.onViewMore(thead);
         }
     }, {
         key: 'replaceAll',
@@ -49320,6 +49320,15 @@ var CommonService = function () {
     }
 
     _createClass(CommonService, null, [{
+        key: 'onViewMore',
+        value: function onViewMore(thead) {
+            for (var i = thead.length - 1; i >= 0; i--) {
+                if (!thead[i].static) {
+                    thead[i].default = !thead[i].default;
+                }
+            }
+        }
+    }, {
         key: 'activeText',
         value: function activeText(active) {
             if (parseInt(active)) return '上架中';
@@ -79820,6 +79829,1211 @@ var Address = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Address);
+
+/***/ }),
+/* 464 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'EditStudent',
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        course_id: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            title: Helper.getIcon(Student.title()),
+            loaded: false,
+            form: new Form({
+                student: {}
+            }),
+
+            removedOptions: Helper.boolOptions(),
+            activeOptions: Helper.activeOptions()
+        };
+    },
+
+    computed: {
+        entityRemoved: function entityRemoved() {
+            if (!this.form.student) return false;
+            return Helper.isTrue(this.form.student.removed);
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.form = new Form({
+                student: {}
+
+            });
+            if (this.id) {
+                this.title += '  編輯學生資料';
+            } else {
+                this.title += '  新增學生資料';
+            }
+            this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = null;
+            if (this.id) {
+                getData = Student.edit(this.id);
+            } else {
+                getData = Student.create();
+            }
+            getData.then(function (data) {
+                var student = data.student;
+                _this.form.student = data.student;
+
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+                _this.loaded = false;
+            });
+        },
+        setActive: function setActive(val) {
+            this.form.student.active = val;
+        },
+        setRemoved: function setRemoved(val) {
+            this.form.student.removed = val;
+        },
+        clearErrorMsg: function clearErrorMsg(name) {
+            this.form.errors.clear(name);
+        },
+        onSubmit: function onSubmit() {
+
+            this.submitForm();
+        },
+        submitForm: function submitForm() {
+            var _this2 = this;
+
+            var store = null;
+
+            if (this.id) {
+                store = Student.update(this.form, this.id);
+            } else {
+                store = Student.store(this.form);
+            }
+
+            store.then(function (data) {
+                Helper.BusEmitOK();
+                _this2.$emit('saved', data);
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        onCanceled: function onCanceled() {
+            this.$emit('canceled');
+        },
+        onStudentSelected: function onStudentSelected(item) {
+            this.selectedStudent = item;
+        }
+    }
+
+});
+
+/***/ }),
+/* 465 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'ShowStudent',
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        can_edit: {
+            type: Boolean,
+            default: true
+        },
+        can_back: {
+            type: Boolean,
+            default: true
+        },
+        hide_delete: {
+            type: Boolean,
+            default: false
+        },
+        version: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            title: Helper.getIcon('Students') + '  學生資料',
+            loaded: false,
+            student: null
+
+        };
+    },
+
+    watch: {
+        'version': 'init'
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.student = null;
+            if (this.id) this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = Student.show(this.id);
+
+            getData.then(function (data) {
+                _this.student = new Student(data.student);
+
+                _this.loaded = true;
+                _this.$emit('loaded', _this.student);
+            }).catch(function (error) {
+                _this.loaded = false;
+                Helper.BusEmitError(error);
+            });
+        },
+        isTrue: function isTrue(val) {
+            return Helper.isTrue(val);
+        },
+        studentActiveLabel: function studentActiveLabel() {
+            var active = this.student.active;
+            return Student.activeLabel(active);
+        },
+        btnEditCilcked: function btnEditCilcked() {
+            this.$emit('begin-edit');
+        },
+        btnDeleteCilcked: function btnDeleteCilcked() {
+            var values = {
+                id: this.id,
+                name: this.student.name
+            };
+            this.$emit('btn-delete-clicked', values);
+        },
+        onBtnBackClick: function onBtnBackClick() {
+            this.$emit('btn-back-clicked');
+        }
+    }
+});
+
+/***/ }),
+/* 466 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__show_vue__ = __webpack_require__(469);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__show_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__show_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_vue__ = __webpack_require__(468);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__edit_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'Student',
+    components: {
+        Show: __WEBPACK_IMPORTED_MODULE_0__show_vue___default.a,
+        Edit: __WEBPACK_IMPORTED_MODULE_1__edit_vue___default.a
+    },
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        can_edit: {
+            type: Boolean,
+            default: true
+        },
+        can_back: {
+            type: Boolean,
+            default: true
+        },
+        version: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            readOnly: true,
+            deleteConfirm: {
+                id: 0,
+                show: false,
+                msg: ''
+
+            }
+        };
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    watch: {
+        'id': 'init',
+        'version': 'init'
+    },
+    methods: {
+        init: function init() {
+            this.readOnly = true;
+            this.deleteConfirm = {
+                id: 0,
+                show: false,
+                msg: ''
+            };
+        },
+        onDataLoaded: function onDataLoaded(student) {
+            this.$emit('loaded', student);
+        },
+        beginEdit: function beginEdit() {
+            this.readOnly = false;
+        },
+        onEditCanceled: function onEditCanceled() {
+            this.init();
+        },
+        onSaved: function onSaved(student) {
+            this.init();
+            this.$emit('saved', student);
+        },
+        onBtnBackClicked: function onBtnBackClicked() {
+            this.$emit('btn-back-clicked');
+        },
+        beginDelete: function beginDelete(values) {
+            this.deleteConfirm.msg = '確定要刪除學生資料 『' + values.name + '』嗎';
+            this.deleteConfirm.id = values.id;
+            this.deleteConfirm.show = true;
+        },
+        closeConfirm: function closeConfirm() {
+            this.deleteConfirm.show = false;
+        },
+        deleteStudent: function deleteStudent() {
+            var _this = this;
+
+            var id = this.deleteConfirm.id;
+            var remove = Student.delete(id);
+            remove.then(function (result) {
+                Helper.BusEmitOK('刪除成功');
+                _this.deleteConfirm.show = false;
+                _this.$emit('deleted');
+            }).catch(function (error) {
+                Helper.BusEmitError(error, '刪除失敗');
+                _this.closeConfirm();
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 467 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_view_vue__ = __webpack_require__(470);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_student_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_student_view_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+   name: 'DepartmentDetails',
+   components: {
+      'student-view': __WEBPACK_IMPORTED_MODULE_0__components_student_view_vue___default.a
+   },
+   props: {
+      id: {
+         type: Number,
+         default: 0
+      },
+      version: {
+         type: Number,
+         default: 0
+      },
+      can_edit: {
+         type: Boolean,
+         default: true
+      },
+      can_back: {
+         type: Boolean,
+         default: true
+      }
+   },
+   data: function data() {
+      return {
+         loaded: false,
+         student: null,
+         current_version: 0,
+
+         activeIndex: 0
+
+      };
+   },
+   beforeMount: function beforeMount() {
+      this.init();
+   },
+
+   methods: {
+      init: function init() {
+         this.loaded = false;
+         this.readonly = true;
+         this.activeIndex = 0;
+      },
+      toBoolean: function toBoolean(val) {
+         return val == 'true';
+      },
+      onDataLoaded: function onDataLoaded(student) {
+         this.loaded = true;
+         this.student = student;
+      },
+      btnEditClicked: function btnEditClicked() {
+         this.beginEdit();
+      },
+      beginEdit: function beginEdit() {
+         this.readonly = false;
+      },
+      editCanceled: function editCanceled() {
+         this.readonly = true;
+      },
+      studentUpdated: function studentUpdated() {
+         this.init();
+      },
+      onBtnBackClicked: function onBtnBackClicked() {
+         this.$emit('btn-back-clicked');
+      },
+      onDepartmentDeleted: function onDepartmentDeleted() {
+         this.$emit('student-deleted');
+      }
+   }
+
+});
+
+/***/ }),
+/* 468 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(464),
+  /* template */
+  __webpack_require__(473),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\student\\edit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] edit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-44cdc986", Component.options)
+  } else {
+    hotAPI.reload("data-v-44cdc986", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 469 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(465),
+  /* template */
+  __webpack_require__(474),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\student\\show.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] show.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5dc2f60e", Component.options)
+  } else {
+    hotAPI.reload("data-v-5dc2f60e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 470 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(466),
+  /* template */
+  __webpack_require__(472),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\student\\view.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] view.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2c97d0a1", Component.options)
+  } else {
+    hotAPI.reload("data-v-2c97d0a1", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 471 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(467),
+  /* template */
+  __webpack_require__(475),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\student\\details.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] details.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a4127548", Component.options)
+  } else {
+    hotAPI.reload("data-v-a4127548", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 472 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(_vm.readOnly) ? _c('show', {
+    attrs: {
+      "id": _vm.id,
+      "can_edit": "can_edit",
+      "can_back": _vm.can_back,
+      "version": _vm.version
+    },
+    on: {
+      "begin-edit": _vm.beginEdit,
+      "loaded": _vm.onDataLoaded,
+      "btn-back-clicked": _vm.onBtnBackClicked,
+      "btn-delete-clicked": _vm.beginDelete
+    }
+  }) : _c('edit', {
+    attrs: {
+      "id": _vm.id
+    },
+    on: {
+      "saved": _vm.onSaved,
+      "canceled": _vm.onEditCanceled
+    }
+  }), _vm._v(" "), _c('delete-confirm', {
+    attrs: {
+      "showing": _vm.deleteConfirm.show,
+      "message": _vm.deleteConfirm.msg
+    },
+    on: {
+      "close": _vm.closeConfirm,
+      "confirmed": _vm.deleteStudent
+    }
+  })], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2c97d0a1", module.exports)
+  }
+}
+
+/***/ }),
+/* 473 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })])]), _vm._v(" "), (_vm.loaded) ? _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    staticClass: "form",
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      },
+      "keydown": function($event) {
+        _vm.clearErrorMsg($event.target.name)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("姓名")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "student.name",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.student.name
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("學號")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "student.number",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.student.number
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("科系")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "student.department.name",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.student.department.name
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("班級")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "student.class.name",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.student.class.name
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("入學日期")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "student.join_date",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.student.join_date
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [(_vm.entityRemoved) ? _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("已移除")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.student.removed),
+      expression: "form.student.removed"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.form.student.removed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.student.removed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('toggle', {
+    attrs: {
+      "items": _vm.removedOptions,
+      "default_val": _vm.form.student.removed
+    },
+    on: {
+      "selected": _vm.setRemoved
+    }
+  })], 1)]) : _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("狀態")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.student.active),
+      expression: "form.student.active"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.form.student.active)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.student.active = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('toggle', {
+    attrs: {
+      "items": _vm.activeOptions,
+      "default_val": _vm.form.student.active
+    },
+    on: {
+      "selected": _vm.setActive
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("備註")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.student.ps),
+      expression: "form.student.ps"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "4",
+      "name": "student.ps"
+    },
+    domProps: {
+      "value": (_vm.form.student.ps)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.student.ps = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.form.errors.any()
+    }
+  }, [_vm._v("確認送出")]), _vm._v("\n                              \n                         "), _c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.onCanceled($event)
+      }
+    }
+  }, [_vm._v("取消")])])])])])]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-44cdc986", module.exports)
+  }
+}
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.loaded) ? _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.can_back),
+      expression: "can_back"
+    }],
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": _vm.onBtnBackClick
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-left",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n                     返回\n                ")]), _vm._v(" "), (_vm.student.canEdit) ? _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.can_edit),
+      expression: "can_edit"
+    }],
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.btnEditCilcked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-pencil"
+  }), _vm._v(" 編輯\n                 ")]) : _vm._e(), _vm._v(" "), (_vm.student.canDelete) ? _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.hide_delete),
+      expression: "!hide_delete"
+    }],
+    staticClass: "btn btn-danger btn-sm",
+    on: {
+      "click": _vm.btnDeleteCilcked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash"
+  }), _vm._v(" 刪除\n                 ")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("姓名")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.name)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("學號")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.number)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("科系")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.department.name)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("班級")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.class.name)
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("入學日期")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.join_date)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("狀態")]), _vm._v(" "), (_vm.isTrue(_vm.student.removed)) ? _c('p', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.$options.filters.removedLabel(_vm.student.removed))
+    }
+  }) : _c('p', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.studentActiveLabel())
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("備註")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.student.ps)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("最後更新")]), _vm._v(" "), _c('updated', {
+    attrs: {
+      "entity": _vm.student
+    }
+  })], 1)])])]) : _vm._e()
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5dc2f60e", module.exports)
+  }
+}
+
+/***/ }),
+/* 475 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('student-view', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.loaded),
+      expression: "loaded"
+    }],
+    attrs: {
+      "id": _vm.id,
+      "can_edit": _vm.can_edit,
+      "can_back": _vm.can_back
+    },
+    on: {
+      "saved": _vm.studentUpdated,
+      "loaded": _vm.onDataLoaded,
+      "btn-back-clicked": _vm.onBtnBackClicked,
+      "deleted": _vm.onDepartmentDeleted
+    }
+  }), _vm._v(" "), (_vm.loaded) ? _c('div', {
+    staticClass: "panel with-nav-tabs panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('ul', {
+    staticClass: "nav nav-tabs"
+  }, [_c('li', {
+    staticClass: "active"
+  }, [_c('a', {
+    attrs: {
+      "href": "#grades",
+      "data-toggle": "tab"
+    },
+    on: {
+      "click": function($event) {
+        _vm.activeIndex = 0
+      }
+    }
+  }, [_vm._v("年級")])])])]), _vm._v(" "), _vm._m(0)]) : _vm._e()], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "tab-content"
+  }, [_c('div', {
+    staticClass: "tab-pane fade active in",
+    attrs: {
+      "id": "grades"
+    }
+  })])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-a4127548", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

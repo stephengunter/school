@@ -54,6 +54,7 @@ Vue.component('user-create', require('./views/users/create') )
 Vue.component('user-details', require('./views/users/details') )
 
 Vue.component('student-index', require('./views/student/index') )
+Vue.component('student-details', require('./views/student/details') )
 
 
 

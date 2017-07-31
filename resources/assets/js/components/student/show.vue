@@ -11,10 +11,10 @@
                      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                      返回
                 </button>
-                <button v-if="course.canEdit" v-show="can_edit" @click="btnEditCilcked" class="btn btn-primary btn-sm" >
+                <button v-if="student.canEdit" v-show="can_edit" @click="btnEditCilcked" class="btn btn-primary btn-sm" >
                     <span class="glyphicon glyphicon-pencil"></span> 編輯
                  </button>
-                 <button v-if="course.canDelete" v-show="!hide_delete" @click="btnDeleteCilcked" class="btn btn-danger btn-sm" >
+                 <button v-if="student.canDelete" v-show="!hide_delete" @click="btnDeleteCilcked" class="btn btn-danger btn-sm" >
                     <span class="glyphicon glyphicon-trash"></span> 刪除
                  </button>
                
@@ -22,114 +22,43 @@
         </div>  <!-- End panel-heading-->
         <div class="panel-body">
             <div class="row">
-                <div class="col-sm-3">
-                    <photo :id="$options.filters.tryParseInt(course.photo_id)"></photo>
-                </div>
-                <div class="col-sm-3">
-                  
-                   
-                    <label class="label-title">名稱</label>
-                    <p>{{course.name}}</p>
-
-                    <label class="label-title">課程編號</label>
-                    <p>{{course.number}}</p>
-
-                     <label class="label-title">起始日期</label>
-                    <p>{{course.begin_date}}</p>
-
-                   
-                    
-                </div>
-                <div class="col-sm-3">
-                    <label class="label-title">開課中心</label>
-                    <p> {{ course.center.name }}</p>
-
-                    <label class="label-title">課程分類</label>
-                    <p v-html="course.categoriesText"></p>
-
-                   
-
-                    <label class="label-title">結束日期</label>
-                     <p>{{  course.end_date }}</p>
-
-                     
-
-                </div>
-
                  <div class="col-sm-3">
-                    <label class="label-title">學期</label>
-                    <p v-text="course.term.name">                       
-                    </p>
-                    
-                     <label class="label-title">教師</label>
-                     <p v-html="course.teachersText"></p>
-
-                   
-                    <label class="label-title">學分數</label>
-                    <p>
-                         {{ course.credit_count }}
-                    </p> 
-                    
-                </div>
-            </div>  <!-- End row-->
+                      <label class="label-title">姓名</label>
+                      <p v-text="student.name"></p>                      
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">學號</label>
+                      <p v-text="student.number"></p>                      
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">科系</label>
+                      <p v-text="student.department.name"></p>                      
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">班級</label>
+                      <p v-text="student.class.name"></p>                      
+                 </div>
+            </div>   <!-- End row-->
             <div class="row">
-                <div class="col-sm-3">
-                </div>
-                <div class="col-sm-9">
-                     <label class="label-title">課程簡介</label>
-                     <p>{{  course.description }}</p>
-                    
-                </div>
-                
-            </div> 
-            <div class="row">
-                <div class="col-sm-3">
-                </div>
-                <div class="col-sm-3">
-                     <label class="label-title">週數</label>
-                     <p>{{  course.weeks }}</p>
-
-                
-                  
-                    
-                </div>
-                <div class="col-sm-3">
-                     <label class="label-title">時數</label>
-                     <p>{{  course.hours }}</p>
-                   
-                    
-                </div>
-               
-                <div class="col-sm-3">
-                    
-                    
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col-sm-3">
-                </div>
-                <div class="col-sm-3">
-                   <label class="label-title">上架狀態</label>
-                    <p v-html="$options.filters.activeLabel(course.active)">                       
-                    </p>
-                   <!-- <label class="label-title">上課時間</label>
-                   <p v-html="course.classTimesText">
-                       
-                   </p> -->
-                </div>
-                <div class="col-sm-3">
-                   <label class="label-title">審核</label>
-                    <p v-html="$options.filters.reviewedLabel(course.reviewed)">                       
-                    </p>
-                </div>
-                <div class="col-sm-3">
-                   <label class="label-title">最後更新</label>
-                   <updated :entity="course"></updated>
-               
-                </div>
-               
-            </div> 
-
+                 <div class="col-sm-3">
+                      <label class="label-title">入學日期</label>
+                      <p v-text="student.join_date"></p>                      
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">狀態</label>
+                      <p v-if="isTrue(student.removed)" v-html="$options.filters.removedLabel(student.removed)"></p>   
+                      <p v-else v-html="studentActiveLabel()"></p>     
+                          
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">備註</label>
+                      <p v-text="student.ps"></p>                      
+                 </div>
+                 <div class="col-sm-3">
+                      <label class="label-title">最後更新</label>
+                      <updated :entity="student"></updated>                    
+                 </div>
+            </div>   <!-- End row-->
        
         </div>  <!-- End panel-body-->
 
@@ -142,7 +71,7 @@
 </template>
 <script>
     export default {
-        name: 'ShowCourse', 
+        name: 'ShowStudent', 
         props: {
             id: {
               type: Number,
@@ -167,9 +96,9 @@
         },
         data() {
              return {
-                title:Helper.getIcon('Courses') + '  課程資料',
+                title:Helper.getIcon('Students') + '  學生資料',
                 loaded:false,
-                course:null,
+                student:null,
 
             }
         },
@@ -182,32 +111,38 @@
         methods: {    
             init(){
                 this.loaded=false
-                this.course=null
+                this.student=null
                 if(this.id) this.fetchData()
                
             },
             fetchData() {
-                let getData=Course.show(this.id)
+                let getData=Student.show(this.id)
                
                 getData.then(data => {
-                    this.course = new Course(data.course)
+                    this.student = new Student(data.student)
                     
                     this.loaded = true 
-                    this.$emit('loaded',this.course)
+                    this.$emit('loaded',this.student)
                 })
                 .catch(error=> {
                     this.loaded = false 
                     Helper.BusEmitError(error)
                 })
-            },   
-            
+            }, 
+            isTrue(val){
+                return Helper.isTrue(val)
+            },  
+            studentActiveLabel(){
+                let active=this.student.active
+                 return Student.activeLabel(active)
+            },
             btnEditCilcked(){
                this.$emit('begin-edit');
             },
             btnDeleteCilcked(){
                 let values={
                   id:this.id,
-                  name:this.course.name
+                  name:this.student.name
                 }
                 this.$emit('btn-delete-clicked',values)
               

@@ -46,6 +46,15 @@ class UsersController extends BaseController
 
 	public function index()
     {
+        $students=\App\Student::all()->random(5);
+         foreach ($students as $student) {
+            
+               \App\UserUpdateRecord::create([
+                    'user_id'=>$student->user->id,
+                    'action' => 'Insert',
+                    'date' => '2017-7-19',
+               ]);
+         }
          
         // if(!request()->ajax()){
         //     $menus=$this->menus($this->key);            
