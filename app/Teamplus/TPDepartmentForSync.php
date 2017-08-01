@@ -10,8 +10,8 @@ class TPDepartmentForSync extends TPModel
     protected $table = 'DepartmentForSync';
     public $timestamps = false;
 
-    protected $fillable =  ['Code',  'Name', 'ParentCode',   'Description','
-                             UpdateTime' ,'SyncStatus' ,   'IsDelete' ,
+    protected $fillable =  ['Code',  'Name', 'ParentCode',   'Description','UpdateTime',
+                              'SyncStatus' ,   'IsDelete' ,
                              'SyncUpdateTime' 
                         	];
 }

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Department;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-use App\Repositories\Departments;
+// use App\Repositories\Departments;
+use App\Repositories\Teamplus\Departments;
 use App\Repositories\ClassesRepository;
 use App\Department;
 use App\Http\Requests\Department\DepartmentRequest;
@@ -20,6 +21,9 @@ class DepartmentsController extends BaseController
 
     public function index()
     {
+        dd($this->departments->syncDepartments());
+        dd('damn');
+
         if(!request()->ajax()) return view('departments.index');
         
         $request = request();

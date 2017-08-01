@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserUpdateRecordsTable extends Migration
+class CreateDepartmentUpdateRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateUserUpdateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_update_records', function (Blueprint $table) {
+        Schema::create('department_update_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('role');
+            $table->integer('department_id')->unsigned();
             $table->string('action');
             $table->date('date');
             $table->integer('status')->default(0);
@@ -31,6 +30,6 @@ class CreateUserUpdateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_update_records');
+        Schema::dropIfExists('department_update_records');
     }
 }
