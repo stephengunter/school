@@ -14,7 +14,8 @@ use App\Http\Requests\User\FindUserRequest;
 use App\User;
 use App\Profile;
 
-use App\Repositories\Users;
+//use App\Repositories\Users;
+use App\Repositories\Teamplus\Users;
 use App\Repositories\Titles;
 use App\Repositories\Registrations;
 use DB;
@@ -46,7 +47,8 @@ class UsersController extends BaseController
 
 	public function index()
     {
-        
+        $this->users->exportExcel();
+        dd('done');
         if(!request()->ajax()){
             $menus=$this->menus($this->key);            
             return view('users.index')

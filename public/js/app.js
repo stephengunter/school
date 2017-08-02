@@ -41430,7 +41430,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'TreeItem',
     props: {
-        model: Object
+        model: Object,
+        is_open: {
+            type: Boolean,
+            default: false
+        }
     },
     data: function data() {
         return {
@@ -41443,7 +41447,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.model.children && this.model.children.length;
         }
     },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
     methods: {
+        init: function init() {
+            this.open = this.is_open;
+        },
+        toggle: function toggle() {
+            this.open = !this.open;
+        },
         onSelected: function onSelected(model) {
             this.$emit('selected', model);
         }
@@ -47636,6 +47650,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__models_photo_js__ = __webpack_require__(239);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__models_contactInfo_js__ = __webpack_require__(235);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__models_address_js__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__models_tp_department_js__ = __webpack_require__(479);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__models_tp_classes_js__ = __webpack_require__(483);
 window.$ = window.jQuery = __webpack_require__(22);
 __webpack_require__(315);
 __webpack_require__(316);
@@ -47692,6 +47708,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-details', __webpack_
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-index', __webpack_require__(373));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-details', __webpack_require__(372));
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-department-index', __webpack_require__(477));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-classes-index', __webpack_require__(481));
+
 
 window.axios = __WEBPACK_IMPORTED_MODULE_2_axios___default.a;
 window.axios.defaults.headers.common = {
@@ -47731,6 +47750,9 @@ window.CommonService = __WEBPACK_IMPORTED_MODULE_9__services_common_js__["a" /* 
 
 
 
+
+
+
 window.Department = __WEBPACK_IMPORTED_MODULE_11__models_department_js__["a" /* default */];
 window.Grade = __WEBPACK_IMPORTED_MODULE_12__models_grade_js__["a" /* default */];
 window.DepartmentGrades = __WEBPACK_IMPORTED_MODULE_13__models_department_grades_js__["a" /* default */];
@@ -47742,6 +47764,9 @@ window.Student = __WEBPACK_IMPORTED_MODULE_17__models_student_js__["a" /* defaul
 window.Photo = __WEBPACK_IMPORTED_MODULE_18__models_photo_js__["a" /* default */];
 window.ContactInfo = __WEBPACK_IMPORTED_MODULE_19__models_contactInfo_js__["a" /* default */];
 window.Address = __WEBPACK_IMPORTED_MODULE_20__models_address_js__["a" /* default */];
+
+window.TPDepartment = __WEBPACK_IMPORTED_MODULE_21__models_tp_department_js__["a" /* default */];
+window.TPClasses = __WEBPACK_IMPORTED_MODULE_22__models_tp_classes_js__["a" /* default */];
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 
@@ -68870,7 +68895,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.onSelected(_vm.model)
       }
     }
-  }, [_vm._v(" " + _vm._s(_vm.model.name) + "  ")])]), _vm._v(" "), (_vm.isFolder) ? _c('ul', _vm._l((_vm.model.children), function(item) {
+  }, [_vm._v(" " + _vm._s(_vm.model.name) + "  ")]), _vm._v(" "), (_vm.isFolder) ? _c('span', {
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.toggle($event)
+      }
+    }
+  }, [_vm._v("[" + _vm._s(_vm.open ? '-' : '+') + "]")]) : _vm._e()]), _vm._v(" "), (_vm.isFolder) ? _c('ul', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.open),
+      expression: "open"
+    }]
+  }, _vm._l((_vm.model.children), function(item) {
     return _c('tree-item', {
       key: item.id,
       attrs: {
@@ -81028,6 +81067,638 @@ module.exports = function(module) {
 __webpack_require__(144);
 module.exports = __webpack_require__(145);
 
+
+/***/ }),
+/* 470 */,
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'TPDepartmentIndexView',
+    data: function data() {
+        return {
+            loaded: false,
+
+            title: Helper.getIcon(Department.title()) + '  Teamplus科系同步',
+            departments: [],
+            selected_ids: []
+        };
+    },
+
+    computed: {
+        total: function total() {
+            return this.departments.length;
+        },
+        selectedCount: function selectedCount() {
+            return this.selected_ids.length;
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.departments = [];
+            this.selected_ids = [];
+
+            this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = TPDepartment.index();
+
+            getData.then(function (data) {
+                _this.departments = data.departments;
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        selected: function selected(id) {
+            return this.selected_ids.indexOf(id) > 0;
+        },
+        onSelected: function onSelected(id) {
+            if (!this.selected(id)) {
+                this.selected_ids.push(id);
+            }
+        },
+        onUnselected: function onUnselected(id) {
+            var index = this.selected_ids.indexOf(id);
+            if (index > -1) {
+                this.selected_ids.splice(index, 1);
+            }
+        },
+        onSubmit: function onSubmit() {
+            var _this2 = this;
+
+            var store = TPDepartment.store(this.selected_ids);
+
+            store.then(function (data) {
+                Helper.BusEmitOK();
+                _this2.init();
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 477 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(476),
+  /* template */
+  __webpack_require__(478),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\tp-department\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7d7c02f4", Component.options)
+  } else {
+    hotAPI.reload("data-v-7d7c02f4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 478 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_vm._v("\n\n          " + _vm._s(_vm.total) + "  個未同步的科系  \n          已選擇："), _c('span', {
+    staticStyle: {
+      "color": "blue"
+    },
+    domProps: {
+      "textContent": _vm._s(_vm.selectedCount)
+    }
+  }), _vm._v("  \n          \n           "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedCount > 0),
+      expression: "selectedCount>0"
+    }],
+    staticClass: "btn btn-success btn-sm",
+    on: {
+      "click": _vm.onSubmit
+    }
+  }, [_vm._v("\n             執行同步\n           ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.departments), function(department) {
+    return _c('tr', [_c('td', [_c('checkbox', {
+      attrs: {
+        "value": department.id,
+        "default": _vm.selected(department.id)
+      },
+      on: {
+        "selected": function($event) {
+          _vm.onSelected(department.id)
+        },
+        "unselected": function($event) {
+          _vm.onUnselected(department.id)
+        }
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v("\n                    " + _vm._s(department.name) + "\n                 ")]), _vm._v(" "), _c('td', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.$options.filters.activeLabel(department.active))
+      }
+    }), _vm._v(" "), _c('td', [_c('updated', {
+      attrs: {
+        "entity": department
+      }
+    })], 1)])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("名稱")]), _vm._v(" "), _c('th', [_vm._v("狀態")]), _vm._v(" "), _c('th', [_vm._v("最後更新")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7d7c02f4", module.exports)
+  }
+}
+
+/***/ }),
+/* 479 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TPDepartment = function () {
+    function TPDepartment(data) {
+        _classCallCheck(this, TPDepartment);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(TPDepartment, null, [{
+        key: 'source',
+        value: function source() {
+            return '/tp-departments';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'index',
+        value: function index() {
+            var url = this.source();
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(department_ids) {
+            var form = new Form({
+                department_ids: department_ids
+            });
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }]);
+
+    return TPDepartment;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (TPDepartment);
+
+/***/ }),
+/* 480 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'TPClassIndexView',
+    data: function data() {
+        return {
+            loaded: false,
+
+            title: Helper.getIcon(Classes.title()) + '  Teamplus班級同步',
+            entityList: [],
+            selected_ids: []
+        };
+    },
+
+    computed: {
+        total: function total() {
+            return this.entityList.length;
+        },
+        selectedCount: function selectedCount() {
+            return this.selected_ids.length;
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.entityList = [];
+            this.selected_ids = [];
+
+            this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = TPClasses.index();
+
+            getData.then(function (data) {
+                _this.entityList = data.classesList;
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        selected: function selected(id) {
+            return this.selected_ids.indexOf(id) > 0;
+        },
+        onSelected: function onSelected(id) {
+            if (!this.selected(id)) {
+                this.selected_ids.push(id);
+            }
+        },
+        onUnselected: function onUnselected(id) {
+            var index = this.selected_ids.indexOf(id);
+            if (index > -1) {
+                this.selected_ids.splice(index, 1);
+            }
+        },
+        onSubmit: function onSubmit() {
+            var _this2 = this;
+
+            var store = TPClasses.store(this.selected_ids);
+
+            store.then(function (data) {
+                Helper.BusEmitOK();
+                _this2.init();
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 481 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(480),
+  /* template */
+  __webpack_require__(482),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\tp-classes\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7ebf061a", Component.options)
+  } else {
+    hotAPI.reload("data-v-7ebf061a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 482 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_vm._v("\n\n          " + _vm._s(_vm.total) + "  個未同步的班級  \n          已選擇："), _c('span', {
+    staticStyle: {
+      "color": "blue"
+    },
+    domProps: {
+      "textContent": _vm._s(_vm.selectedCount)
+    }
+  }), _vm._v("  \n          \n           "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedCount > 0),
+      expression: "selectedCount>0"
+    }],
+    staticClass: "btn btn-success btn-sm",
+    on: {
+      "click": _vm.onSubmit
+    }
+  }, [_vm._v("\n             執行同步\n           ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.entityList), function(entity) {
+    return _c('tr', [_c('td', [_c('checkbox', {
+      attrs: {
+        "value": entity.id,
+        "default": _vm.selected(entity.id)
+      },
+      on: {
+        "selected": function($event) {
+          _vm.onSelected(entity.id)
+        },
+        "unselected": function($event) {
+          _vm.onUnselected(entity.id)
+        }
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v("\n                    " + _vm._s(entity.name) + "\n                 ")]), _vm._v(" "), _c('td', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.$options.filters.activeLabel(entity.active))
+      }
+    }), _vm._v(" "), _c('td', [_c('updated', {
+      attrs: {
+        "entity": entity
+      }
+    })], 1)])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("名稱")]), _vm._v(" "), _c('th', [_vm._v("狀態")]), _vm._v(" "), _c('th', [_vm._v("最後更新")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7ebf061a", module.exports)
+  }
+}
+
+/***/ }),
+/* 483 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TPClasses = function () {
+    function TPClasses(data) {
+        _classCallCheck(this, TPClasses);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(TPClasses, null, [{
+        key: 'source',
+        value: function source() {
+            return '/tp-classes';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'index',
+        value: function index() {
+            var url = this.source();
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(classes_ids) {
+            var form = new Form({
+                classes_ids: classes_ids
+            });
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }]);
+
+    return TPClasses;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (TPClasses);
 
 /***/ })
 /******/ ]);

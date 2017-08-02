@@ -49,3 +49,6 @@ Route::resource('contactinfoes', '\App\Http\Controllers\Contact\ContactInfoesCon
 Route::resource('address', '\App\Http\Controllers\Contact\AddressController');
 Route::resource('cities', '\App\Http\Controllers\Contact\CitiesController', ['only' => ['index']]);
 Route::resource('districts', '\App\Http\Controllers\Contact\DistrictsController', ['only' => ['index']]);
+
+Route::resource('tp-departments', '\App\Http\Controllers\Teamplus\DepartmentsController', ['only' => ['index','store']]);
+Route::resource('tp-classes', '\App\Http\Controllers\Teamplus\ClassesController', ['only' => ['index','store']]);

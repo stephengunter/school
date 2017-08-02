@@ -4,6 +4,7 @@ namespace App\Repositories\Teamplus;
 
 use DB;
 use App\Department;
+use App\Classes;
 use App\DepartmentUpdateRecord;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPDepartmentForSync;
@@ -12,10 +13,8 @@ use Carbon\Carbon;
 
 class Departments 
 {
-     public function syncDepartments()
-     {
-       
-        $department=Department::find(1);
+    public function createDepartmentForSync(Department $department, $action)
+    {
         $has_parent=(int)$department->parent;
         $parent_department=null;
         if($has_parent){
@@ -23,11 +22,13 @@ class Departments
         }else{
             $parent_department=new Department(['name'=>'系所']);
         }
+        $parent_department=$this->getTPDepartmentByName($parent_department->name);
+        $is_delete=false; 
+        if(strtolower($action)=='delete'){
+            $is_delete=true;
+        }
 
-        $parent_department=TPDepartment::where('Name',$parent_department->name)->first();
-       
-          
-         TPDepartmentForSync::create([
+           TPDepartmentForSync::create([
                     'Code'=> 'department_' . $department->id ,
                     'Name' => $department->name ,
                     'ParentCode' => $parent_department->Code,
@@ -35,24 +36,50 @@ class Departments
                     'SyncStatus' => 0,
                     'IsDelete' => false,
                  ]);
+    }
+    public function createClassForSync(Classes $entity, $action)
+    {
+        $parent_department=$this->getTPDepartmentByName($entity->department->name);
+        
+        $is_delete=false; 
+        if(strtolower($action)=='delete'){
+            $is_delete=true;
+        }
 
-                 return 'done';
-        //  $records=DepartmentUpdateRecord::where('status', 0 )->get();
-        //  if(count($records)){
-        //      foreach($records as $record){
-        //          $action=strtolower($$record->action);
-        //          if($action=='insert'){
+           TPDepartmentForSync::create([
+                    'Code'=> 'class_' . $entity->id ,
+                    'Name' => $entity->name ,
+                    'ParentCode' => $parent_department->Code,
+                    'UpdateTime' =>Carbon::today(),
+                    'SyncStatus' => 0,
+                    'IsDelete' => false,
+                 ]);
+    }
+    public function syncDepartments()
+    {
+         $records=DepartmentUpdateRecord::where('status', 0 )->get();
+         if(count($records)){
+            foreach($records as $record){
+                 $action=$record->action;
+                 $department=Department::findOrFail($record->department_id);
+                 $this->createDepartmentForSync($department, $action);
+            }
+         }
+    }
 
-        //          }else if($action=='update'){
-
-        //          }else if($action=='delete'){
-
-        //          }
-        //      }
-        //  }
-     }
-
-    
+    public function getTPDepartmentByName($name)
+    {
+         return TPDepartment::where('Name',$name)->first();
+    }
+    public function getAll()
+    {
+         return TPDepartment::all();
+    }
+    public function existDepartmentForSync($name)
+    {
+          return TPDepartmentForSync::where('SyncStatus',0)
+                             ->where('Name',$name)->first();
+    }
    
    
     

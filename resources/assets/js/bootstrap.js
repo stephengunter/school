@@ -56,6 +56,9 @@ Vue.component('user-details', require('./views/users/details') )
 Vue.component('student-index', require('./views/student/index') )
 Vue.component('student-details', require('./views/student/details') )
 
+Vue.component('tp-department-index', require('./views/tp-department/index') )
+Vue.component('tp-classes-index', require('./views/tp-classes/index') )
+
 
 
 
@@ -102,6 +105,9 @@ import Photo from './models/photo.js'
 import ContactInfo from './models/contactInfo.js'
 import Address from './models/address.js'
 
+import TPDepartment from './models/tp-department.js'
+import TPClasses from './models/tp-classes.js'
+
 
 window.Department = Department
 window.Grade = Grade
@@ -114,6 +120,9 @@ window.Student = Student
 window.Photo = Photo
 window.ContactInfo = ContactInfo
 window.Address = Address
+
+window.TPDepartment = TPDepartment
+window.TPClasses = TPClasses
 
 
 

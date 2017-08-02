@@ -10,6 +10,7 @@ use App\Teamplus\TPUser;
 use App\Teamplus\TPUserForSync;
 use App\Support\Helper;
 use Carbon\Carbon;
+use Excel;
 
 class Users 
 {
@@ -46,26 +47,62 @@ class Users
          }
      }
 
+    
+    private function syncUserFromStudent(Student $student, $action)
+    {
+        $tp_department=$this->getTPDepartmentByName($student->department->name);
+        
+        $values= $this-> initializeValues($student->user,$action);
+        $values['LoginAccount']=$student->number;
+        $values['EmpID']=$student->number;
+        $values['Name']=$student->getName();
+        $values['DeptCode']=$tp_department->Code;
+        
+        TPUserForSync::create($values);
+    }
 
-     private function syncUserFromStudent($user){
-          $student=Student::findOrFail($user->id);
-          $tp_department=TPDepartment::where('Name',$parent_department->name)->first();
-          TPUserForSync::create([
-                'LoginAccount'=>$student->number,
-                'EmpID'=>$student->number,
-                'Name' => $student->getName(),
-                'DeptCode' => $this->getTPDepartmentCode($student->department->name),
-                'JobTitle' => '',
-                
+    
+    private function getTPDepartmentByName($name)
+    {
+         return TPDepartment::where('Name',$name)->first();
+    }
+    private function initializeValues(User $user,$action)
+    {
+        $values=TPUserForSync::initialize();
+        $values['Email']=$user->email;
 
-          ]);
-     }
+        $action=strtolower($action);
+        if($action=='delete'){
+            $values['IsDelete']=true;
+        }else if($action=='insert'){
+            $values['Password']=$this->defaultPassword($student->user);
+        }else if($action=='stop'){
+            $values['Status']==2;
+        }else if($action=='leave'){
+            $values['Status']==2;
+        }
+        
+        return $values;
+    }
 
-     private function getTPDepartmentCode($name){
-        $tp_department=TPDepartment::where('Name',$name)->first();
-        return $tp_department->Code;
-     }
+    private function defaultPassword($user)
+    {
+          return '0000';
+    }
 
+
+    public function exportExcel()
+    {
+         Excel::create('Laravel Excel', function($excel) {
+
+            $excel->sheet('Excel sheet', function($sheet) {
+
+                $sheet->setOrientation('landscape');
+
+            });
+
+        })->export('xls');
+    }
 
      
 
