@@ -98,6 +98,11 @@
              
                 getData.then(data => {
                    this.entityList=data.classesList
+                   let selected_ids=[]
+                   for(let i=0; i<data.classesList.length; i++){
+                         selected_ids.push(data.classesList[i].id)
+                   }
+                   this.selected_ids=selected_ids
                    this.loaded = true                        
                 })
                 .catch(error=> {
@@ -105,7 +110,7 @@
                 })
             },
             selected(id){
-               return ( this.selected_ids.indexOf(id) > 0 )
+               return ( this.selected_ids.indexOf(id) > -1 )
             },
             onSelected(id){
                 if(!this.selected(id)){

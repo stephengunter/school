@@ -25,7 +25,10 @@
                     <div class="col-sm-3">
                          <div class="form-group">                           
                             <label>科系</label>
-                            <input type="text" name="student.department.name" class="form-control" :value="form.student.department.name"  disabled>
+                            <select  v-model="form.student.department_id"   class="form-control">
+                                 <option v-for="item in departmentOptions" :value="item.value" v-text="item.text"></option>
+                            </select>
+                            <!-- <input type="text" name="student.department.name" class="form-control" :value="form.student.department.name"  disabled> -->
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -110,6 +113,8 @@
 
                 removedOptions: Helper.boolOptions(),
                 activeOptions: Helper.activeOptions(),
+
+                departmentOptions:[],
             }
         },
         computed:{
@@ -145,6 +150,7 @@
                 getData.then(data=>{
                     let student=data.student
                     this.form.student=data.student
+                    this.departmentOptions=data.departmentOptions
 
                     this.loaded=true
                 }).catch(error=>{

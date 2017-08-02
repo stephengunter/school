@@ -64,7 +64,7 @@ class StudentsController extends BaseController
        
         $students=[];
         if($removed){
-            $students=$this->students->trash()->with('department')
+            $students=$this->students->trash()->with(['department','class'])
                                      ->filterPaginateOrder();
                                              
         }else{
@@ -81,8 +81,15 @@ class StudentsController extends BaseController
                 $students=$students->whereIn('class_id', $activeClasses);
             }
 
-            $students=$students->with('department')
+            $class_id=(int)$request->classes; 
+            if($class_id){
+                $students=$students->where('class_id', $class_id);
+            }
+
+            $students=$students->with(['department','class'])
                                ->orderBy('active','desc')->filterPaginateOrder();
+
+                           
                                                 
                                        
         }
@@ -150,8 +157,11 @@ class StudentsController extends BaseController
             return  $this->unauthorized(); 
         }
         $student->getName();
+
+        $departmentOptions=$this->departments->options();
         return response()->json([
                     'student' => $student,
+                    'departmentOptions' => $departmentOptions,
                 ]);        
     }
     public function update(StudentRequest $request, $id)

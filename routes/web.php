@@ -28,6 +28,7 @@ Route::put('units/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\
 
 Route::put('classes/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\ClassesController@updateOrder']);
 Route::get('classes/index-options',['uses'=>'\App\Http\Controllers\Department\ClassesController@indexOptions']);
+Route::get('classes/options',['uses'=>'\App\Http\Controllers\Department\ClassesController@options']);
 
 
 Route::put('grades/{id}/update-order',['uses'=>'\App\Http\Controllers\Department\GradesController@updateOrder']);
@@ -52,3 +53,4 @@ Route::resource('districts', '\App\Http\Controllers\Contact\DistrictsController'
 
 Route::resource('tp-departments', '\App\Http\Controllers\Teamplus\DepartmentsController', ['only' => ['index','store']]);
 Route::resource('tp-classes', '\App\Http\Controllers\Teamplus\ClassesController', ['only' => ['index','store']]);
+Route::resource('tp-users', '\App\Http\Controllers\Teamplus\UsersController', ['only' => ['index','store']]);

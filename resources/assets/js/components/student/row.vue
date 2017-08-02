@@ -19,6 +19,7 @@
         </td> 
         <td v-text="student.number"></td> 
         <td v-text="student.department.name"></td> 
+         <td v-text="student.class.name"></td> 
         <td v-if="removed" v-html="$options.filters.removedLabel(student.removed)" ></td>
         <td v-else v-html="studentActiveLabel()" ></td> 
         <td>

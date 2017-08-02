@@ -184,6 +184,11 @@ class Student {
                         sort: false,
                         default:true
                     }, {
+                        title: '班級',
+                        key: 'class_id',
+                        sort: false,
+                        default:true
+                    },{
                         title: '狀態',
                         key: 'active',
                         sort: false,

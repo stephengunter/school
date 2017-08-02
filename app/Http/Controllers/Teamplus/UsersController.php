@@ -5,24 +5,24 @@ namespace App\Http\Controllers\Teamplus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 
-use App\Teamplus\TPUser;
+use App\Repositories\Teamplus\Users;
 
 class UsersController extends BaseController
 {
    
-    public function __construct() 
+    public function __construct(Users $users) 
     {
-		
+		$this->users=$users;
 	}
 
     public function index()
     {
-        $users=TPUser::where('UserName','鍾吉偉')->get();
         
-        return response()
-            ->json([
-                'users' => $users
-            ]);
+        $student->save();
+
+        $this->users->syncUserFromStudent($student,'update');
+        
+        dd($student);
         
     }
     

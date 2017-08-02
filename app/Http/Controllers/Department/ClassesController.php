@@ -167,12 +167,16 @@ class ClassesController extends BaseController
                 'deleted' => true
             ]);
     }
-    // public function options()
-    // {
-    //     $options=$this->classes->options();
+    public function options()
+    {
+        dd('sss');
+        $request = request();
+        $department_id=(int)$request->department; 
+        $grade_id=(int)$request->grade; 
+        $options=$this->classesRepository->options($department_id,$grade_id);
 
-    //     return response()->json([
-    //                  'options' => $options
-    //             ]);   
-    // }
+        return response()->json([
+                     'options' => $options
+                ]);   
+    }
 }

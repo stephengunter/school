@@ -1,5 +1,5 @@
 <template>
-    <div v-show="ready" class="form-inline">
+    <div class="form-inline">
        <div class="form-group">
             <select  v-model="params.department" @change="onDepartmentChanged"  style="width:auto;" class="form-control selectWidth">
                 <option v-for="item in departmentOptions" :value="item.value" v-text="item.text"></option>

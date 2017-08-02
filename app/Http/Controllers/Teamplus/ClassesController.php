@@ -40,7 +40,9 @@ class ClassesController extends BaseController
             $exsit=$this->TPDepartments->getTPDepartmentByName($name);
             if(!$exsit){
                 $existDepartmentForSync=$this->TPDepartments->existDepartmentForSync($name);
-                if(!$existDepartmentForSync)  array_push($must_sync_classes, $entity);
+                if(!$existDepartmentForSync) {
+                   array_push($must_sync_classes, $entity);
+                } 
                
             }
         }                                        

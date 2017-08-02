@@ -13,8 +13,9 @@ class TPUserForSync extends TPModel
 
     protected $fillable =  ['LoginAccount',  'EmpID', 'Name',   'DeptCode',
                             'JobTitle', 'Email', 'Mobile', 'Extend', 'Mvpn',
-                            'Status', 'Password', 'RankName' ,'UpdateTime' ,'SyncStatus' ,   'IsDelete' ,
-                             'SyncUpdateTime' 
+                            'Status', 'Password', 'RankName' ,'UpdateTime' ,
+                            'SyncStatus' ,   'SyncUpdateTime' 
+                            
                         	];
     public static function initialize()
     {
@@ -33,7 +34,6 @@ class TPUserForSync extends TPModel
             'Status' => 1,
             'UpdateTime' => Carbon::today(),
             'SyncStatus' => 0,
-            'IsDelete' => 0,
             'SyncUpdateTime' =>''
 
         ];

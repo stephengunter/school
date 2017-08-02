@@ -119,6 +119,12 @@ class ClassesRepository
         }
         return $options;
     }
+    public function options(int $department_id, int $grade_id=0)
+    {
+        $activeClasses=$this->activeClasses($department_id, $grade_id);
+       
+        return $$this->optionsConverting($activeClasses);
+    }
     
     
     
