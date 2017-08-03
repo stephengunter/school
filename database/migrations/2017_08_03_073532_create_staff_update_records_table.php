@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDepartmentUpdateRecordsTable extends Migration
+class CreateStaffUpdateRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_update_records', function (Blueprint $table) {
+        Schema::create('staff_update_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('department_id');
             $table->string('name');
-            $table->string('parent')->nullable();
-            $table->boolean('delete')->default(false);
+            $table->string('number');
+            $table->string('department');
+            $table->string('email');
+            $table->string('password')->nullable();
+            $table->string('job_title')->nullable();
+            $table->string('extend')->nullable();
             $table->date('date');
+            $table->integer('status');
 
             $table->boolean('done')->default(false);
             $table->timestamps();
@@ -33,6 +37,6 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department_update_records');
+        Schema::dropIfExists('staff_update_records');
     }
 }

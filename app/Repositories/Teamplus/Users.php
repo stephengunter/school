@@ -7,6 +7,7 @@ use App\User;
 use App\Student;
 use App\Staff;
 use App\StudentUpdateRecord;
+use App\StaffUpdateRecord;
 use App\Teamplus\TPUser;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPUserForSync;
@@ -31,7 +32,24 @@ class Users
                $record->save();
         }
     }
-    public function syncUsers()
+    public function syncStaffs()
+    {
+        $records=StaffUpdateRecord::where('done', false )->get();
+        foreach($records as $record){
+               $number=$record->number;
+               $email=$record->email;
+               $name=$record->name;
+               $department=$record->department;
+               $job_title=$record->job_title;
+               $extend=$record->extend;
+               $status=$record->status;
+               $this->syncUserFromStaff($number, $email, $name, $department, $job_title, $extend  ,$status);
+
+               $record->done=true;
+               $record->save();
+        }
+    }
+    public function xxsyncUsers()
     {
          $records=UserUpdateRecord::where('status', 0 )->get();
          foreach($records as $record){
@@ -65,6 +83,23 @@ class Users
         $this->saveUserForSync($values);
         
     }
+    public function syncUserFromStaff($number, $email, $name, $department, $job_title, $extend  ,$status)
+    {
+        $tp_department=$this->getTPDepartmentByName($department);
+
+        $values=TPUserForSync::initialize();
+        $values['LoginAccount']=$number;
+        $values['Email']=$email;
+        $values['EmpID']=$number;
+        $values['Name']=$name;
+        $values['DeptCode']=$tp_department->Code;
+        $values['JobTitle']=$job_title;
+        $values['Extend']=$extend;
+        $values['Status']=$status;
+        
+        $this->saveUserForSync($values);
+        
+    }
     private function saveUserForSync($values)
     {
         $exist_record=$this->existUserForSync($values['LoginAccount']);
@@ -92,7 +127,7 @@ class Users
             TPUserForSync::create($values);
         }
     }
-    public function syncUserFromStaff(Staff $staff, $action)
+    private function xxsyncUserFromStaff(Staff $staff, $action)
     {
         $tp_department=$this->getTPDepartmentByName($staff->unit->name);
         
@@ -115,7 +150,7 @@ class Users
     {
          return TPDepartment::where('Name',$name)->first();
     }
-    private function initializeValues(User $user,$action)
+    private function xxinitializeValues(User $user,$action)
     {
         $values=TPUserForSync::initialize();
         $values['Email']=$user->email;
@@ -134,7 +169,7 @@ class Users
         return $values;
     }
 
-    private function defaultPassword($user)
+    private function xxdefaultPassword($user)
     {
           return '0000';
     }

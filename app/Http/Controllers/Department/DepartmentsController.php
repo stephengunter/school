@@ -21,6 +21,9 @@ class DepartmentsController extends BaseController
 
     public function index()
     {
+        $sync=new \App\Repositories\Teamplus\Departments();
+        $sync->syncDepartments();
+        dd('done');
         if(!request()->ajax()) return view('departments.index');
         
         $request = request();
@@ -97,6 +100,21 @@ class DepartmentsController extends BaseController
     }
     public function show($id)
     {
+        $department=Department::findOrFail($id);
+        $parent_name='';
+        $parent=Department::find($department->parent);
+        if($parent) $parent_name=$parent->name;
+        \App\DepartmentUpdateRecord::create([
+            'department_id' => $department->id,
+            'name' => $department->name,
+            'parent' => $parent_name,
+            'delete' => false,
+            'date' => \Carbon\Carbon::today(),
+
+
+        ]);
+        dd('done');
+
         if(!request()->ajax()){
             $menus=$this->menus($this->key);            
             return view('departments.details')

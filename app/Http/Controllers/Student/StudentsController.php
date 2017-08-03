@@ -56,12 +56,7 @@ class StudentsController extends BaseController
     }
     public function index()
     {
-        $sync=new \App\Repositories\Teamplus\Users();
-        $sync->syncStudents();
-
-        dd('done');
-        if(!request()->ajax()) return view('students.index');
-       
+        
         $request = request();
 
         $removed=(int)$request->removed; 
@@ -131,20 +126,7 @@ class StudentsController extends BaseController
       
     }
     public function show($id)
-    {
-        $student=Student::findOrFail($id);
-        \App\StudentUpdateRecord::create([
-               'name' => $student->getName(),
-               'number' => $student->number,
-               'department' => $student->department->name,
-               'email' => $student->user->email,
-               'password' => '',
-               'date' => \Carbon\Carbon::today(),
-               'status' => 1
-
-        ]);
-
-         dd($student);               
+    {          
         if(!request()->ajax()){
             $menus=$this->menus($this->key);            
             return view('students.details')
