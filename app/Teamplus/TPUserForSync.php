@@ -9,6 +9,7 @@ class TPUserForSync extends TPModel
 {
     
     protected $table = 'UserForSync';
+    protected $primaryKey = 'SN';
     public $timestamps = false;
 
     protected $fillable =  ['LoginAccount',  'EmpID', 'Name',   'DeptCode',

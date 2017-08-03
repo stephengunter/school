@@ -85,6 +85,20 @@ class Units
         return $this->optionsConverting($units);
        
     }
+
+    public function getChildrenIds($id)
+    {
+        $children=$this->getAll()->where('parent',$id)->get()->pluck('id')->toArray();
+        if($children){
+            $ids=$children;
+            for($i = 0; $i < count($children); ++$i){
+                $ids=array_merge($this->getChildrenIds($children[$i]),$ids);
+            }
+            return $ids;
+        }else{
+            return [];
+        }
+    }
     
      
 

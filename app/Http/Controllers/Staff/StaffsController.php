@@ -48,7 +48,11 @@ class StaffsController extends BaseController
             $staffs=$this->staffs->getAll();
             $unit_id=(int)$request->unit; 
             if($unit_id){
-                $staffs=$staffs->where('unit_id', $unit_id);
+                $unit=$this->units->findOrFail($unit_id);
+                $children_ids=$this->units->getChildrenIds($unit_id);
+                array_unshift($children_ids, $unit_id);
+
+                $staffs=$staffs->whereIn('unit_id', $children_ids);
             }
             
 
@@ -104,7 +108,7 @@ class StaffsController extends BaseController
 
         $current_user=$this->currentUser();
         
-        $staff=Staff::with(['department','class'])
+        $staff=Staff::with(['unit'])
                         ->findOrFail($id);
         if(!$staff->canViewBy($current_user)){
             return  $this->unauthorized();   
@@ -116,7 +120,7 @@ class StaffsController extends BaseController
     }
     public function edit($id)
     {
-        $staff=Staff::with(['department','class'])
+        $staff=Staff::with(['unit'])
                         ->findOrFail($id);    
         $current_user=$this->currentUser();
         if(!$staff->canEditBy($current_user)){
@@ -124,14 +128,13 @@ class StaffsController extends BaseController
         }
         $staff->getName();
 
-        $departmentOptions=$this->departments->options();
-        $department_id=(int)$staff->department_id; 
-        $grade_id=0; 
-        $classesOptions=$this->classesRepository->options($department_id,$grade_id);
+        $statusOptions=$this->staffs->statusOptions();
+        $unitOptions=$this->units->options();
+
         return response()->json([
                     'staff' => $staff,
-                    'departmentOptions' => $departmentOptions,
-                    'classesOptions' => $classesOptions,
+                    'unitOptions' => $unitOptions,
+                    'statusOptions' => $statusOptions
                 ]);        
     }
     public function update(StaffRequest $request, $id)
@@ -152,25 +155,7 @@ class StaffsController extends BaseController
 
          return response()->json($staff);
     }
-    public function updateOrder(Request $request, $id)
-    {
-        $staff=$this->staffs->findOrFail($id);
-        $current_user=$this->currentUser();
-        if(!$staff->canEditBy($current_user)){
-            return  $this->unauthorized();         
-        }
-
-        $updated_by=$current_user->id;
-        $up=$request['up'];
-        
-        $staff=$this->staffs->updateDisplayOrder($staff ,$up, $updated_by);
-        
-        return response()
-            ->json([
-                'staff' => $staff
-            ]);    
-
-    }
+    
     public function destroy($id)
     {
         $current_user=$this->currentUser();      

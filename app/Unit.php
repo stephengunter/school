@@ -62,17 +62,21 @@ class Unit extends Model
 	}
 
 	public function getChildren(){
+		
 		$children=$this->childs();
 
 		if(count($children)){
-            foreach ($children as $department) {
-                $department->getChildren();
+            foreach ($children as $unit) {
+                $unit->getChildren();
             }
         }
 
 		$this->children= $children;
+
+		return $children;
 		
 	}
+	
 	public function childs()
 	{
 		return static::where('removed',false)

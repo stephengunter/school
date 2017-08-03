@@ -61,6 +61,23 @@ class Staffs
         }
         return $options;
     }
+    public function statusOptions()
+    {
+        $options=[];
+        array_push($options,[
+            'value' => 1,
+            'text' => '在職中',
+        ]);
+        array_push($options,[
+            'value' => 0,
+            'text' => '留職停薪',
+        ]);
+        array_push($options,[
+            'value' => -1,
+            'text' => '已離職',
+        ]);
+        return $options;
+    }
     
     
     

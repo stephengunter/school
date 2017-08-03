@@ -71,9 +71,11 @@ class Helper {
             case 'teachers':
                 html = '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'
                 break
-           
             case 'students':
                 html = '<i class="fa fa-user-circle" aria-hidden="true"></i>'
+            break
+            case 'staffs':
+                html = '<i class="fa fa-id-card-o" aria-hidden="true"></i>'
             break
             
                

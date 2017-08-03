@@ -1,10 +1,10 @@
 <template>
 <div>
-  <student-view v-show="loaded" :id="id" :can_edit="can_edit" :can_back="can_back"  
-     @saved="studentUpdated" @loaded="onDataLoaded" 
-     @btn-back-clicked="onBtnBackClicked" @deleted="onDepartmentDeleted" > 
+  <staff-view v-show="loaded" :id="id" :can_edit="can_edit" :can_back="can_back"  
+     @saved="staffUpdated" @loaded="onDataLoaded" 
+     @btn-back-clicked="onBtnBackClicked" @deleted="onStaffDeleted" > 
 
-  </student-view>
+  </staff-view>
   
   <div v-if="loaded" class="panel with-nav-tabs panel-default">
      <div class="panel-heading">
@@ -18,7 +18,7 @@
      <div class="panel-body">
         <div class="tab-content">
             <div class="tab-pane fade active in" id="grades">
-                 <!-- <grades-view :student_id="id" v-if="activeIndex==0"></grades-view> -->
+                 <!-- <grades-view :staff_id="id" v-if="activeIndex==0"></grades-view> -->
             </div>
            
         </div>
@@ -29,12 +29,12 @@
 </template>
 
 <script>
-    import StudentView from '../../components/student/view.vue'
+    import StaffView from '../../components/staff/view.vue'
     
     export default {
-        name: 'StudentDetails',
+        name: 'DepartmentDetails',
         components: {
-            'student-view':StudentView,
+            'staff-view':StaffView,
         },
         props: {
             id: {
@@ -57,7 +57,7 @@
         data() {
             return {
                loaded:false,
-               student:null,
+               staff:null,
                current_version:0,
 
                activeIndex:0,
@@ -77,9 +77,9 @@
             toBoolean(val){
                return val=='true'
             },
-            onDataLoaded(student){
+            onDataLoaded(staff){
                 this.loaded=true
-                this.student=student
+                this.staff=staff
             },
             btnEditClicked(){    
               this.beginEdit()
@@ -90,14 +90,14 @@
             editCanceled(){
                this.readonly=true
             },
-            studentUpdated(){
+            staffUpdated(){
                this.init()
             },
             onBtnBackClicked(){
                 this.$emit('btn-back-clicked')
             },
-            onDepartmentDeleted(){
-               this.$emit('student-deleted')
+            onStaffDeleted(){
+               this.$emit('staff-deleted')
             },
             
         }, 

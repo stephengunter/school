@@ -11,19 +11,19 @@
     </edit> 
 
     <delete-confirm :showing="deleteConfirm.show" :message="deleteConfirm.msg"
-      @close="closeConfirm" @confirmed="deleteCourse">        
+      @close="closeConfirm" @confirmed="deleteStaff">        
     </delete-confirm>
     
 
 </div>
 </template>
 <script>
-    import Show from '../../components/course/show.vue'
-    import Edit from '../../components/course/edit.vue'
+    import Show from './show.vue'
+    import Edit from './edit.vue'
 
 
     export default {
-        name:'Course',
+        name:'Staff',
         components: {
             Show,
             Edit,
@@ -73,8 +73,8 @@
                     msg:''
                }
             },      
-            onDataLoaded(course){
-                this.$emit('loaded',course)
+            onDataLoaded(staff){
+                this.$emit('loaded',staff)
             },        
             beginEdit() {
                 this.readOnly=false
@@ -82,27 +82,28 @@
             onEditCanceled(){
                 this.init()
             },
-            onSaved(course){
+            onSaved(staff){
                 this.init()
-                this.$emit('saved',course)
+                this.$emit('saved',staff)
             },
             
             onBtnBackClicked(){
                 this.$emit('btn-back-clicked')
             },
             beginDelete(values){
-                this.deleteConfirm.msg='確定要刪除 ' + values.name + ' 的課程資料嗎？'
+                this.deleteConfirm.msg= '確定要刪除員工資料 『' + values.name + '』嗎' 
                 this.deleteConfirm.id=values.id
                 this.deleteConfirm.show=true                
             },
             closeConfirm(){
                 this.deleteConfirm.show=false
             },
-            deleteCourse(){
+            deleteStaff(){
                 let id = this.deleteConfirm.id 
-                let remove= Course.delete(id)
+                let remove= Staff.delete(id)
                 remove.then(result => {
                     Helper.BusEmitOK('刪除成功')
+                    this.deleteConfirm.show=false
                     this.$emit('deleted')
                 })
                 .catch(error => {

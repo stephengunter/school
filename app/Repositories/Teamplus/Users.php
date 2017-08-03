@@ -46,33 +46,32 @@ class Users
         $values['Name']=$student->getName();
         $values['DeptCode']=$tp_department->Code;
         
-        TPUserForSync::create($values);
+        
+        $exist_record=$this->existUserForSync($values['LoginAccount']);
+        if($exist_record){
+            $exist_record->update($values);
+        }else{
+            TPUserForSync::create($values);
+        }
     }
     public function syncUserFromStaff(Staff $staff, $action)
     {
-        $tp_department=$this->getTPDepartmentByName($student->unit->name);
+        $tp_department=$this->getTPDepartmentByName($staff->unit->name);
         
         $values= $this-> initializeValues($staff->user,$action);
         $values['LoginAccount']=$staff->number;
         $values['EmpID']=$staff->number;
         $values['Name']=$staff->getName();
         $values['DeptCode']=$tp_department->Code;
-        
-        TPUserForSync::create($values);
-    }
-    // private function syncUserFromStudent(Student $student, $action)
-    // {
-    //     $tp_department=$this->getTPDepartmentByName($student->class->name);
-        
-    //     $values= $this-> initializeValues($student->user,$action);
-    //     $values['LoginAccount']=$student->number;
-    //     $values['EmpID']=$student->number;
-    //     $values['Name']=$student->getName();
-    //     $values['DeptCode']=$tp_department->Code;
-        
-    //     TPUserForSync::create($values);
-    // }
 
+        $exist_record=$this->existUserForSync($values['LoginAccount']);
+        if($exist_record){
+            $exist_record->update($values);
+        }else{
+            TPUserForSync::create($values);
+        }
+        
+    }
     
     private function getTPDepartmentByName($name)
     {
@@ -100,6 +99,12 @@ class Users
     private function defaultPassword($user)
     {
           return '0000';
+    }
+
+    public function existUserForSync($account)
+    {
+          return TPUserForSync::where('SyncStatus',0)
+                             ->where('LoginAccount',$account)->first();
     }
 
 

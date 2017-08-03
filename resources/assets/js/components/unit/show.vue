@@ -32,7 +32,7 @@
                  <div class="col-sm-3">
                       <label class="label-title">母部門</label>
                      
-                      <p v-text="unit.parent">                       
+                      <p v-text="unit.parentDepartment.name">                       
                       </p>                     
                  </div>
                   <div v-if="entityRemoved" class="col-sm-2" >

@@ -56,6 +56,9 @@ Vue.component('user-details', require('./views/users/details') )
 Vue.component('student-index', require('./views/student/index') )
 Vue.component('student-details', require('./views/student/details') )
 
+Vue.component('staff-index', require('./views/staff/index') )
+Vue.component('staff-details', require('./views/staff/details') )
+
 Vue.component('tp-department-index', require('./views/tp-department/index') )
 Vue.component('tp-classes-index', require('./views/tp-classes/index') )
 Vue.component('tp-unit-index', require('./views/tp-unit/index') )
@@ -101,6 +104,7 @@ import Classes from './models/class.js'
 import Unit from './models/unit.js'
 import User from './models/user.js'
 import Student from './models/student.js'
+import Staff from './models/staff.js'
 
 import Photo from './models/photo.js'
 import ContactInfo from './models/contactInfo.js'
@@ -118,6 +122,8 @@ window.Classes = Classes
 window.Unit = Unit
 window.User = User
 window.Student = Student
+window.Staff = Staff
+
 
 window.Photo = Photo
 window.ContactInfo = ContactInfo

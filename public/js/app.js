@@ -46853,7 +46853,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-   name: 'DepartmentDetails',
+   name: 'StudentDetails',
    components: {
       'student-view': __WEBPACK_IMPORTED_MODULE_0__components_student_view_vue___default.a
    },
@@ -48118,12 +48118,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__models_unit_js__ = __webpack_require__(247);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__models_user_js__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__models_student_js__ = __webpack_require__(243);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__models_photo_js__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__models_contactInfo_js__ = __webpack_require__(238);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__models_address_js__ = __webpack_require__(236);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__models_tp_department_js__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__models_tp_classes_js__ = __webpack_require__(244);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__models_tp_unit_js__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__models_staff_js__ = __webpack_require__(497);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__models_photo_js__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__models_contactInfo_js__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__models_address_js__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__models_tp_department_js__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__models_tp_classes_js__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__models_tp_unit_js__ = __webpack_require__(246);
 window.$ = window.jQuery = __webpack_require__(22);
 __webpack_require__(321);
 __webpack_require__(322);
@@ -48180,6 +48181,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('user-details', __webpack_
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-index', __webpack_require__(379));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('student-details', __webpack_require__(378));
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('staff-index', __webpack_require__(489));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('staff-details', __webpack_require__(505));
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-department-index', __webpack_require__(381));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-classes-index', __webpack_require__(380));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-unit-index', __webpack_require__(382));
@@ -48227,6 +48231,7 @@ window.CommonService = __WEBPACK_IMPORTED_MODULE_9__services_common_js__["a" /* 
 
 
 
+
 window.Department = __WEBPACK_IMPORTED_MODULE_11__models_department_js__["a" /* default */];
 window.Grade = __WEBPACK_IMPORTED_MODULE_12__models_grade_js__["a" /* default */];
 window.DepartmentGrades = __WEBPACK_IMPORTED_MODULE_13__models_department_grades_js__["a" /* default */];
@@ -48234,14 +48239,15 @@ window.Classes = __WEBPACK_IMPORTED_MODULE_14__models_class_js__["a" /* default 
 window.Unit = __WEBPACK_IMPORTED_MODULE_15__models_unit_js__["a" /* default */];
 window.User = __WEBPACK_IMPORTED_MODULE_16__models_user_js__["a" /* default */];
 window.Student = __WEBPACK_IMPORTED_MODULE_17__models_student_js__["a" /* default */];
+window.Staff = __WEBPACK_IMPORTED_MODULE_18__models_staff_js__["a" /* default */];
 
-window.Photo = __WEBPACK_IMPORTED_MODULE_18__models_photo_js__["a" /* default */];
-window.ContactInfo = __WEBPACK_IMPORTED_MODULE_19__models_contactInfo_js__["a" /* default */];
-window.Address = __WEBPACK_IMPORTED_MODULE_20__models_address_js__["a" /* default */];
+window.Photo = __WEBPACK_IMPORTED_MODULE_19__models_photo_js__["a" /* default */];
+window.ContactInfo = __WEBPACK_IMPORTED_MODULE_20__models_contactInfo_js__["a" /* default */];
+window.Address = __WEBPACK_IMPORTED_MODULE_21__models_address_js__["a" /* default */];
 
-window.TPDepartment = __WEBPACK_IMPORTED_MODULE_21__models_tp_department_js__["a" /* default */];
-window.TPClasses = __WEBPACK_IMPORTED_MODULE_22__models_tp_classes_js__["a" /* default */];
-window.TPUnit = __WEBPACK_IMPORTED_MODULE_23__models_tp_unit_js__["a" /* default */];
+window.TPDepartment = __WEBPACK_IMPORTED_MODULE_22__models_tp_department_js__["a" /* default */];
+window.TPClasses = __WEBPACK_IMPORTED_MODULE_23__models_tp_classes_js__["a" /* default */];
+window.TPUnit = __WEBPACK_IMPORTED_MODULE_24__models_tp_unit_js__["a" /* default */];
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 
@@ -48440,9 +48446,11 @@ var Helper = function () {
                 case 'teachers':
                     html = '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>';
                     break;
-
                 case 'students':
                     html = '<i class="fa fa-user-circle" aria-hidden="true"></i>';
+                    break;
+                case 'staffs':
+                    html = '<i class="fa fa-id-card-o" aria-hidden="true"></i>';
                     break;
 
             }
@@ -70314,7 +70322,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "label-title"
   }, [_vm._v("母部門")]), _vm._v(" "), _c('p', {
     domProps: {
-      "textContent": _vm._s(_vm.unit.parent)
+      "textContent": _vm._s(_vm.unit.parentDepartment.name)
     }
   })]), _vm._v(" "), (_vm.entityRemoved) ? _c('div', {
     staticClass: "col-sm-2"
@@ -82097,6 +82105,2136 @@ module.exports = function(module) {
 __webpack_require__(144);
 module.exports = __webpack_require__(145);
 
+
+/***/ }),
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */,
+/* 488 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_staff_list_vue__ = __webpack_require__(493);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_staff_list_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_staff_list_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'StaffIndex',
+    components: {
+        'staff-list': __WEBPACK_IMPORTED_MODULE_0__components_staff_list_vue___default.a
+    },
+    props: {
+        version: {
+            type: Number,
+            default: 0
+        },
+        hide_create: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data: function data() {
+        return {
+            ready: false,
+
+            selectedUnit: {},
+
+            unitOptions: [],
+
+            params: {
+                unit: 0,
+                removed: 0
+            },
+
+            removed: false,
+
+            listSettings: {
+                title: '',
+                can_select: false
+            }
+
+        };
+    },
+
+    watch: {
+        removed: function removed(value) {
+            if (value) {
+                this.params.removed = 1;
+            } else {
+                this.params.removed = 0;
+            }
+            this.setTitle();
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            var _this = this;
+
+            this.setTitle();
+
+            var options = Staff.indexOptions();
+            options.then(function (data) {
+                _this.unitOptions = data.unitOptions;
+                var rootOption = {
+                    text: ' 所有部門 ',
+                    value: 0
+                };
+                _this.unitOptions.splice(0, 0, rootOption);
+
+                _this.onUnitSelected(rootOption);
+                _this.ready = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+                _this.ready = false;
+            });
+        },
+        setTitle: function setTitle() {
+            var text = '  員工管理';
+            if (this.removed) text += ' (資源回收桶)';
+            this.listSettings.title = Helper.getIcon(Staff.title()) + text;
+        },
+        onUnitSelected: function onUnitSelected(item) {
+            this.selectedUnit = item;
+            this.params.unit = item.value;
+        },
+        onOptionsReady: function onOptionsReady(params) {
+            this.params.department = params.department;
+            this.params.grade = params.grade;
+            this.params.classes = params.classes;
+            this.ready = true;
+        },
+        onSelected: function onSelected(staff) {
+            this.$emit('selected', staff.user_id);
+        },
+        onBeginCreate: function onBeginCreate() {
+            this.$emit('begin-create', this.staff_id);
+        },
+        onBtnAddClicked: function onBtnAddClicked() {}
+    }
+
+});
+
+/***/ }),
+/* 489 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(488),
+  /* template */
+  __webpack_require__(490),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\staff\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3ed36051", Component.options)
+  } else {
+    hotAPI.reload("data-v-3ed36051", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 490 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('level-dropdown', {
+    attrs: {
+      "default_item": _vm.selectedUnit,
+      "options": _vm.unitOptions
+    },
+    on: {
+      "selected": _vm.onUnitSelected
+    }
+  }), _vm._v(" "), (_vm.removed) ? _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = false
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-left",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\r\n                     返回\r\n                ")])]) : _c('div', [_c('button', {
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": function($event) {
+        _vm.removed = true
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\r\n                  資源回收桶\r\n              ")]), _vm._v("\r\n               \r\n              \r\n              "), _c('button', {
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.onBtnAddClicked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-plus"
+  }), _vm._v(" 新增\r\n              ")])])], 1)]), _vm._v(" "), (_vm.ready) ? _c('staff-list', {
+    attrs: {
+      "search_params": _vm.params,
+      "hide_create": _vm.hide_create,
+      "version": _vm.version,
+      "can_select": _vm.listSettings.can_select,
+      "title": _vm.listSettings.title
+    },
+    on: {
+      "selected": _vm.onSelected,
+      "begin-create": _vm.onBeginCreate
+    }
+  }) : _vm._e()], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3ed36051", module.exports)
+  }
+}
+
+/***/ }),
+/* 491 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__row_vue__ = __webpack_require__(494);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__row_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__row_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        Row: __WEBPACK_IMPORTED_MODULE_0__row_vue___default.a
+    },
+    name: 'StaffList',
+    props: {
+        search_params: {
+            type: Object,
+            default: null
+        },
+        hide_create: {
+            type: Boolean,
+            default: false
+        },
+        version: {
+            type: Number,
+            default: 0
+        },
+        can_select: {
+            type: Boolean,
+            default: true
+        },
+        selected_ids: {
+            type: Array,
+            default: null
+        },
+        show_title: {
+            type: Boolean,
+            default: true
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        no_page: {
+            type: Boolean,
+            default: false
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+    data: function data() {
+        return {
+            loaded: false,
+            source: Staff.source(),
+
+            defaultSearch: 'user.profile.fullname',
+            defaultOrder: 'updated_at',
+            create: Staff.createUrl(),
+
+            thead: [],
+            filter: [{
+                title: '姓名',
+                key: 'user.profile.fullname'
+            }, {
+                title: '員工編號',
+                key: 'number'
+            }],
+
+            hasData: false,
+            viewMore: false
+
+        };
+    },
+
+    computed: {
+        removed: function removed() {
+            return Helper.isTrue(this.search_params.removed);
+        }
+    },
+    methods: {
+        init: function init() {
+            this.thead = Staff.getThead(this.can_select);
+        },
+        onDataLoaded: function onDataLoaded(data) {
+            this.hasData = data.model.total > 0;
+        },
+        onBtnViewMoreClicked: function onBtnViewMoreClicked() {
+            this.viewMore = !this.viewMore;
+            for (var i = this.thead.length - 1; i >= 0; i--) {
+                if (!this.thead[i].static) {
+                    this.thead[i].default = !this.thead[i].default;
+                }
+            }
+        },
+        onRowSelected: function onRowSelected(staff) {
+            this.$emit('selected', staff);
+        },
+        onRowUnselected: function onRowUnselected(id) {
+            this.$emit('unselected', id);
+        },
+        beginCreate: function beginCreate() {
+            this.$emit('begin-create');
+        },
+        beenSelected: function beenSelected(id) {
+            if (!this.selected_ids) return false;
+            if (this.selected_ids.length < 1) return false;
+            var index = this.selected_ids.indexOf(id);
+            return index >= 0;
+        }
+    }
+
+});
+
+/***/ }),
+/* 492 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'StaffRow',
+    props: {
+        staff: {
+            type: Object,
+            default: null
+        },
+        more: {
+            type: Boolean,
+            default: false
+        },
+        can_remove: {
+            type: Boolean,
+            default: false
+        },
+        removed: {
+            type: Boolean,
+            default: false
+        },
+        select: {
+            type: Boolean,
+            default: false
+        },
+        been_selected: {
+            type: Boolean,
+            default: false
+        }
+
+    },
+    data: function data() {
+        return {
+            thead: []
+        };
+    },
+    beforeMount: function beforeMount() {},
+
+
+    methods: {
+        removeItem: function removeItem(id, name) {
+            var values = {
+                id: id,
+                name: name
+            };
+            this.$emit('remove-clicked', values);
+        },
+        staffActiveLabel: function staffActiveLabel() {
+            var status = this.staff.status;
+            return Staff.activeLabel(status);
+        },
+        selected: function selected() {
+            this.$emit('selected', this.staff);
+        },
+        unselected: function unselected() {
+            this.$emit('unselected', this.staff.id);
+        }
+    }
+
+});
+
+/***/ }),
+/* 493 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(491),
+  /* template */
+  __webpack_require__(496),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\staff\\list.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] list.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-361da1d6", Component.options)
+  } else {
+    hotAPI.reload("data-v-361da1d6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 494 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(492),
+  /* template */
+  __webpack_require__(495),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\staff\\row.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] row.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1d924cb3", Component.options)
+  } else {
+    hotAPI.reload("data-v-1d924cb3", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 495 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [(_vm.can_remove) ? _c('td', [_c('button', {
+    staticClass: "btn btn-danger btn-xs",
+    on: {
+      "click": function($event) {
+        _vm.removeItem(_vm.staff.id, _vm.staff.name)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-remove",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]) : _vm._e(), _vm._v(" "), (_vm.select) ? _c('td', [_c('checkbox', {
+    attrs: {
+      "default": _vm.been_selected
+    },
+    on: {
+      "selected": _vm.selected,
+      "unselected": _vm.unselected
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('td', [_c('a', {
+    attrs: {
+      "herf": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.selected($event)
+      }
+    }
+  }, [_vm._v("\n                " + _vm._s(_vm.staff.name) + "\n         ")])]), _vm._v(" "), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.number)
+    }
+  }), _vm._v(" "), _c('td', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.unit.name)
+    }
+  }), _vm._v(" "), (_vm.removed) ? _c('td', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.$options.filters.removedLabel(_vm.staff.removed))
+    }
+  }) : _c('td', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.staffActiveLabel())
+    }
+  }), _vm._v(" "), _c('td', [_c('updated', {
+    attrs: {
+      "entity": _vm.staff
+    }
+  })], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1d924cb3", module.exports)
+  }
+}
+
+/***/ }),
+/* 496 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('data-viewer', {
+    attrs: {
+      "default_search": _vm.defaultSearch,
+      "default_order": _vm.defaultOrder,
+      "source": _vm.source,
+      "search_params": _vm.search_params,
+      "thead": _vm.thead,
+      "no_search": _vm.can_select,
+      "filter": _vm.filter,
+      "title": _vm.title,
+      "create_text": "",
+      "show_title": _vm.show_title,
+      "no_page": _vm.no_page,
+      "version": _vm.version
+    },
+    on: {
+      "refresh": _vm.init,
+      "beginCreate": _vm.beginCreate,
+      "dataLoaded": _vm.onDataLoaded
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(props) {
+        return [_c('row', {
+          attrs: {
+            "staff": props.item,
+            "more": _vm.viewMore,
+            "select": _vm.can_select,
+            "removed": _vm.removed,
+            "been_selected": _vm.beenSelected(props.item.id)
+          },
+          on: {
+            "selected": _vm.onRowSelected,
+            "unselected": _vm.onRowUnselected
+          }
+        })]
+      }
+    }])
+  })
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-361da1d6", module.exports)
+  }
+}
+
+/***/ }),
+/* 497 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Staff = function () {
+    function Staff(data) {
+        _classCallCheck(this, Staff);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(Staff, null, [{
+        key: 'title',
+        value: function title() {
+            return 'Staffs';
+        }
+    }, {
+        key: 'source',
+        value: function source() {
+            return '/staffs';
+        }
+    }, {
+        key: 'createUrl',
+        value: function createUrl() {
+            return this.source() + '/create';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'showUrl',
+        value: function showUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'editUrl',
+        value: function editUrl(id) {
+            return this.showUrl(id) + '/edit';
+        }
+    }, {
+        key: 'updateUrl',
+        value: function updateUrl(id) {
+            return this.showUrl(id);
+        }
+    }, {
+        key: 'deleteUrl',
+        value: function deleteUrl(id) {
+            return this.source() + '/' + id;
+        }
+    }, {
+        key: 'create',
+        value: function create() {
+            var url = this.createUrl();
+
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(form) {
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'show',
+        value: function show(id) {
+            var _this = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this.showUrl(id);
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'edit',
+        value: function edit(id) {
+            var url = this.editUrl(id);
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'update',
+        value: function update(form, id) {
+            var url = this.updateUrl(id);
+            var method = 'put';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(id) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                var url = _this2.deleteUrl(id);
+                var form = new Form();
+                form.delete(url).then(function (response) {
+                    resolve(true);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'updatePhoto',
+        value: function updatePhoto(staffId, photoId) {
+            var form = new Form({
+                photo_id: photoId
+            });
+            var url = '/staffs/' + staffId + '/update-photo';
+            var method = 'put';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (saved) {
+                    resolve(saved);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'indexOptions',
+        value: function indexOptions(params) {
+            var url = this.source() + '/index-options';
+            url = Helper.buildQuery(url, params);
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'activeText',
+        value: function activeText(status) {
+
+            if (status == 1) return '在職中';else if (status == 0) return '留職停薪';else if (status == -1) return '已離職';
+            return '';
+        }
+    }, {
+        key: 'activeLabel',
+        value: function activeLabel(status) {
+            status = Number(status);
+            var style = 'label label-default';
+            if (status > 0) style = 'label label-info';
+            var text = this.activeText(status);
+
+            return '<span class="' + style + '" > ' + text + ' </span>';
+        }
+    }, {
+        key: 'getThead',
+        value: function getThead(canSelect) {
+            var thead = [{
+                title: '姓名',
+                key: 'name',
+                sort: false,
+                default: true
+            }, {
+                title: '員工編號',
+                key: 'number',
+                sort: true,
+                default: true
+            }, {
+                title: '部門',
+                key: 'unit_id',
+                sort: false,
+                default: true
+            }, {
+                title: '狀態',
+                key: 'status',
+                sort: false,
+                default: true
+            }, {
+                title: '更新時間',
+                key: 'updated_at',
+                sort: true,
+                default: true
+            }];
+            if (canSelect) {
+                var selectColumn = {
+                    title: '',
+                    key: '',
+                    sort: false,
+                    static: true,
+                    default: true
+                };
+                thead.splice(0, 0, selectColumn);
+            }
+            return thead;
+        }
+    }]);
+
+    return Staff;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Staff);
+
+/***/ }),
+/* 498 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'EditStaff',
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        course_id: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            title: Helper.getIcon(Staff.title()),
+            loaded: false,
+            form: new Form({
+                staff: {}
+            }),
+            selectedUnit: {},
+            removedOptions: Helper.boolOptions(),
+            statusOptions: [],
+
+            unitOptions: []
+        };
+    },
+
+    computed: {
+        entityRemoved: function entityRemoved() {
+            if (!this.form.staff) return false;
+            return Helper.isTrue(this.form.staff.removed);
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.form = new Form({
+                staff: {}
+
+            });
+            if (this.id) {
+                this.title += '  編輯學生資料';
+            } else {
+                this.title += '  新增學生資料';
+            }
+            this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = null;
+            if (this.id) {
+                getData = Staff.edit(this.id);
+            } else {
+                getData = Staff.create();
+            }
+            getData.then(function (data) {
+                var staff = data.staff;
+                _this.form.staff = data.staff;
+                _this.statusOptions = data.statusOptions;
+                _this.unitOptions = data.unitOptions;
+
+                _this.selectedUnit = {
+                    value: staff.unit_id,
+                    text: staff.unit.name
+                };
+
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+                _this.loaded = false;
+            });
+        },
+        loadClassesOptions: function loadClassesOptions() {
+            var _this2 = this;
+
+            var options = Classes.options(this.form.staff.department_id);
+
+            options.then(function (data) {
+                _this2.classesOptions = data.options;
+                _this2.form.staff.class_id = data.options[0].value;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        onUnitSelected: function onUnitSelected(item) {
+            this.selectedUnit = item;
+            this.form.staff.unit_id = item.value;
+        },
+        setStatus: function setStatus(val) {
+            this.form.staff.status = val;
+        },
+        setRemoved: function setRemoved(val) {
+            this.form.staff.removed = val;
+        },
+        clearErrorMsg: function clearErrorMsg(name) {
+            this.form.errors.clear(name);
+        },
+        onSubmit: function onSubmit() {
+
+            this.submitForm();
+        },
+        submitForm: function submitForm() {
+            var _this3 = this;
+
+            var store = null;
+
+            if (this.id) {
+                store = Staff.update(this.form, this.id);
+            } else {
+                store = Staff.store(this.form);
+            }
+
+            store.then(function (data) {
+                Helper.BusEmitOK();
+                _this3.$emit('saved', data);
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        onCanceled: function onCanceled() {
+            this.$emit('canceled');
+        },
+        onStaffSelected: function onStaffSelected(item) {
+            this.selectedStaff = item;
+        }
+    }
+
+});
+
+/***/ }),
+/* 499 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'ShowStaff',
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        can_edit: {
+            type: Boolean,
+            default: true
+        },
+        can_back: {
+            type: Boolean,
+            default: true
+        },
+        hide_delete: {
+            type: Boolean,
+            default: false
+        },
+        version: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            title: Helper.getIcon('Staffs') + '  學生資料',
+            loaded: false,
+            staff: null
+
+        };
+    },
+
+    watch: {
+        'version': 'init'
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.staff = null;
+            if (this.id) this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = Staff.show(this.id);
+
+            getData.then(function (data) {
+                _this.staff = new Staff(data.staff);
+
+                _this.loaded = true;
+                _this.$emit('loaded', _this.staff);
+            }).catch(function (error) {
+                _this.loaded = false;
+                Helper.BusEmitError(error);
+            });
+        },
+        isTrue: function isTrue(val) {
+            return Helper.isTrue(val);
+        },
+        staffActiveLabel: function staffActiveLabel() {
+
+            var status = this.staff.status;
+            return Staff.activeLabel(status);
+        },
+        btnEditCilcked: function btnEditCilcked() {
+            this.$emit('begin-edit');
+        },
+        btnDeleteCilcked: function btnDeleteCilcked() {
+            var values = {
+                id: this.id,
+                name: this.staff.name
+            };
+            this.$emit('btn-delete-clicked', values);
+        },
+        onBtnBackClick: function onBtnBackClick() {
+            this.$emit('btn-back-clicked');
+        }
+    }
+});
+
+/***/ }),
+/* 500 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__show_vue__ = __webpack_require__(503);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__show_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__show_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_vue__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__edit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__edit_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'Staff',
+    components: {
+        Show: __WEBPACK_IMPORTED_MODULE_0__show_vue___default.a,
+        Edit: __WEBPACK_IMPORTED_MODULE_1__edit_vue___default.a
+    },
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        },
+        can_edit: {
+            type: Boolean,
+            default: true
+        },
+        can_back: {
+            type: Boolean,
+            default: true
+        },
+        version: {
+            type: Number,
+            default: 0
+        }
+    },
+    data: function data() {
+        return {
+            readOnly: true,
+            deleteConfirm: {
+                id: 0,
+                show: false,
+                msg: ''
+
+            }
+        };
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    watch: {
+        'id': 'init',
+        'version': 'init'
+    },
+    methods: {
+        init: function init() {
+            this.readOnly = true;
+            this.deleteConfirm = {
+                id: 0,
+                show: false,
+                msg: ''
+            };
+        },
+        onDataLoaded: function onDataLoaded(staff) {
+            this.$emit('loaded', staff);
+        },
+        beginEdit: function beginEdit() {
+            this.readOnly = false;
+        },
+        onEditCanceled: function onEditCanceled() {
+            this.init();
+        },
+        onSaved: function onSaved(staff) {
+            this.init();
+            this.$emit('saved', staff);
+        },
+        onBtnBackClicked: function onBtnBackClicked() {
+            this.$emit('btn-back-clicked');
+        },
+        beginDelete: function beginDelete(values) {
+            this.deleteConfirm.msg = '確定要刪除員工資料 『' + values.name + '』嗎';
+            this.deleteConfirm.id = values.id;
+            this.deleteConfirm.show = true;
+        },
+        closeConfirm: function closeConfirm() {
+            this.deleteConfirm.show = false;
+        },
+        deleteStaff: function deleteStaff() {
+            var _this = this;
+
+            var id = this.deleteConfirm.id;
+            var remove = Staff.delete(id);
+            remove.then(function (result) {
+                Helper.BusEmitOK('刪除成功');
+                _this.deleteConfirm.show = false;
+                _this.$emit('deleted');
+            }).catch(function (error) {
+                Helper.BusEmitError(error, '刪除失敗');
+                _this.closeConfirm();
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 501 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_staff_view_vue__ = __webpack_require__(504);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_staff_view_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_staff_view_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+   name: 'DepartmentDetails',
+   components: {
+      'staff-view': __WEBPACK_IMPORTED_MODULE_0__components_staff_view_vue___default.a
+   },
+   props: {
+      id: {
+         type: Number,
+         default: 0
+      },
+      version: {
+         type: Number,
+         default: 0
+      },
+      can_edit: {
+         type: Boolean,
+         default: true
+      },
+      can_back: {
+         type: Boolean,
+         default: true
+      }
+   },
+   data: function data() {
+      return {
+         loaded: false,
+         staff: null,
+         current_version: 0,
+
+         activeIndex: 0
+
+      };
+   },
+   beforeMount: function beforeMount() {
+      this.init();
+   },
+
+   methods: {
+      init: function init() {
+         this.loaded = false;
+         this.readonly = true;
+         this.activeIndex = 0;
+      },
+      toBoolean: function toBoolean(val) {
+         return val == 'true';
+      },
+      onDataLoaded: function onDataLoaded(staff) {
+         this.loaded = true;
+         this.staff = staff;
+      },
+      btnEditClicked: function btnEditClicked() {
+         this.beginEdit();
+      },
+      beginEdit: function beginEdit() {
+         this.readonly = false;
+      },
+      editCanceled: function editCanceled() {
+         this.readonly = true;
+      },
+      staffUpdated: function staffUpdated() {
+         this.init();
+      },
+      onBtnBackClicked: function onBtnBackClicked() {
+         this.$emit('btn-back-clicked');
+      },
+      onStaffDeleted: function onStaffDeleted() {
+         this.$emit('staff-deleted');
+      }
+   }
+
+});
+
+/***/ }),
+/* 502 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(498),
+  /* template */
+  __webpack_require__(506),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\staff\\edit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] edit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-178d52fe", Component.options)
+  } else {
+    hotAPI.reload("data-v-178d52fe", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 503 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(499),
+  /* template */
+  __webpack_require__(509),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\staff\\show.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] show.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-feebdc18", Component.options)
+  } else {
+    hotAPI.reload("data-v-feebdc18", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 504 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(500),
+  /* template */
+  __webpack_require__(507),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\components\\staff\\view.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] view.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-47f944c8", Component.options)
+  } else {
+    hotAPI.reload("data-v-47f944c8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 505 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(501),
+  /* template */
+  __webpack_require__(508),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\staff\\details.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] details.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4d371401", Component.options)
+  } else {
+    hotAPI.reload("data-v-4d371401", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 506 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })])]), _vm._v(" "), (_vm.loaded) ? _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    staticClass: "form",
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      },
+      "keydown": function($event) {
+        _vm.clearErrorMsg($event.target.name)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("姓名")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "staff.name",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.staff.name
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("員工編號")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "staff.number",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.staff.number
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("部門")]), _vm._v(" "), _c('level-dropdown', {
+    attrs: {
+      "default_item": _vm.selectedUnit,
+      "options": _vm.unitOptions
+    },
+    on: {
+      "selected": _vm.onUnitSelected
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("到職日期")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "staff.join_date",
+      "disabled": ""
+    },
+    domProps: {
+      "value": _vm.form.staff.join_date
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [(_vm.entityRemoved) ? _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("已移除")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.staff.removed),
+      expression: "form.staff.removed"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.form.staff.removed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.staff.removed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('toggle', {
+    attrs: {
+      "items": _vm.removedOptions,
+      "default_val": _vm.form.staff.removed
+    },
+    on: {
+      "selected": _vm.setRemoved
+    }
+  })], 1)]) : _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("狀態")]), _vm._v(" "), _c('div', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.staff.active),
+      expression: "form.staff.active"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.form.staff.active)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.staff.active = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('toggle', {
+    attrs: {
+      "items": _vm.statusOptions,
+      "default_val": _vm.form.staff.status
+    },
+    on: {
+      "selected": _vm.setStatus
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("備註")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.form.staff.ps),
+      expression: "form.staff.ps"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "4",
+      "name": "staff.ps"
+    },
+    domProps: {
+      "value": (_vm.form.staff.ps)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.form.staff.ps = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "submit",
+      "disabled": _vm.form.errors.any()
+    }
+  }, [_vm._v("確認送出")]), _vm._v("\n                              \n                         "), _c('button', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.onCanceled($event)
+      }
+    }
+  }, [_vm._v("取消")])])])])])]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-178d52fe", module.exports)
+  }
+}
+
+/***/ }),
+/* 507 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(_vm.readOnly) ? _c('show', {
+    attrs: {
+      "id": _vm.id,
+      "can_edit": "can_edit",
+      "can_back": _vm.can_back,
+      "version": _vm.version
+    },
+    on: {
+      "begin-edit": _vm.beginEdit,
+      "loaded": _vm.onDataLoaded,
+      "btn-back-clicked": _vm.onBtnBackClicked,
+      "btn-delete-clicked": _vm.beginDelete
+    }
+  }) : _c('edit', {
+    attrs: {
+      "id": _vm.id
+    },
+    on: {
+      "saved": _vm.onSaved,
+      "canceled": _vm.onEditCanceled
+    }
+  }), _vm._v(" "), _c('delete-confirm', {
+    attrs: {
+      "showing": _vm.deleteConfirm.show,
+      "message": _vm.deleteConfirm.msg
+    },
+    on: {
+      "close": _vm.closeConfirm,
+      "confirmed": _vm.deleteStaff
+    }
+  })], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-47f944c8", module.exports)
+  }
+}
+
+/***/ }),
+/* 508 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('staff-view', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.loaded),
+      expression: "loaded"
+    }],
+    attrs: {
+      "id": _vm.id,
+      "can_edit": _vm.can_edit,
+      "can_back": _vm.can_back
+    },
+    on: {
+      "saved": _vm.staffUpdated,
+      "loaded": _vm.onDataLoaded,
+      "btn-back-clicked": _vm.onBtnBackClicked,
+      "deleted": _vm.onStaffDeleted
+    }
+  }), _vm._v(" "), (_vm.loaded) ? _c('div', {
+    staticClass: "panel with-nav-tabs panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('ul', {
+    staticClass: "nav nav-tabs"
+  }, [_c('li', {
+    staticClass: "active"
+  }, [_c('a', {
+    attrs: {
+      "href": "#grades",
+      "data-toggle": "tab"
+    },
+    on: {
+      "click": function($event) {
+        _vm.activeIndex = 0
+      }
+    }
+  }, [_vm._v("年級")])])])]), _vm._v(" "), _vm._m(0)]) : _vm._e()], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "tab-content"
+  }, [_c('div', {
+    staticClass: "tab-pane fade active in",
+    attrs: {
+      "id": "grades"
+    }
+  })])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4d371401", module.exports)
+  }
+}
+
+/***/ }),
+/* 509 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.loaded) ? _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.can_back),
+      expression: "can_back"
+    }],
+    staticClass: "btn btn-default btn-sm",
+    on: {
+      "click": _vm.onBtnBackClick
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-arrow-left",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n                     返回\n                ")]), _vm._v(" "), (_vm.staff.canEdit) ? _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.can_edit),
+      expression: "can_edit"
+    }],
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.btnEditCilcked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-pencil"
+  }), _vm._v(" 編輯\n                 ")]) : _vm._e(), _vm._v(" "), (_vm.staff.canDelete) ? _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.hide_delete),
+      expression: "!hide_delete"
+    }],
+    staticClass: "btn btn-danger btn-sm",
+    on: {
+      "click": _vm.btnDeleteCilcked
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-trash"
+  }), _vm._v(" 刪除\n                 ")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("姓名")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.name)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("員工編號")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.number)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("部門")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.unit.name)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("到職日期")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.join_date)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("狀態")]), _vm._v(" "), (_vm.isTrue(_vm.staff.removed)) ? _c('p', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.$options.filters.removedLabel(_vm.staff.removed))
+    }
+  }) : _c('p', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.staffActiveLabel())
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("備註")]), _vm._v(" "), _c('p', {
+    domProps: {
+      "textContent": _vm._s(_vm.staff.ps)
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    staticClass: "label-title"
+  }, [_vm._v("最後更新")]), _vm._v(" "), _c('updated', {
+    attrs: {
+      "entity": _vm.staff
+    }
+  })], 1)])])]) : _vm._e()
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-feebdc18", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
