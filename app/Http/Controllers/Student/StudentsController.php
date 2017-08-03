@@ -159,9 +159,13 @@ class StudentsController extends BaseController
         $student->getName();
 
         $departmentOptions=$this->departments->options();
+        $department_id=(int)$student->department_id; 
+        $grade_id=0; 
+        $classesOptions=$this->classesRepository->options($department_id,$grade_id);
         return response()->json([
                     'student' => $student,
                     'departmentOptions' => $departmentOptions,
+                    'classesOptions' => $classesOptions,
                 ]);        
     }
     public function update(StudentRequest $request, $id)
@@ -173,8 +177,13 @@ class StudentsController extends BaseController
          }
          $updated_by=$current_user->id;
          $values=$request->getValues($updated_by);  
-
+         
          $student->update($values);
+
+         $sync=new \App\Repositories\Teamplus\Users();
+         $sync->syncUserFromStudent($student, 'update');
+
+
          return response()->json($student);
     }
     public function updateOrder(Request $request, $id)

@@ -8,7 +8,7 @@ use App\Support\FilterPaginateOrder;
 class Student extends Model
 {
 	use FilterPaginateOrder;
-	protected $fillable = [ 'ps', 'join_date',
+	protected $fillable = [ 'ps', 'join_date', 'department_id','class_id',
 						    'active', 'removed','updated_by'
 						  ];
 	protected $filter =  [ 'user.profile.fullname',  'number','active'

@@ -5,6 +5,7 @@ namespace App\Repositories\Teamplus;
 use DB;
 use App\Department;
 use App\Classes;
+use App\Unit;
 use App\DepartmentUpdateRecord;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPDepartmentForSync;
@@ -49,6 +50,30 @@ class Departments
            TPDepartmentForSync::create([
                     'Code'=> 'class_' . $entity->id ,
                     'Name' => $entity->name ,
+                    'ParentCode' => $parent_department->Code,
+                    'UpdateTime' =>Carbon::today(),
+                    'SyncStatus' => 0,
+                    'IsDelete' => false,
+                 ]);
+    }
+    public function createUnitForSync(Unit $unit, $action)
+    {
+        $has_parent=(int)$unit->parent;
+        $parent_department=null;
+        if($has_parent){
+            $parent_department=Unit::findOrFail($unit->parent);
+        }else{
+            $parent_department=new Unit(['name'=>'部門']);
+        }
+        $parent_department=$this->getTPDepartmentByName($parent_department->name);
+        $is_delete=false; 
+        if(strtolower($action)=='delete'){
+            $is_delete=true;
+        }
+
+           TPDepartmentForSync::create([
+                    'Code'=> 'unit_' . $unit->id ,
+                    'Name' => $unit->name ,
                     'ParentCode' => $parent_department->Code,
                     'UpdateTime' =>Carbon::today(),
                     'SyncStatus' => 0,

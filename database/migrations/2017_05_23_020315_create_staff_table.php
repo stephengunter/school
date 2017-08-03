@@ -24,7 +24,7 @@ class CreateStaffTable extends Migration
 
             $table->string('number')->nullable();
             $table->date('join_date');
-            $table->boolean('active')->default(true);
+            $table->tinyInteger('status')->default(0);
             $table->boolean('removed')->default(false);
             $table->text('ps')->nullable();
 

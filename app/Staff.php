@@ -12,6 +12,15 @@ class Staff extends Model
     {
 		 return $this->belongsTo('App\User');
     }
+    public function unit() 
+    {
+		 return $this->belongsTo('App\Unit');
+    }
+    public function getName()
+	{
+        $this->name=$this->user->profile->fullname;
+		return $this->name;
+	}
     public function canDeleteBy($user)
 	{
         return $true;

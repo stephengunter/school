@@ -53,4 +53,5 @@ Route::resource('districts', '\App\Http\Controllers\Contact\DistrictsController'
 
 Route::resource('tp-departments', '\App\Http\Controllers\Teamplus\DepartmentsController', ['only' => ['index','store']]);
 Route::resource('tp-classes', '\App\Http\Controllers\Teamplus\ClassesController', ['only' => ['index','store']]);
+Route::resource('tp-units', '\App\Http\Controllers\Teamplus\UnitsController', ['only' => ['index','store']]);
 Route::resource('tp-users', '\App\Http\Controllers\Teamplus\UsersController', ['only' => ['index','store']]);

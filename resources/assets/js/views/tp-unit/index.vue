@@ -8,7 +8,7 @@
            
           <div>
 
-             {{ total }}  個未同步的科系 &nbsp;
+             {{ total }}  個未同步的部門 &nbsp;
              已選擇：<span v-text="selectedCount" style="color:blue"></span> &nbsp;
              
               <button v-show="selectedCount>0" @click="onSubmit" class="btn btn-success btn-sm" >
@@ -28,23 +28,23 @@
                 </tr>      
              </thead>
              <tbody>
-                <tr v-for="department in departments">
+                <tr v-for="unit in units">
                     <td>
-                      <checkbox :value="department.id" :default="selected(department.id)"
-                        @selected="onSelected(department.id)"   @unselected="onUnselected(department.id)">
+                      <checkbox :value="unit.id" :default="selected(unit.id)"
+                        @selected="onSelected(unit.id)"   @unselected="onUnselected(unit.id)">
                          
                       </checkbox>
                     </td>
                     <td>
-                       {{ department.name }}
+                       {{ unit.name }}
                     </td>
                     
                     
-                     <td v-html="$options.filters.activeLabel(department.active)" ></td>
+                     <td v-html="$options.filters.activeLabel(unit.active)" ></td>
                     
                     
                     <td>
-                      <updated :entity="department"></updated>
+                      <updated :entity="unit"></updated>
                     </td>
                 </tr>                  
               </tbody>
@@ -64,19 +64,19 @@
 
 <script>
     export default {
-        name:'TPDepartmentIndexView',
+        name:'TPUnitIndexView',
         data() {
             return {
                 loaded:false,
 
-                title:Helper.getIcon(Department.title())  + '  Teamplus科系同步',
-                departments:[],
+                title:Helper.getIcon(Unit.title())  + '  Teamplus部門同步',
+                units:[],
                 selected_ids:[],
             }
         },
         computed:{
             total(){
-                return this.departments.length
+                return this.units.length
             },
             selectedCount(){
                 return this.selected_ids.length
@@ -88,19 +88,19 @@
         methods: {
             init(){
                 this.loaded=false
-                this.departments=[]
+                this.units=[]
                 this.selected_ids=[]
 
                 this.fetchData()
             },
             fetchData() {
-                let getData = TPDepartment.index()             
+                let getData = TPUnit.index()             
              
                 getData.then(data => {
-                   this.departments=data.departments
+                   this.units=data.units
                    let selected_ids=[]
-                   for(let i=0; i<data.departments.length; i++){
-                         selected_ids.push(data.departments[i].id)
+                   for(let i=0; i<data.units.length; i++){
+                         selected_ids.push(data.units[i].id)
                    }
                    this.selected_ids=selected_ids
                    this.loaded = true                        
@@ -125,7 +125,7 @@
                 }
             },
             onSubmit(){
-                let store=TPDepartment.store(this.selected_ids)
+                let store=TPUnit.store(this.selected_ids)
                
                 store.then(data => {
                    Helper.BusEmitOK()

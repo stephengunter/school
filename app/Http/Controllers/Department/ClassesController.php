@@ -169,7 +169,7 @@ class ClassesController extends BaseController
     }
     public function options()
     {
-        dd('sss');
+        
         $request = request();
         $department_id=(int)$request->department; 
         $grade_id=(int)$request->grade; 

@@ -123,7 +123,7 @@ class ClassesRepository
     {
         $activeClasses=$this->activeClasses($department_id, $grade_id);
        
-        return $$this->optionsConverting($activeClasses);
+        return $this->optionsConverting($activeClasses);
     }
     
     

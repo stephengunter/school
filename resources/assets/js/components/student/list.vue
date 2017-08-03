@@ -121,8 +121,8 @@
                     
                 }
             },
-            onRowSelected(id,number,name){
-                this.$emit('selected',id,number,name)
+            onRowSelected(student){
+                this.$emit('selected',student)
             },
             onRowUnselected(id){
                 this.$emit('unselected',id)

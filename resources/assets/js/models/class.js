@@ -59,6 +59,20 @@ class Classes {
            
         })
     }
+    static options(department_id){
+        let url = this.source() + '/options'
+        url += '?department=' + department_id
+        return new Promise((resolve, reject) => {
+            axios.get(url)
+                .then(response => {
+                   resolve(response.data)
+                })
+                .catch(error=> {
+                     reject(error)
+                })
+           
+        })
+    }
     static index(params){
         let url = this.source() 
         url =Helper.buildQuery(url,params)

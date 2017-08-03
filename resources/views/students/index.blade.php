@@ -10,11 +10,11 @@
 
        
 
-       {{-- <student-details v-if="selected"  :id="selected" :can_back="detailsSettings.can_back" 
+       <student-details v-if="selected"  :id="selected" :can_back="detailsSettings.can_back" 
           @btn-back-clicked="backToIndex" @student-deleted="onDeleted"
         
           @edit-user="onEditUser" >
-       </student-details> --}}
+       </student-details>
       
        
 @endsection

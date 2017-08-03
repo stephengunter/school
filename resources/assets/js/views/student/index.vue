@@ -114,8 +114,8 @@
                 this.params.classes=params.classes
                 this.ready=true
             },
-            onSelected(id){
-                this.$emit('selected',id)
+            onSelected(student){
+                this.$emit('selected',student.user_id)
             },
             onBeginCreate(){
                 this.$emit('begin-create',this.student_id)

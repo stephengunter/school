@@ -25,7 +25,7 @@
                     <div class="col-sm-3">
                          <div class="form-group">                           
                             <label>科系</label>
-                            <select  v-model="form.student.department_id"   class="form-control">
+                            <select  v-model="form.student.department_id" @change="loadClassesOptions"  class="form-control">
                                  <option v-for="item in departmentOptions" :value="item.value" v-text="item.text"></option>
                             </select>
                             <!-- <input type="text" name="student.department.name" class="form-control" :value="form.student.department.name"  disabled> -->
@@ -34,7 +34,10 @@
                     <div class="col-sm-3">
                          <div class="form-group">                           
                             <label>班級</label>
-                            <input type="text" name="student.class.name" class="form-control" :value="form.student.class.name"  disabled>
+                            <select  v-model="form.student.class_id"  class="form-control">
+                                 <option v-for="item in classesOptions" :value="item.value" v-text="item.text"></option>
+                            </select>
+                            <!-- <input type="text" name="student.class.name" class="form-control" :value="form.student.class.name"  disabled> -->
                         </div>
                     </div>
                 </div>
@@ -115,6 +118,7 @@
                 activeOptions: Helper.activeOptions(),
 
                 departmentOptions:[],
+                classesOptions:[],
             }
         },
         computed:{
@@ -151,6 +155,7 @@
                     let student=data.student
                     this.form.student=data.student
                     this.departmentOptions=data.departmentOptions
+                    this.classesOptions=data.classesOptions
 
                     this.loaded=true
                 }).catch(error=>{
@@ -158,7 +163,16 @@
                    this.loaded=false
                 })  
             },
-          
+            loadClassesOptions(){
+                let options=Classes.options(this.form.student.department_id)
+                
+                options.then(data=>{
+                    this.classesOptions=data.options
+                    this.form.student.class_id=data.options[0].value
+                }).catch(error=>{
+                   Helper.BusEmitError(error)  
+                }) 
+            },          
             setActive(val){
                 this.form.student.active=val
             },

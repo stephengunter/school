@@ -3,10 +3,10 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Student;
+use App\Staff;
 use App\Support\Helper;
 
-class StudentRequest extends FormRequest
+class StaffRequest extends FormRequest
 {
     public function authorize()
     {
@@ -27,9 +27,9 @@ class StudentRequest extends FormRequest
     }
     
    
-    public function getStudentId()
+    public function getStaffId()
     {
-        $values = $this['student'];
+        $values = $this['staff'];
         $id=0;        
         if(array_key_exists ( 'id' ,$values)){
             $id=(int)$values['id'];
@@ -40,8 +40,8 @@ class StudentRequest extends FormRequest
 
     public function getValues($updated_by)
     {
-        $request=$this->get('student');
-        $values=array_except($request, ['user','department','class']);
+        $request=$this->get('staff');
+        $values=array_except($request, ['user','department']);
        
         $values= Helper::setUpdatedBy($values,$updated_by);
         return $values;

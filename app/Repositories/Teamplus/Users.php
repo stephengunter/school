@@ -5,6 +5,7 @@ namespace App\Repositories\Teamplus;
 use DB;
 use App\User;
 use App\Student;
+use App\Staff;
 use App\UserUpdateRecord;
 use App\Teamplus\TPUser;
 use App\Teamplus\TPDepartment;
@@ -43,6 +44,18 @@ class Users
         $values['LoginAccount']=$student->number;
         $values['EmpID']=$student->number;
         $values['Name']=$student->getName();
+        $values['DeptCode']=$tp_department->Code;
+        
+        TPUserForSync::create($values);
+    }
+    public function syncUserFromStaff(Staff $staff, $action)
+    {
+        $tp_department=$this->getTPDepartmentByName($student->unit->name);
+        
+        $values= $this-> initializeValues($staff->user,$action);
+        $values['LoginAccount']=$staff->number;
+        $values['EmpID']=$staff->number;
+        $values['Name']=$staff->getName();
         $values['DeptCode']=$tp_department->Code;
         
         TPUserForSync::create($values);
