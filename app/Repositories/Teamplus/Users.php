@@ -6,7 +6,7 @@ use DB;
 use App\User;
 use App\Student;
 use App\Staff;
-use App\UserUpdateRecord;
+use App\StudentUpdateRecord;
 use App\Teamplus\TPUser;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPUserForSync;
@@ -16,8 +16,23 @@ use Excel;
 
 class Users 
 {
-     public function syncUsers()
-     {
+    public function syncStudents()
+    {
+        $records=StudentUpdateRecord::where('done', false )->get();
+        foreach($records as $record){
+               $number=$record->number;
+               $email=$record->email;
+               $name=$record->name;
+               $class=$record->department;
+               $status=$record->status;
+               $this->syncUserFromStudent($number, $email,$name, $class,$status);
+
+               $record->done=true;
+               $record->save();
+        }
+    }
+    public function syncUsers()
+    {
          $records=UserUpdateRecord::where('status', 0 )->get();
          foreach($records as $record){
                 $user_id=$record->user_id;
@@ -33,10 +48,33 @@ class Users
                 }
                 
          }
-     }
+    }
 
-    
-    public function syncUserFromStudent(Student $student, $action)
+    public function syncUserFromStudent($number, $email, $name, $class,$status)
+    {
+        $tp_department=$this->getTPDepartmentByName($class);
+
+        $values=TPUserForSync::initialize();
+        $values['LoginAccount']=$number;
+        $values['Email']=$email;
+        $values['EmpID']=$number;
+        $values['Name']=$name;
+        $values['DeptCode']=$tp_department->Code;
+        $values['Status']=$status;
+        
+        $this->saveUserForSync($values);
+        
+    }
+    private function saveUserForSync($values)
+    {
+        $exist_record=$this->existUserForSync($values['LoginAccount']);
+        if($exist_record){
+            $exist_record->update($values);
+        }else{
+            TPUserForSync::create($values);
+        }
+    }
+    private function xxsyncUserFromStudent(Student $student, $action)
     {
         $tp_department=$this->getTPDepartmentByName($student->class->name);
         

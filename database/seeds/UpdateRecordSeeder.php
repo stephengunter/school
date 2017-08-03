@@ -7,7 +7,7 @@ use App\Student;
 use App\Staff;
 use App\Department;
 use App\Unit;
-use App\UserUpdateRecord;
+use App\StudentUpdateRecord;
 
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -46,30 +46,30 @@ class UpdateRecordSeeder extends Seeder
                  ]);
             }
 
-            $staffs=Staff::all();
-            $role='Staff';
-            $staff=$staffs[0];
-            UserUpdateRecord::create([
-                  'user_id'=>$staff->user->id,
-                  'role' => $role,
-                  'action' => 'Insert',
-                  'date' => '2017-7-19',
-            ]);
-            $staff=$staffs[1];
-            UserUpdateRecord::create([
-                  'user_id'=>$staff->user->id,
-                  'role' => $role,
-                  'action' => 'Update',
-                  'date' => '2017-7-19',
-            ]);
+            // $staffs=Staff::all();
+            // $role='Staff';
+            // $staff=$staffs[0];
+            // Student::create([
+            //       'user_id'=>$staff->user->id,
+            //       'role' => $role,
+            //       'action' => 'Insert',
+            //       'date' => '2017-7-19',
+            // ]);
+            // $staff=$staffs[1];
+            // Student::create([
+            //       'user_id'=>$staff->user->id,
+            //       'role' => $role,
+            //       'action' => 'Update',
+            //       'date' => '2017-7-19',
+            // ]);
          
-            $staff=$staffs[2];
-            UserUpdateRecord::create([
-                  'user_id'=>$staff->user->id,
-                  'role' => $role,
-                  'action' => 'Delete',
-                  'date' => '2017-7-24',
-            ]);
+            // $staff=$staffs[2];
+            // UserUpdateRecord::create([
+            //       'user_id'=>$staff->user->id,
+            //       'role' => $role,
+            //       'action' => 'Delete',
+            //       'date' => '2017-7-24',
+            // ]);
         
 				
 	}
