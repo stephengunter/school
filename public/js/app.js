@@ -49256,6 +49256,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__models_tp_classes_js__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__models_tp_unit_js__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__models_tp_student_js__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__models_tp_staff_js__ = __webpack_require__(514);
 window.$ = window.jQuery = __webpack_require__(22);
 __webpack_require__(330);
 __webpack_require__(331);
@@ -49319,6 +49320,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-department-index', __w
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-classes-index', __webpack_require__(397));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-unit-index', __webpack_require__(400));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-student-index', __webpack_require__(399));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tp-staff-index', __webpack_require__(516));
 
 
 window.axios = __WEBPACK_IMPORTED_MODULE_2_axios___default.a;
@@ -49365,6 +49367,7 @@ window.CommonService = __WEBPACK_IMPORTED_MODULE_9__services_common_js__["a" /* 
 
 
 
+
 window.Department = __WEBPACK_IMPORTED_MODULE_11__models_department_js__["a" /* default */];
 window.Grade = __WEBPACK_IMPORTED_MODULE_12__models_grade_js__["a" /* default */];
 window.DepartmentGrades = __WEBPACK_IMPORTED_MODULE_13__models_department_grades_js__["a" /* default */];
@@ -49382,6 +49385,7 @@ window.TPDepartment = __WEBPACK_IMPORTED_MODULE_22__models_tp_department_js__["a
 window.TPClasses = __WEBPACK_IMPORTED_MODULE_23__models_tp_classes_js__["a" /* default */];
 window.TPUnit = __WEBPACK_IMPORTED_MODULE_24__models_tp_unit_js__["a" /* default */];
 window.TPStudent = __WEBPACK_IMPORTED_MODULE_25__models_tp_student_js__["a" /* default */];
+window.TPStaff = __WEBPACK_IMPORTED_MODULE_26__models_tp_staff_js__["a" /* default */];
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
 
@@ -84554,6 +84558,340 @@ module.exports = function(module) {
 __webpack_require__(143);
 module.exports = __webpack_require__(144);
 
+
+/***/ }),
+/* 508 */,
+/* 509 */,
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TPStaff = function () {
+    function TPStaff(data) {
+        _classCallCheck(this, TPStaff);
+
+        for (var property in data) {
+            this[property] = data[property];
+        }
+    }
+
+    _createClass(TPStaff, null, [{
+        key: 'source',
+        value: function source() {
+            return '/tp-staff';
+        }
+    }, {
+        key: 'storeUrl',
+        value: function storeUrl() {
+            return this.source();
+        }
+    }, {
+        key: 'index',
+        value: function index() {
+            var url = this.source();
+            return new Promise(function (resolve, reject) {
+                axios.get(url).then(function (response) {
+                    resolve(response.data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }, {
+        key: 'store',
+        value: function store(staff_ids) {
+            var form = new Form({
+                staff_ids: staff_ids
+            });
+            var url = this.storeUrl();
+            var method = 'post';
+            return new Promise(function (resolve, reject) {
+                form.submit(method, url).then(function (data) {
+                    resolve(data);
+                }).catch(function (error) {
+                    reject(error);
+                });
+            });
+        }
+    }]);
+
+    return TPStaff;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (TPStaff);
+
+/***/ }),
+/* 515 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'TPStaffIndexView',
+    data: function data() {
+        return {
+            loaded: false,
+
+            title: Helper.getIcon(Staff.title()) + '  Teamplus教職員同步',
+            staffs: [],
+            selected_ids: []
+        };
+    },
+
+    computed: {
+        total: function total() {
+            return this.staffs.length;
+        },
+        selectedCount: function selectedCount() {
+            return this.selected_ids.length;
+        }
+    },
+    beforeMount: function beforeMount() {
+        this.init();
+    },
+
+    methods: {
+        init: function init() {
+            this.loaded = false;
+            this.staffs = [];
+            this.selected_ids = [];
+
+            this.fetchData();
+        },
+        fetchData: function fetchData() {
+            var _this = this;
+
+            var getData = TPStaff.index();
+
+            getData.then(function (data) {
+                _this.staffs = data.staffs;
+                var selected_ids = [];
+                for (var i = 0; i < data.staffs.length; i++) {
+                    selected_ids.push(data.staffs[i].user_id);
+                }
+                _this.selected_ids = selected_ids;
+                _this.loaded = true;
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        },
+        staffActiveLabel: function staffActiveLabel(status) {
+            return Staff.activeLabel(status);
+        },
+        removed: function removed(val) {
+            return Helper.isTrue(val);
+        },
+        selected: function selected(id) {
+            return this.selected_ids.indexOf(id) > -1;
+        },
+        onSelected: function onSelected(id) {
+            if (!this.selected(id)) {
+                this.selected_ids.push(id);
+            }
+        },
+        onUnselected: function onUnselected(id) {
+            var index = this.selected_ids.indexOf(id);
+            if (index > -1) {
+                this.selected_ids.splice(index, 1);
+            }
+        },
+        onSubmit: function onSubmit() {
+            var _this2 = this;
+
+            var store = TPStaff.store(this.selected_ids);
+
+            store.then(function (data) {
+                Helper.BusEmitOK();
+                _this2.init();
+            }).catch(function (error) {
+                Helper.BusEmitError(error);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 516 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(515),
+  /* template */
+  __webpack_require__(517),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\Users\\Stephen\\Desktop\\www\\school\\resources\\assets\\js\\views\\tp-staff\\index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-44b3b294", Component.options)
+  } else {
+    hotAPI.reload("data-v-44b3b294", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 517 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default show-data"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('span', {
+    staticClass: "panel-title"
+  }, [_c('h4', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.title)
+    }
+  })]), _vm._v(" "), _c('div', [_vm._v("\n\n          " + _vm._s(_vm.total) + "  個未同步的教職員  \n          已選擇："), _c('span', {
+    staticStyle: {
+      "color": "blue"
+    },
+    domProps: {
+      "textContent": _vm._s(_vm.selectedCount)
+    }
+  }), _vm._v("  \n          \n           "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectedCount > 0),
+      expression: "selectedCount>0"
+    }],
+    staticClass: "btn btn-success btn-sm",
+    on: {
+      "click": _vm.onSubmit
+    }
+  }, [_vm._v("\n             執行同步\n           ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.staffs), function(staff) {
+    return _c('tr', [_c('td', [_c('checkbox', {
+      attrs: {
+        "value": staff.user_id,
+        "default": _vm.selected(staff.user_id)
+      },
+      on: {
+        "selected": function($event) {
+          _vm.onSelected(staff.user_id)
+        },
+        "unselected": function($event) {
+          _vm.onUnselected(staff.user_id)
+        }
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v("  " + _vm._s(staff.user.profile.fullname) + " ")]), _vm._v(" "), _c('td', {
+      domProps: {
+        "textContent": _vm._s(staff.number)
+      }
+    }), _vm._v(" "), _c('td', {
+      domProps: {
+        "textContent": _vm._s(staff.unit.name)
+      }
+    }), _vm._v(" "), (_vm.removed(staff.removed)) ? _c('td', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.$options.filters.removedLabel(staff.removed))
+      }
+    }) : _c('td', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.staffActiveLabel(staff.status))
+      }
+    })])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("姓名")]), _vm._v(" "), _c('th', [_vm._v("教職員編號")]), _vm._v(" "), _c('th', [_vm._v("單位")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-44b3b294", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

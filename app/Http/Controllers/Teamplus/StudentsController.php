@@ -19,8 +19,7 @@ class StudentsController extends BaseController
 
     public function index()
     {
-        $this->TPUsers->syncUsers();
-        dd('damn');
+        
         if(!request()->ajax()) return view('tp-students.index');
        
        
@@ -29,7 +28,7 @@ class StudentsController extends BaseController
                                        ->orderBy('class_id')
                                        ->orderBy('updated_at','desc')
                                        ->with(['user.profile','department','class'])
-                                       ->get(); 
+                                       ->take(8)->get(); 
         
         $studentList=[];
         foreach($students as $student){

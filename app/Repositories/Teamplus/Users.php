@@ -82,8 +82,9 @@ class Users
 
     public function syncUserFromStudent($number, $email, $name, $class,$status)
     {
+        
         $tp_department=$this->getTPDepartmentByName($class);
-
+        
         if($tp_department){
             $values=TPUserForSync::initialize();
             $values['LoginAccount']=$number;

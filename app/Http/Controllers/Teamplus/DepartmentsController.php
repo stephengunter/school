@@ -21,7 +21,7 @@ class DepartmentsController extends BaseController
 
     public function index()
     {
-        $this->TPDepartments->syncDepartments();
+        
         if(!request()->ajax()) return view('tp-departments.index');
 
        

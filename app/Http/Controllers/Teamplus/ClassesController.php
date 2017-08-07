@@ -64,6 +64,7 @@ class ClassesController extends BaseController
                'department_id' => $entity->id,
                'name' => $entity->name,
                'parent' => $entity->department->name,
+               'type' => 'class',
                'delete' => false,
 
            ]);

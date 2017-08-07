@@ -55,3 +55,4 @@ Route::resource('tp-departments', '\App\Http\Controllers\Teamplus\DepartmentsCon
 Route::resource('tp-classes', '\App\Http\Controllers\Teamplus\ClassesController', ['only' => ['index','store']]);
 Route::resource('tp-units', '\App\Http\Controllers\Teamplus\UnitsController', ['only' => ['index','store']]);
 Route::resource('tp-students', '\App\Http\Controllers\Teamplus\StudentsController', ['only' => ['index','store']]);
+Route::resource('tp-staff', '\App\Http\Controllers\Teamplus\StaffController', ['only' => ['index','store']]);
