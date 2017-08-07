@@ -3,24 +3,21 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Carbon\Carbon;
 
 class CreateStudentUpdateRecordsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+   
     public function up()
     {
-        Schema::create('student_update_records', function (Blueprint $table) {
+        Schema::connection('sqlsrv_teamplus')->create('student_update_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('number');
             $table->string('department');
             $table->string('email');
             $table->string('password')->nullable();
-            $table->date('date');
+            $table->date('date')->default(Carbon::today());
             $table->integer('status');
 
             $table->boolean('done')->default(false);

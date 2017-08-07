@@ -58,9 +58,16 @@ class ClassesController extends BaseController
     {
         $ids=$request['classes_ids'];
         for($i = 0; $i < count($ids); ++$i){
-             $entity=$this->classesRepository->findOrFail($ids[$i]);
-             $action='insert';
-             $this->TPDepartments->createClassForSync($entity, $action);
+           $entity=$this->classesRepository->findOrFail($ids[$i]);
+           
+           \App\Teamplus\DepartmentUpdateRecord::create([
+               'department_id' => $entity->id,
+               'name' => $entity->name,
+               'parent' => $entity->department->name,
+               'delete' => false,
+
+           ]);
+
         }
         
        

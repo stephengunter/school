@@ -101,13 +101,9 @@
    
 </template>
 <script>
-    import Pager from 'vue-simple-pager'
-
+   
     export default {
         name:'DataViewer',
-        components: {
-            Pager
-        },
         props: {
             source: {
               type: String,

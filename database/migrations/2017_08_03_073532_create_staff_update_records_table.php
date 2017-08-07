@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Carbon\Carbon;
 
 class CreateStaffUpdateRecordsTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateStaffUpdateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('staff_update_records', function (Blueprint $table) {
+        Schema::connection('sqlsrv_teamplus')->create('staff_update_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('number');
@@ -22,7 +23,7 @@ class CreateStaffUpdateRecordsTable extends Migration
             $table->string('password')->nullable();
             $table->string('job_title')->nullable();
             $table->string('extend')->nullable();
-            $table->date('date');
+            $table->date('date')->default(Carbon::today());
             $table->integer('status');
 
             $table->boolean('done')->default(false);

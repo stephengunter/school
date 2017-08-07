@@ -6,7 +6,7 @@ use DB;
 use App\Department;
 use App\Classes;
 use App\Unit;
-use App\DepartmentUpdateRecord;
+use App\Teamplus\DepartmentUpdateRecord;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPDepartmentForSync;
 use App\Support\Helper;
@@ -19,17 +19,24 @@ class Departments
         $records=DepartmentUpdateRecord::where('done', false )->get();
         foreach($records as $record){
                $parent_code='';
+               $parent_checked=true;
                if($record->parent){
                    $parent_department=TPDepartment::where('Name',$record->parent)->first();
-                   $parent_code=$parent_department->Code;
+                   if($parent_department) $parent_code=$parent_department->Code;
+                   else $parent_checked=false;
                }
-               $code='department_' . $record->department_id;
-               $name=$record->name;
-               $delete=$record->delete;
-               $this->syncDepartment($name, $code,$parent_code,$delete);
-
-               $record->done=true;
-               $record->save();
+               if($parent_checked){
+                    $code=$record->getCode();
+                    $name=$record->name;
+                    $delete=$record->delete;
+                    $saved= $this->syncDepartment($name, $code,$parent_code,$delete);
+                    if($saved){
+                       $record->done=true;
+                       $record->save();
+                    }
+                    
+               }
+               
         }
         
     }
@@ -42,15 +49,15 @@ class Departments
         $values['ParentCode']=$parent_code;
         $values['IsDelete']=$delete;
         
-        $this->saveDepartmentForSync($values);
+        return $this->saveDepartmentForSync($values);
     }
     private function saveDepartmentForSync($values)
     {
         $exist_record=$this->existDepartmentForSync($values['Name']);
         if($exist_record){
-            $exist_record->update($values);
+           return  $exist_record->update($values);
         }else{
-            TPDepartmentForSync::create($values);
+           return TPDepartmentForSync::create($values);
         }
     }
     
@@ -58,6 +65,10 @@ class Departments
     {
           return TPDepartmentForSync::where('SyncStatus',0)
                              ->where('Name',$name)->first();
+    }
+    public function getTPDepartmentByName($name)
+    {
+         return TPDepartment::where('Name',$name)->first();
     }
     
 }

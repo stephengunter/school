@@ -62,6 +62,7 @@ Vue.component('staff-details', require('./views/staff/details') )
 Vue.component('tp-department-index', require('./views/tp-department/index') )
 Vue.component('tp-classes-index', require('./views/tp-classes/index') )
 Vue.component('tp-unit-index', require('./views/tp-unit/index') )
+Vue.component('tp-student-index', require('./views/tp-student/index') )
 
 
 
@@ -113,6 +114,7 @@ import Address from './models/address.js'
 import TPDepartment from './models/tp-department.js'
 import TPClasses from './models/tp-classes.js'
 import TPUnit from './models/tp-unit.js'
+import TPStudent from './models/tp-student.js'
 
 
 window.Department = Department
@@ -132,6 +134,7 @@ window.Address = Address
 window.TPDepartment = TPDepartment
 window.TPClasses = TPClasses
 window.TPUnit = TPUnit
+window.TPStudent = TPStudent
 
 
 

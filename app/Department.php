@@ -35,7 +35,20 @@ class Department extends Model
     {
         return $this->belongsToMany('App\Grade','grade_department');
     }
-	
+	public function parentDepartment()
+    {
+		$parentId=(int)$this->parent;
+		if($parentId)  return static::find($parentId);
+		return null;
+       
+    }
+	public function parentName()
+    {
+		$parent_department=$this->parentDepartment();
+		if($parent_department)  return $parent_department->name;
+		return '';
+       
+    }
 
 	
 	public function toOption()

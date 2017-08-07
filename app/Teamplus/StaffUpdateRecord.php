@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Teamplus;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Teamplus\TPModel;
 
-class StaffUpdateRecord extends Model
+class StaffUpdateRecord extends TPModel
 {
     protected $table = 'staff_update_records';
     protected $fillable = ['name' ,'number', 'department' ,

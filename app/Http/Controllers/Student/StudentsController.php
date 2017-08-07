@@ -56,7 +56,9 @@ class StudentsController extends BaseController
     }
     public function index()
     {
-        
+         if(!request()->ajax()){
+            return view('students.index');                   
+        } 
         $request = request();
 
         $removed=(int)$request->removed; 
@@ -126,7 +128,7 @@ class StudentsController extends BaseController
       
     }
     public function show($id)
-    {          
+    {   
         if(!request()->ajax()){
             $menus=$this->menus($this->key);            
             return view('students.details')

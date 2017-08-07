@@ -59,9 +59,9 @@
                             <button type="button" class="btn btn-default btn-xs" @click="onAddRoleCilcked">
                               <span class="glyphicon glyphicon-plus"></span>
                             </button>
-                            <role-label v-for="role in user.roles" :labelstyle="role.style" 
+                            <!-- <role-label v-for="role in user.roles" :labelstyle="role.style" 
                             :labeltext="role.display_name">
-                            </role-label>
+                            </role-label> -->
                             
                         </p>
                      <label class="label-title">稱謂</label>

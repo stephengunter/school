@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Carbon\Carbon;
 
 class CreateDepartmentUpdateRecordsTable extends Migration
 {
@@ -13,13 +14,14 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_update_records', function (Blueprint $table) {
+        Schema::connection('sqlsrv_teamplus')->create('department_update_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('department_id');
             $table->string('name');
             $table->string('parent')->nullable();
+            $table->string('type')->nullable();
             $table->boolean('delete')->default(false);
-            $table->date('date');
+            $table->date('date')->default(Carbon::today());
 
             $table->boolean('done')->default(false);
             $table->timestamps();

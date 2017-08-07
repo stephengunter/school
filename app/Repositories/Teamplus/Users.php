@@ -6,30 +6,42 @@ use DB;
 use App\User;
 use App\Student;
 use App\Staff;
-use App\StudentUpdateRecord;
-use App\StaffUpdateRecord;
+
+use App\Teamplus\StudentUpdateRecord;
+use App\Teamplus\StaffUpdateRecord;
 use App\Teamplus\TPUser;
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPUserForSync;
+
 use App\Support\Helper;
 use Carbon\Carbon;
 use Excel;
 
 class Users 
 {
+    public function syncUsers()
+    {
+       
+        // $this->syncStaffs();
+        $this->syncStudents();  
+    }
     public function syncStudents()
     {
         $records=StudentUpdateRecord::where('done', false )->get();
+       
         foreach($records as $record){
                $number=$record->number;
                $email=$record->email;
                $name=$record->name;
                $class=$record->department;
                $status=$record->status;
-               $this->syncUserFromStudent($number, $email,$name, $class,$status);
-
-               $record->done=true;
-               $record->save();
+               
+               $done=$this->syncUserFromStudent($number, $email,$name, $class,$status);
+               if($done){
+                   $record->done=true;
+                   $record->save();
+               }
+               
         }
     }
     public function syncStaffs()
@@ -51,7 +63,7 @@ class Users
     }
     public function xxsyncUsers()
     {
-         $records=UserUpdateRecord::where('status', 0 )->get();
+         $records=UserUpdateRecord::where('done', false )->get();
          foreach($records as $record){
                 $user_id=$record->user_id;
                 $action=$record->action;
@@ -72,15 +84,21 @@ class Users
     {
         $tp_department=$this->getTPDepartmentByName($class);
 
-        $values=TPUserForSync::initialize();
-        $values['LoginAccount']=$number;
-        $values['Email']=$email;
-        $values['EmpID']=$number;
-        $values['Name']=$name;
-        $values['DeptCode']=$tp_department->Code;
-        $values['Status']=$status;
+        if($tp_department){
+            $values=TPUserForSync::initialize();
+            $values['LoginAccount']=$number;
+            $values['Email']=$email;
+            $values['EmpID']=$number;
+            $values['Name']=$name;
+            $values['DeptCode']=$tp_department->Code;
+            $values['Status']=$status;
+            
+            return $this->saveUserForSync($values);
         
-        $this->saveUserForSync($values);
+        }else{
+             return null;
+        }
+
         
     }
     public function syncUserFromStaff($number, $email, $name, $department, $job_title, $extend  ,$status)
@@ -104,9 +122,9 @@ class Users
     {
         $exist_record=$this->existUserForSync($values['LoginAccount']);
         if($exist_record){
-            $exist_record->update($values);
+           return $exist_record->update($values);
         }else{
-            TPUserForSync::create($values);
+           return TPUserForSync::create($values);
         }
     }
     private function xxsyncUserFromStudent(Student $student, $action)
@@ -173,7 +191,10 @@ class Users
     {
           return '0000';
     }
-
+    public function userExist($account)
+    {
+          return TPUser::where('LoginName',$account)->first();
+    }
     public function existUserForSync($account)
     {
           return TPUserForSync::where('SyncStatus',0)

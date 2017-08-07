@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\SyncUsers::class
+        Commands\SyncUsers::class,
+         Commands\SyncDepartments::class
     ];
 
     /**
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->command('sync:users')->everyMinute();
+        $schedule->command('sync:departments')->everyMinute();
              
     }
 

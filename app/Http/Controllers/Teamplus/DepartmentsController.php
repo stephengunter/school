@@ -21,9 +21,11 @@ class DepartmentsController extends BaseController
 
     public function index()
     {
+        $this->TPDepartments->syncDepartments();
         if(!request()->ajax()) return view('tp-departments.index');
 
-        
+       
+       
         $departments=$this->departments->getAll()->where('active',true)
                                        ->orderBy('parent')
                                        ->orderBy('order','desc')
@@ -34,13 +36,14 @@ class DepartmentsController extends BaseController
         foreach($departments as $department){
             $name=$department->name;
             $exsit=$this->TPDepartments->getTPDepartmentByName($name);
+            
             if(!$exsit){
                 $existDepartmentForSync=$this->TPDepartments->existDepartmentForSync($name);
                 if(!$existDepartmentForSync)  array_push($departmentList, $department);
                
             }
-        }                                        
-         
+        }                                
+        
         return response()
             ->json([
                 'departments' => $departmentList
@@ -53,8 +56,15 @@ class DepartmentsController extends BaseController
         $ids=$request['department_ids'];
         for($i = 0; $i < count($ids); ++$i){
            $department=$this->departments->findOrFail($ids[$i]);
-           $action='insert';
-           $this->TPDepartments->createDepartmentForSync($department, $action);
+           
+           \App\Teamplus\DepartmentUpdateRecord::create([
+               'department_id' => $department->id,
+               'name' => $department->name,
+               'parent' => $department->parentName(),
+               'delete' => false,
+
+           ]);
+
         }
         
        
