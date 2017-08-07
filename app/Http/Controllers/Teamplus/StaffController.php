@@ -19,7 +19,7 @@ class StaffController extends BaseController
 
     public function index()
     {
-        
+       
         if(!request()->ajax()) return view('tp-staff.index');
        
        
@@ -58,7 +58,7 @@ class StaffController extends BaseController
            \App\Teamplus\StaffUpdateRecord::create([
                'name' => $staff->getName(),
                'number' => $staff->number,
-               'department' => $staff->class->name,
+               'department' => $staff->unit->name,
                'email' => $staff->user->email,
                'password' => '000000',
                'status' => 1,

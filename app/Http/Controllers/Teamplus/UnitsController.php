@@ -19,7 +19,7 @@ class UnitsController extends BaseController
 
     public function index()
     {
-        
+       
         if(!request()->ajax()) return view('tp-units.index');
 
         
@@ -52,8 +52,14 @@ class UnitsController extends BaseController
         $ids=$request['unit_ids'];
         for($i = 0; $i < count($ids); ++$i){
            $unit=$this->units->findOrFail($ids[$i]);
-           $action='insert';
-           $this->TPDepartments->createUnitForSync($unit, $action);
+           \App\Teamplus\DepartmentUpdateRecord::create([
+               'department_id' => $unit->id,
+               'type' => 'unit',
+               'name' => $unit->name,
+               'parent' => $unit->parentName(),
+               'delete' => false,
+
+           ]);
         }
         
        

@@ -21,8 +21,7 @@ class Users
 {
     public function syncUsers()
     {
-       
-        // $this->syncStaffs();
+        $this->syncStaffs();
         $this->syncStudents();  
     }
     public function syncStudents()
@@ -128,70 +127,15 @@ class Users
            return TPUserForSync::create($values);
         }
     }
-    private function xxsyncUserFromStudent(Student $student, $action)
-    {
-        $tp_department=$this->getTPDepartmentByName($student->class->name);
-        
-        $values= $this-> initializeValues($student->user,$action);
-        $values['LoginAccount']=$student->number;
-        $values['EmpID']=$student->number;
-        $values['Name']=$student->getName();
-        $values['DeptCode']=$tp_department->Code;
-        
-        
-        $exist_record=$this->existUserForSync($values['LoginAccount']);
-        if($exist_record){
-            $exist_record->update($values);
-        }else{
-            TPUserForSync::create($values);
-        }
-    }
-    private function xxsyncUserFromStaff(Staff $staff, $action)
-    {
-        $tp_department=$this->getTPDepartmentByName($staff->unit->name);
-        
-        $values= $this-> initializeValues($staff->user,$action);
-        $values['LoginAccount']=$staff->number;
-        $values['EmpID']=$staff->number;
-        $values['Name']=$staff->getName();
-        $values['DeptCode']=$tp_department->Code;
-
-        $exist_record=$this->existUserForSync($values['LoginAccount']);
-        if($exist_record){
-            $exist_record->update($values);
-        }else{
-            TPUserForSync::create($values);
-        }
-        
-    }
+  
     
     private function getTPDepartmentByName($name)
     {
          return TPDepartment::where('Name',$name)->first();
     }
-    private function xxinitializeValues(User $user,$action)
-    {
-        $values=TPUserForSync::initialize();
-        $values['Email']=$user->email;
+    
 
-        $action=strtolower($action);
-        if($action=='delete'){
-             $values['Status']=3;
-        }else if($action=='insert'){
-            $values['Password']=$this->defaultPassword($user);
-        }else if($action=='stop'){
-            $values['Status']=2;
-        }else if($action=='leave'){
-            $values['Status']=2;
-        }
-        
-        return $values;
-    }
-
-    private function xxdefaultPassword($user)
-    {
-          return '0000';
-    }
+   
     public function userExist($account)
     {
           return TPUser::where('LoginName',$account)->first();
@@ -201,6 +145,8 @@ class Users
           return TPUserForSync::where('SyncStatus',0)
                              ->where('LoginAccount',$account)->first();
     }
+
+    
 
 
     

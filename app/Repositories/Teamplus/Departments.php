@@ -16,6 +16,7 @@ class Departments
 {
     public function syncDepartments()
     {
+        
         $records=DepartmentUpdateRecord::where('done', false )->get();
         foreach($records as $record){
                $parent_code='';

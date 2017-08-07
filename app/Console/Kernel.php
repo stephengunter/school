@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SyncUsers::class,
-         Commands\SyncDepartments::class
+        Commands\SyncDepartments::class
     ];
 
     /**
@@ -27,9 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-
-        $schedule->command('sync:users')->everyMinute();
-        $schedule->command('sync:departments')->everyMinute();
+        $schedule->command('sync:departments')->dailyAt('01:00');
+        $schedule->command('sync:users')->dailyAt('02:00');
+        
              
     }
 
