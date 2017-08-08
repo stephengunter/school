@@ -10,7 +10,7 @@ class UnitSeeder extends Seeder
   
     public function run()
     {
-        Excel::load('C:\Users\Stephen\Desktop\www\school\departments.xlsx', function($reader) {
+        Excel::load('C:\Users\Stephen\Desktop\php\departments.xlsx', function($reader) {
             $units = $reader->all()->first();
             
             for($i = 0; $i < count($units); ++$i) {
