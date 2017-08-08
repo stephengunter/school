@@ -4,11 +4,43 @@ use Illuminate\Database\Seeder;
 
 use App\Classes;
 use App\Department;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClassesSeeder extends Seeder
 {
-  
     public function run()
+    {
+         Excel::load('C:\Users\Stephen\Desktop\www\school\departments.xlsx', function($reader) {
+            $classes = $reader->get()[1];
+            for($i = 0; $i < count($classes); ++$i) {
+                $entity=$classes[$i];
+                $department=Department::where('name',$entity['department'])->first();
+                if(!$department){
+                    $department=Department::create([
+                        'name'=> $entity['department'],
+                    ]);
+                }
+                $exist=\App\Classes::where('code', $entity['code'])->where('name',$entity['name'])->first();
+                        if($exist){
+                            $exist->update([
+                                'code' => $entity['code'],
+                                'name'=> $entity['name'],
+                                'department_id' => $department->id,
+                                'grade_id' => 1
+                            ]);
+                        }else{
+                            \App\Classes::create([
+                                'code' => $entity['code'],
+                                'name'=> $entity['name'],
+                                'department_id' => $department->id,
+                                'grade_id' => 1
+                            ]);
+                        }
+            }
+        });
+    }
+  
+    public function xxrun()
     {
         $hb = Department::where('name','護理系')->first();
         $entity=Classes::create([

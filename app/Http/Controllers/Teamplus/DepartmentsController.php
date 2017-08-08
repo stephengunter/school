@@ -54,9 +54,16 @@ class DepartmentsController extends BaseController
     public function store(Request $request)
     {
         $ids=$request['department_ids'];
-        for($i = 0; $i < count($ids); ++$i){
-           $department=$this->departments->findOrFail($ids[$i]);
-           
+        $departmentList=\App\Department::whereIn('id',$ids)
+                            ->orderBy('parent')
+                            ->get();
+
+        for($i = 0; $i < count($departmentList); ++$i){
+           $department=$departmentList[$i];
+           $department_id=$department->code;
+           if(!$department_id){
+               $department_id=$department->id;
+           }
            \App\Teamplus\DepartmentUpdateRecord::create([
                'department_id' => $department->id,
                'name' => $department->name,

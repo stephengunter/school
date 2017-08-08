@@ -40,6 +40,7 @@ class StaffController extends BaseController
                 if(!$existStaffForSync)  array_push($staffList, $staff);
                
             }
+            
         }                                
         
         return response()
@@ -64,6 +65,7 @@ class StaffController extends BaseController
                'status' => 1,
 
            ]);
+       
 
         }
         

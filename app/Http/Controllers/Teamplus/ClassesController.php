@@ -57,11 +57,19 @@ class ClassesController extends BaseController
     public function store(Request $request)
     {
         $ids=$request['classes_ids'];
-        for($i = 0; $i < count($ids); ++$i){
-           $entity=$this->classesRepository->findOrFail($ids[$i]);
+        $classList=\App\Classes::whereIn('id',$ids)
+                            ->orderBy('department_id')
+                            ->get();
+
+        for($i = 0; $i < count($classList); ++$i){
+           $entity=$classList[$i];
+           $department_id=$entity->code;
+           if(!$department_id){
+               $department_id=$entity->id;
+           }
            
            \App\Teamplus\DepartmentUpdateRecord::create([
-               'department_id' => $entity->id,
+               'department_id' => $department_id,
                'name' => $entity->name,
                'parent' => $entity->department->name,
                'type' => 'class',

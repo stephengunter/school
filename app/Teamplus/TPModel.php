@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TPModel extends Model
 {
-    protected $connection = 'sqlsrv_teamplus';
+   protected $connection = 'sqlsrv_teamplus';
 }

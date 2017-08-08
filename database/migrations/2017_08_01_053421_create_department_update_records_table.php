@@ -35,6 +35,6 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department_update_records');
+        Schema::connection('sqlsrv_teamplus')->dropIfExists('department_update_records');
     }
 }

@@ -50,10 +50,17 @@ class UnitsController extends BaseController
     public function store(Request $request)
     {
         $ids=$request['unit_ids'];
-        for($i = 0; $i < count($ids); ++$i){
-           $unit=$this->units->findOrFail($ids[$i]);
+        $unitList=\App\Unit::whereIn('id',$ids)
+                            ->orderBy('parent')
+                            ->get();
+        for($i = 0; $i < count($unitList); ++$i){
+           $unit=$unitList[$i];
+           $department_id=$unit->code;
+           if(!$department_id){
+               $department_id=$unit->id;
+           }
            \App\Teamplus\DepartmentUpdateRecord::create([
-               'department_id' => $unit->id,
+               'department_id' => $department_id,
                'type' => 'unit',
                'name' => $unit->name,
                'parent' => $unit->parentName(),

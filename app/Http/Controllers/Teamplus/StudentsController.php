@@ -34,7 +34,8 @@ class StudentsController extends BaseController
         foreach($students as $student){
             $number=$student->number;
             $exsit=$this->TPUsers->userExist($number);
-            
+
+           
             if(!$exsit){
                 $existStudentForSync=$this->TPUsers->existUserForSync($number);
                 if(!$existStudentForSync)  array_push($studentList, $student);

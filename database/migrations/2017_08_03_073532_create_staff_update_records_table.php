@@ -38,6 +38,6 @@ class CreateStaffUpdateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staff_update_records');
+        Schema::connection('sqlsrv_teamplus')->dropIfExists('staff_update_records');
     }
 }
