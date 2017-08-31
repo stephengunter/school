@@ -6,15 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 
 use App\Repositories\Staffs;
-use App\Repositories\Teamplus\Users as TPUsers;
+use App\Repositories\TPSync\Users as TPSyncUsers;
+
+use App\TPSync\StaffUpdateRecord;
 
 class StaffController extends BaseController
 {
     protected $key='staffs';
-    public function __construct(TPUsers $TPUsers,Staffs $staffs) 
+    public function __construct(TPSyncUsers $TPSyncUsers,Staffs $staffs) 
     {
 		 $this->staffs=$staffs;
-         $this->TPUsers=$TPUsers;
+         $this->TPSyncUsers=$TPSyncUsers;
 	}
 
     public function index()
@@ -33,10 +35,10 @@ class StaffController extends BaseController
         $staffList=[];
         foreach($staffs as $staff){
             $number=$staff->number;
-            $exsit=$this->TPUsers->userExist($number);
+            $exsit=$this->TPSyncUsers->userExist($number);
             
             if(!$exsit){
-                $existStaffForSync=$this->TPUsers->existUserForSync($number);
+                $existStaffForSync=$this->TPSyncUsers->existUserForSync($number);
                 if(!$existStaffForSync)  array_push($staffList, $staff);
                
             }
@@ -56,7 +58,7 @@ class StaffController extends BaseController
         for($i = 0; $i < count($ids); ++$i){
            $staff=$this->staffs->findOrFail($ids[$i]);
            
-           \App\Teamplus\StaffUpdateRecord::create([
+           StaffUpdateRecord::create([
                'name' => $staff->getName(),
                'number' => $staff->number,
                'department' => $staff->unit->name,

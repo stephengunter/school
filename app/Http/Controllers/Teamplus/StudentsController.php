@@ -6,20 +6,23 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 
 use App\Repositories\Students;
-use App\Repositories\Teamplus\Users as TPUsers;
+use App\Repositories\TPSync\Users as TPSyncUsers;
+
+use App\TPSync\StudentUpdateRecord;
 
 class StudentsController extends BaseController
 {
     protected $key='students';
-    public function __construct(TPUsers $TPUsers,Students $students) 
+    public function __construct(TPSyncUsers $TPSyncUsers,Students $students) 
     {
 		 $this->students=$students;
-         $this->TPUsers=$TPUsers;
+         $this->TPSyncUsers=$TPSyncUsers;
 	}
 
     public function index()
     {
-        
+
+        $this->TPSyncUsers->syncUsers();
         if(!request()->ajax()) return view('tp-students.index');
        
        
@@ -33,11 +36,11 @@ class StudentsController extends BaseController
         $studentList=[];
         foreach($students as $student){
             $number=$student->number;
-            $exsit=$this->TPUsers->userExist($number);
+            $exsit=$this->TPSyncUsers->userExist($number);
 
            
             if(!$exsit){
-                $existStudentForSync=$this->TPUsers->existUserForSync($number);
+                $existStudentForSync=$this->TPSyncUsers->existUserForSync($number);
                 if(!$existStudentForSync)  array_push($studentList, $student);
                
             }
@@ -56,7 +59,7 @@ class StudentsController extends BaseController
         for($i = 0; $i < count($ids); ++$i){
            $student=$this->students->findOrFail($ids[$i]);
            
-           \App\Teamplus\StudentUpdateRecord::create([
+           StudentUpdateRecord::create([
                'name' => $student->getName(),
                'number' => $student->number,
                'department' => $student->class->name,

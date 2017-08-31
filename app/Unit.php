@@ -51,6 +51,14 @@ class Unit extends Model
        
     }
 
+	public function parentCode()
+    {
+		$parent_department=$this->parentDepartment();
+		if($parent_department)  return $parent_department->code;
+		return '';
+       
+    }
+
 
 	public function getParents()
 	{

@@ -14,16 +14,16 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv_teamplus')->create('department_update_records', function (Blueprint $table) {
+        Schema::connection('sqlsrv_tp_sync')->create('department_update_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('department_id');
             $table->string('name');
             $table->string('parent')->nullable();
-            $table->string('type')->nullable();
-            $table->boolean('delete')->default(false);
-            $table->date('date')->default(Carbon::today());
+            $table->boolean('is_delete')->default(false);
 
             $table->boolean('done')->default(false);
+            $table->boolean('success')->default(false);
+            $table->string('msg')->nullable();
             $table->timestamps();
         });
     }
@@ -35,6 +35,6 @@ class CreateDepartmentUpdateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv_teamplus')->dropIfExists('department_update_records');
+        Schema::connection('sqlsrv_tp_sync')->dropIfExists('department_update_records');
     }
 }

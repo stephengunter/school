@@ -6,15 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 
 use App\Repositories\Units;
-use App\Repositories\Teamplus\Departments as TPDepartments;
+use App\Repositories\TPSync\Departments as TPSyncDepartments;
+
+use App\TPSync\DepartmentUpdateRecord;
 
 class UnitsController extends BaseController
 {
     
-    public function __construct(TPDepartments $TPDepartments,Units $units) 
+    public function __construct(TPSyncDepartments $TPSyncDepartments,Units $units) 
     {
 		 $this->units=$units;
-         $this->TPDepartments=$TPDepartments;
+         $this->TPSyncDepartments=$TPSyncDepartments;
 	}
 
     public function index()
@@ -31,10 +33,10 @@ class UnitsController extends BaseController
         
         $unitList=[];
         foreach($units as $unit){
-            $name=$unit->name;
-            $exsit=$this->TPDepartments->getTPDepartmentByName($name);
+            $code=$unit->code;
+            $exsit=$this->TPSyncDepartments->getTPDepartmentByCode($code);
             if(!$exsit){
-                $existUnitForSync=$this->TPDepartments->existDepartmentForSync($name);
+                $existUnitForSync=$this->TPSyncDepartments->existDepartmentForSync($code);
                 if(!$existUnitForSync)  array_push($unitList, $unit);
                
             }
@@ -59,12 +61,12 @@ class UnitsController extends BaseController
            if(!$department_id){
                $department_id=$unit->id;
            }
-           \App\Teamplus\DepartmentUpdateRecord::create([
+           DepartmentUpdateRecord::create([
                'department_id' => $department_id,
                'type' => 'unit',
                'name' => $unit->name,
-               'parent' => $unit->parentName(),
-               'delete' => false,
+               'parent' => $unit->parentCode(),
+               'is_delete' => false,
 
            ]);
         }

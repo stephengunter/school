@@ -7,69 +7,66 @@ use App\Student;
 use App\Staff;
 use App\Department;
 use App\Unit;
-use App\StudentUpdateRecord;
+
+use App\TPSync\StudentUpdateRecord;
+use App\TPSync\StaffUpdateRecord;
+use App\TPSync\DepartmentUpdateRecord;
+
 
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class UpdateRecordSeeder extends Seeder 
 {
 	public function run()
 	{
 		$students=Student::all();
-            $role='Student';
             for($i = 0; $i < 3; ++$i) {
                  $student=$students[$i];
-                 UserUpdateRecord::create([
-                    'user_id'=>$student->user->id,
-                    'role' => $role,
-                    'action' => 'Insert',
-                    'date' => '2017-7-19',
-                 ]);
-            }
-            for($i = 3; $i < 6; ++$i) {
-                 $student=$students[$i];
-                 UserUpdateRecord::create([
-                    'user_id'=>$student->user->id,
-                    'role' => $role,
-                    'action' => 'Update',
-                    'date' => '2017-7-22',
-                 ]);
-            }
-            for($i = 6; $i < 9; ++$i) {
-                 $student=$students[$i];
-                 UserUpdateRecord::create([
-                    'user_id'=>$student->user->id,
-                    'role' => $role,
-                    'action' => 'Delete',
-                    'date' => '2017-7-24',
+                 StudentUpdateRecord::create([
+                    'name'=>$student->getName(),
+                    'number' =>$student->number,
+                    'department' =>strtolower($student->class->code),
+                    'email' => $student->user->email,
+                    'password' => '000000',
+                    'status' => 1
                  ]);
             }
 
-            // $staffs=Staff::all();
-            // $role='Staff';
-            // $staff=$staffs[0];
-            // Student::create([
-            //       'user_id'=>$staff->user->id,
-            //       'role' => $role,
-            //       'action' => 'Insert',
-            //       'date' => '2017-7-19',
-            // ]);
-            // $staff=$staffs[1];
-            // Student::create([
-            //       'user_id'=>$staff->user->id,
-            //       'role' => $role,
-            //       'action' => 'Update',
-            //       'date' => '2017-7-19',
-            // ]);
-         
-            // $staff=$staffs[2];
-            // UserUpdateRecord::create([
-            //       'user_id'=>$staff->user->id,
-            //       'role' => $role,
-            //       'action' => 'Delete',
-            //       'date' => '2017-7-24',
-            // ]);
+
+            $staffs=Staff::all();
+            for($i = 0; $i < 3; ++$i) {
+                 $staff=$staffs[$i];
+                 StaffUpdateRecord::create([
+                    'name'=>$staff->getName(),
+                    'number' =>$staff->number,
+                    'department' =>strtolower($staff->unit->code),
+                    'email' => $staff->user->email,
+                    'password' => '000000',
+                    'job_title' => '主任',
+                    'extend' => '#2345',
+                    'status' => 1
+                 ]);
+            }
+
+            $units=Unit::all();
+            for($i = 0; $i < 3; ++$i) {
+                 $unit=$units[$i];
+                 DepartmentUpdateRecord::create([
+                    'department_id'=>$unit->code,
+                    'name' =>$unit->name,
+                    'parent' =>strtolower($unit->parentCode()),
+                    'is_delete' => false,
+                 ]);
+            }
+
+           
+            
+
+
+
+          
         
 				
 	}

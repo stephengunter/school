@@ -14,7 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SyncUsers::class,
-        Commands\SyncDepartments::class
+        Commands\SyncDepartments::class,
+        Commands\SyncEvents::class,
+        Commands\SyncGroups::class
     ];
 
     /**
@@ -25,10 +27,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('sync:events')->everyFiveMinutes();
+                
         $schedule->command('sync:departments')->dailyAt('01:00');
         $schedule->command('sync:users')->dailyAt('02:00');
+        $schedule->command('sync:group')->dailyAt('05:00');
         
              
     }

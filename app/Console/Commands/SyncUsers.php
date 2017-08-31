@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Repositories\Teamplus\Users;
+use App\Repositories\TPSync\Users;
 
 class SyncUsers extends Command
 {

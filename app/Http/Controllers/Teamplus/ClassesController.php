@@ -7,15 +7,17 @@ use App\Http\Controllers\BaseController;
 
 use App\Repositories\Departments;
 use App\Repositories\ClassesRepository;
-use App\Repositories\Teamplus\Departments as TPDepartments;
+
+use App\Repositories\TPSync\Departments as TPSyncDepartments;
+use App\TPSync\DepartmentUpdateRecord;
 
 class ClassesController extends BaseController
 {
     
-    public function __construct(TPDepartments $TPDepartments,Departments $departments,ClassesRepository $classesRepository) 
+    public function __construct(TPSyncDepartments $TPSyncDepartments,Departments $departments,ClassesRepository $classesRepository) 
     {
 		 $this->departments=$departments;
-         $this->TPDepartments=$TPDepartments;
+         $this->TPSyncDepartments=$TPSyncDepartments;
          $this->classesRepository=$classesRepository;
 	}
 
@@ -36,10 +38,10 @@ class ClassesController extends BaseController
         
         $must_sync_classes=[];
         foreach($classesList as $entity){
-            $name=$entity->name;
-            $exsit=$this->TPDepartments->getTPDepartmentByName($name);
+            $code=$entity->code;
+            $exsit=$this->TPSyncDepartments->getTPDepartmentByCode($code);
             if(!$exsit){
-                $existDepartmentForSync=$this->TPDepartments->existDepartmentForSync($name);
+                $existDepartmentForSync=$this->TPSyncDepartments->existDepartmentForSync($code);
                 if(!$existDepartmentForSync) {
                    array_push($must_sync_classes, $entity);
                 } 
@@ -68,12 +70,12 @@ class ClassesController extends BaseController
                $department_id=$entity->id;
            }
            
-           \App\Teamplus\DepartmentUpdateRecord::create([
+           DepartmentUpdateRecord::create([
                'department_id' => $department_id,
                'name' => $entity->name,
-               'parent' => $entity->department->name,
+               'parent' => $entity->department->code,
                'type' => 'class',
-               'delete' => false,
+               'is_delete' => false,
 
            ]);
 

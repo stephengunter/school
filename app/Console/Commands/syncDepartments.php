@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Repositories\Teamplus\Departments;
+use App\Repositories\TPSync\Departments;
 
 class SyncDepartments extends Command
 {

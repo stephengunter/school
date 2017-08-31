@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UnitSeeder::class);	
         $this->call(ClassesSeeder::class);
-        //$this->call(UserSeeder::class);
-        // $this->call(UpdateRecordSeeder::class);
+        $this->call(UserSeeder::class);
+
+
+        $this->call(TPSyncSeeder::class);
+        $this->call(UpdateRecordSeeder::class);
     }
 }

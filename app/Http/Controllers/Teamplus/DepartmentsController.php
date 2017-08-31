@@ -7,15 +7,17 @@ use App\Http\Controllers\BaseController;
 
 use App\Repositories\Departments;
 use App\Repositories\ClassesRepository;
-use App\Repositories\Teamplus\Departments as TPDepartments;
+use App\Repositories\TPSync\Departments as TPSyncDepartments;
+
+use App\TPSync\DepartmentUpdateRecord;
 
 class DepartmentsController extends BaseController
 {
     protected $key='departments';
-    public function __construct(TPDepartments $TPDepartments,Departments $departments,ClassesRepository $classesRepository) 
+    public function __construct(TPSyncDepartments $TPSyncDepartments,Departments $departments,ClassesRepository $classesRepository) 
     {
 		 $this->departments=$departments;
-         $this->TPDepartments=$TPDepartments;
+         $this->TPSyncDepartments=$TPSyncDepartments;
          $this->classesRepository=$classesRepository;
 	}
 
@@ -34,11 +36,11 @@ class DepartmentsController extends BaseController
         
         $departmentList=[];
         foreach($departments as $department){
-            $name=$department->name;
-            $exsit=$this->TPDepartments->getTPDepartmentByName($name);
             
+            $code=$department->code;
+            $exsit=$this->TPSyncDepartments->getTPDepartmentByCode($code);
             if(!$exsit){
-                $existDepartmentForSync=$this->TPDepartments->existDepartmentForSync($name);
+                $existUnitForSync=$this->TPSyncDepartments->existDepartmentForSync($code);
                 if(!$existDepartmentForSync)  array_push($departmentList, $department);
                
             }
@@ -64,11 +66,11 @@ class DepartmentsController extends BaseController
            if(!$department_id){
                $department_id=$department->id;
            }
-           \App\Teamplus\DepartmentUpdateRecord::create([
-               'department_id' => $department->id,
+           DepartmentUpdateRecord::create([
+               'department_id' => $department->code,
                'name' => $department->name,
-               'parent' => $department->parentName(),
-               'delete' => false,
+               'parent' => $department->parentCode(),
+               'is_delete' => false,
 
            ]);
 

@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Repositories\Teamplus;
+namespace App\Repositories\TPSync;
 
 use DB;
-use App\Department;
-use App\Classes;
-use App\Unit;
-use App\Teamplus\DepartmentUpdateRecord;
+use App\TPSync\DepartmentUpdateRecord;
+
 use App\Teamplus\TPDepartment;
 use App\Teamplus\TPDepartmentForSync;
 use App\Support\Helper;
@@ -16,27 +14,40 @@ class Departments
 {
     public function syncDepartments()
     {
-        
         $records=DepartmentUpdateRecord::where('done', false )->get();
+        
         foreach($records as $record){
                $parent_code='';
                $parent_checked=true;
                if($record->parent){
-                   $parent_department=TPDepartment::where('Name',$record->parent)->first();
+                   $parent_department=TPDepartment::where('Code',$record->parent)->first();
                    if($parent_department) $parent_code=$parent_department->Code;
                    else $parent_checked=false;
                }
-               if($parent_checked){
+               if(!$parent_checked){
+                   $record->msg ='父部門 ' . $record->parent . ' 不存在'; 
+                   $record->done=true;
+                   $record->success=false;
+                   $record->save();                   
+               }else{
                     $code=$record->getCode();
                     $name=$record->name;
-                    $delete=$record->delete;
+                    $delete=$record->is_delete;
                     $saved= $this->syncDepartment($name, $code,$parent_code,$delete);
                     if($saved){
-                       $record->done=true;
-                       $record->save();
+                        $record->msg ='';
+                        $record->done=true;
+                        $record->success=true;
+                        $record->save();
+                    }else{
+                        $record->msg ='新增DepartmentForSync失敗';
+                        $record->done=true;
+                        $record->success=false;
+                        $record->save();
                     }
-                    
                }
+
+
                
         }
         
@@ -62,14 +73,20 @@ class Departments
         }
     }
     
-    public function existDepartmentForSync($name)
+    public function existDepartmentForSync($code)
     {
           return TPDepartmentForSync::where('SyncStatus',0)
-                             ->where('Name',$name)->first();
+                             ->where('Code',strtolower($code))->first();
     }
+    
     public function getTPDepartmentByName($name)
     {
          return TPDepartment::where('Name',$name)->first();
+    }
+
+    public function getTPDepartmentByCode($code)
+    {
+         return TPDepartment::where('Code',strtolower($code))->first();
     }
     
 }
