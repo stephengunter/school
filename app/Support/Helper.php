@@ -194,8 +194,9 @@ class Helper
 
     }
 
-    public static function strFromArray($arrVal,$split=',')
+    public static function strFromArray(Array $arrVal,$split=',')
     {
+        if(!count($arrVal)) return '';
         $str='';
         for($i = 0; $i < count($arrVal); ++$i) {
             if($i>0){
@@ -203,6 +204,8 @@ class Helper
             }
             $str .=  $arrVal[$i];
         }
+
+        return $str;
     }
     
     

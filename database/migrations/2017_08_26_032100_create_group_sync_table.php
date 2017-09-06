@@ -13,10 +13,11 @@ class CreateGroupSyncTable extends Migration
         Schema::connection('sqlsrv_tp_sync')->create('group_sync', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tp_id')->unsigned()->default(0);
+            $table->string('parent')->nullable(); 
             $table->string('code')->nullable(); 
             $table->string('name')->nullable();
             $table->string('admin')->nullable();
-            $table->text('members');
+            $table->text('members')->nullable();
 
             $table->boolean('is_delete')->default(false);
             $table->boolean('sync')->default(false);

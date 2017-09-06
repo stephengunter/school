@@ -41,7 +41,7 @@ class SyncUsers extends Command
      */
     public function handle()
     {
-        $this->users->syncUsers();
+        $this->users->syncStudents();
         $this->info('Sync Users Has Done.');
     }
 }

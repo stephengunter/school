@@ -8,7 +8,7 @@ class GroupSync extends BaseTPSyncModel
 {
     protected $table = 'group_sync';
     protected $fillable = [  
-        'code', 'name' ,'members', 'admin', 
+        'code', 'parent' ,'name' ,'members', 'admin', 
         'tp_id','is_delete', 'sync'
      
     ];

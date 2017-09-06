@@ -13,22 +13,67 @@ use Config;
 use Carbon\Carbon;
 
 use App\Console\Commands\SyncNotices;
-use App\Services\Teamplus\NoticeService;
+use App\Services\Teamplus\GroupService;
 use App\Repositories\Teamplus\Notices;
 use App\TPSync\SchoolNotice;
 use DB;
 
+use App\Support\Helper;
+
 class GroupsController extends BaseController
 {
-    public function __construct(NoticeService  $noticeService)
+    public function __construct(GroupService  $groupService)
     {
-        $this->noticeService=$noticeService;
+        $this->groupService=$groupService;
     }
 
     function test()
     {
-        $this->noticeService->syncNotices();
+        dd(\App\TPSync\SchoolEventCalendar::create([
+            'code' => 'dd',
+            'name' => 'dd',
+            'members' => 'dd',
+            'description' => 'dd',
+            'start_time' => \Carbon\Carbon::now(),
+            'end_time' => \Carbon\Carbon::now()
+
+        ]));
+
+        // $repo=new \App\Repositories\TPSync\Departments();
+        // $repo->syncDepartments();
+        // dd('done');
+        
+        // $this->groupService->syncGroups();
+        // dd('done');
+
+        // $from=2086;
+        // $end=2168;
+        // for( $i = $from ; $i <= $end ; $i++){
+        //     $department=\App\Teamplus\TPDepartment::find($i);
+        //     if($department){
+        //         $userAccounts=\App\Teamplus\TPUser::where('DeptID', $i)
+        //                                           ->pluck('LoginName')->toArray();
+                
+        //         $members=Helper::strFromArray($userAccounts);
+        //         if($members){
+        //             \App\TPSync\GroupSync::create([
+        //                 'code' => $department->Code,
+        //                 'name' => $department->Name,
+        //                 'members' => $members,
+        //                 'admin' => '',
+    
+        //             ]);
+        //         }
+        //     }
+        // }
+
        
+        
+        return 'done';
+        
+
+        
+        
     }
 
     function xsxsxtest()

@@ -10,7 +10,6 @@ use App\Unit;
 
 use App\TPSync\StudentUpdateRecord;
 use App\TPSync\StaffUpdateRecord;
-use App\TPSync\DepartmentUpdateRecord;
 
 
 use Faker\Factory;
@@ -50,16 +49,7 @@ class UpdateRecordSeeder extends Seeder
                  ]);
             }
 
-            $units=Unit::all();
-            for($i = 0; $i < 3; ++$i) {
-                 $unit=$units[$i];
-                 DepartmentUpdateRecord::create([
-                    'department_id'=>$unit->code,
-                    'name' =>$unit->name,
-                    'parent' =>strtolower($unit->parentCode()),
-                    'is_delete' => false,
-                 ]);
-            }
+           
 
            
             
