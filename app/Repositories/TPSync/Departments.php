@@ -12,10 +12,12 @@ use Carbon\Carbon;
 
 class Departments 
 {
+    
+
     public function syncDepartments()
     {
-        $records=GroupSync::where('sync', false )->get();
-        
+        $records=GroupSync::orderBy('parent')->get();
+       
         foreach($records as $record){
                $parent_code='';
                $parent_checked=true;
@@ -30,9 +32,11 @@ class Departments
                    $record->success=false;
                    $record->save();                   
                }else{
+                    
                     $code=strtolower($record->code);
                     $name=$record->name;
                     $delete=$record->is_delete;
+                   
                     $saved= $this->syncDepartment($name, $code,$parent_code,$delete);
                     if($saved){
                         $record->msg ='';
@@ -67,7 +71,9 @@ class Departments
     }
     private function saveDepartmentForSync($values)
     {
+       
         $exist_record=$this->existDepartmentForSync($values['Name']);
+      
         if($exist_record){
            return  $exist_record->update($values);
         }else{

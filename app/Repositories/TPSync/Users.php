@@ -23,8 +23,8 @@ class Users
     }
     public function syncStudents()
     {
-        $records=StudentUpdateRecord::where('done', false )->get();
-
+        $records=StudentUpdateRecord::where('done', false )->take(15)->get();
+       
         foreach($records as $record){
                $number=$record->number;
                $password=$record->password;
@@ -77,6 +77,7 @@ class Users
     
     public function syncUserFromStudent($number, $password ,$email, $name, $class,$status)
     {
+       
         $code= strtolower($class);
 
         $tp_department=TPDepartment::where('Code',$code)->first();
@@ -99,6 +100,7 @@ class Users
             }
         
         }else{
+            
             return '班級 ' . $code . ' 不存在';
         }
 

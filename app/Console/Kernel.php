@@ -17,7 +17,9 @@ class Kernel extends ConsoleKernel
         Commands\SyncDepartments::class,
         Commands\SyncEvents::class,
         Commands\SyncNotices::class,
-        Commands\SyncGroups::class
+        Commands\SyncGroups::class,
+        Commands\SyncClasses::class,
+        Commands\SyncUnits::class
     ];
 
     /**
@@ -30,7 +32,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sync:events')->everyFiveMinutes();
         $schedule->command('sync:notices')->everyFiveMinutes();
-                
+        
+        $schedule->command('sync:classes')->dailyAt('00:00');
+        $schedule->command('sync:units')->dailyAt('00:30');
         $schedule->command('sync:departments')->dailyAt('01:00');
         $schedule->command('sync:users')->dailyAt('02:00');
         $schedule->command('sync:group')->dailyAt('05:00');

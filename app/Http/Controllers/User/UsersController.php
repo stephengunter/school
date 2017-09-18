@@ -14,8 +14,8 @@ use App\Http\Requests\User\FindUserRequest;
 use App\User;
 use App\Profile;
 
-//use App\Repositories\Users;
-use App\Repositories\Teamplus\Users;
+use App\Repositories\Users;
+
 use App\Repositories\Titles;
 use App\Repositories\Registrations;
 use DB;
@@ -43,9 +43,16 @@ class UsersController extends BaseController
           $this->registrations=$registrations;
 
           
-	}
+    }
+    
+    public function index()
+    {
+        $repo=new \App\Repositories\TPSync\Users();
+        $test=$repo->syncStudents();
+        dd($test);
+    }
 
-	public function index()
+	public function xxindex()
     {
         $this->users->exportExcel();
         dd('done');
