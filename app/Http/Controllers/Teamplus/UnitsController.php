@@ -17,7 +17,8 @@ class UnitsController extends BaseController
     {
 		 $this->units=$units;
          $this->TPSyncDepartments=$TPSyncDepartments;
-	}
+    }
+   
 
     public function index()
     {

@@ -199,10 +199,14 @@ class Helper
         if(!count($arrVal)) return '';
         $str='';
         for($i = 0; $i < count($arrVal); ++$i) {
-            if($i>0){
-                $str .= ',' ;
+            
+            if($arrVal[$i]){
+                if($i>0){
+                    $str .= ',' ;
+                }
+                $str .=  $arrVal[$i];
             }
-            $str .=  $arrVal[$i];
+           
         }
 
         return $str;

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     protected $table = 'classes';
-    protected $fillable = ['name', 'department_id', 'grade_id',
+    protected $fillable = ['name', 'code', 'department_id', 'grade_id',
 						    'active', 'removed','updated_by'
 						  ];
     public static function initialize($department)

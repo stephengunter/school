@@ -27,8 +27,48 @@ class GroupsController extends BaseController
         $this->groupService=$groupService;
     }
 
-    function test()
+    function cscsc4ggtest()
     {
+        
+        $subs= \App\TPSync\GroupSync::find(173)->getMembers();
+        return $subs;
+    }
+
+    function svcscsctest()
+    {
+        $repo=new \App\Repositories\Teamplus\Groups();
+
+        $userNo=3504;
+        $owner='';
+
+       
+         $sn_list= \App\Teamplus\TPPrivateChannel::where('UserNo',$userNo)
+        ->where('IsDelete',false)->pluck('SN')->toArray();
+
+       
+        
+        for($i=0; $i<count($sn_list); $i++){
+         
+            $repo->delete($sn_list[$i]);
+          
+        }
+                                
+
+                                 return 'done';
+
+        $userNo=1025;
+        $sn_list= \App\Teamplus\TPPrivateChannel::where('UserNo',$userNo)
+                                ->pluck('SN')->toArray();
+
+        
+        $repo=new \App\Repositories\Teamplus\Groups();
+        return $repo->delete(2073);
+       return   \App\Teamplus\TPPrivateChannel::all();
+    }
+
+    function xplplxtest()
+    {
+        dd(\App\TPSync\SchoolEventCalendar::first());
         dd(\App\TPSync\SchoolEventCalendar::create([
             'code' => 'dd',
             'name' => 'dd',

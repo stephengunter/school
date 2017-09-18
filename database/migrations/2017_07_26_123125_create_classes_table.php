@@ -15,10 +15,10 @@ class CreateClassesTable extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('department_id')->unsigned();
+            $table->integer('department_id')->unsigned()->nullable();	
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             
-            $table->integer('grade_id')->unsigned();
+            $table->integer('grade_id')->unsigned()->nullable();
             	
 			$table->string('name');	
             $table->string('code')->nullable();	

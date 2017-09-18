@@ -17,6 +17,12 @@ class Units
                             ->orderBy('updated_at','desc');
 
     }
+
+    public function getByCode($code)
+    {
+        $code=strtolower($code);
+        return Unit::where('code',$code)->first();
+    }
     
     public function findOrFail($id)
     {

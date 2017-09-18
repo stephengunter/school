@@ -12,16 +12,27 @@ use App\Repositories\ClassesRepository;
 use App\Repositories\Departments;
 use App\Repositories\Grades;
 
+use App\Services\ClassesService;
+
 class ClassesController extends BaseController
 {
-    
-    public function __construct(ClassesRepository $classesRepository, Departments $departments,
-                                Grades $grades) 
+    public function __construct(ClassesService $classesService)
     {
-		$this->classesRepository=$classesRepository;
-        $this->departments=$departments;
-        $this->grades=$grades;
-	}
+        $this->classesService=$classesService;
+    }
+
+    public function index()
+    {
+        $test= $this->classesService->syncClasses();
+        dd($test);
+    }
+    // public function __construct(ClassesRepository $classesRepository, Departments $departments,
+    //                             Grades $grades) 
+    // {
+	// 	$this->classesRepository=$classesRepository;
+    //     $this->departments=$departments;
+    //     $this->grades=$grades;
+	// }
     public function indexOptions()
     {
         $request = request();
@@ -36,7 +47,7 @@ class ClassesController extends BaseController
             ]);
 
     }
-    public function index()
+    public function xxindex()
     {
         $current_user=$this->currentUser();
 
