@@ -23,7 +23,7 @@ class Users
     }
     public function syncStudents()
     {
-        $records=StudentUpdateRecord::where('done', false )->take(15)->get();
+        $records=StudentUpdateRecord::where('done', false )->get();
        
         foreach($records as $record){
                $number=$record->number;
@@ -49,7 +49,7 @@ class Users
     }
     public function syncStaffs()
     {
-        $records=StaffUpdateRecord::where('done', false )->take(15)->get();
+        $records=StaffUpdateRecord::where('done', false )->get();
         foreach($records as $record){
                $number=$record->number;
                $password=$record->password;
