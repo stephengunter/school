@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\SyncUsers::class,
+        Commands\SyncStaff::class,
+        Commands\SyncStudents::class,
         Commands\SyncDepartments::class,
         Commands\SyncEvents::class,
         Commands\SyncNotices::class,
