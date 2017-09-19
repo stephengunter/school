@@ -3,125 +3,135 @@
 
 
 <style>
-.hummingbird-treeview,
-.hummingbird-treeview *
-{
-    list-style: none;
-    font-size: 20px;
-    line-height: 24px;
-}
+    .hummingbird-treeview,
+    .hummingbird-treeview * {
+        list-style: none;
+        font-size: 20px;
+        line-height: 24px;
+    }
 
-.hummingbird-treeview label {
-    font-weight: normal;
-}
+        .hummingbird-treeview label {
+            font-weight: normal;
+        }
 
 
-.hummingbird-treeview input[type=checkbox] {
-    width : 16px;
-    height :16px;
-    padding: 0px;
-    margin: 0px;
-}
+        .hummingbird-treeview input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            padding: 0px;
+            margin: 0px;
+        }
 
-.hummingbird-treeview ul:not(.hummingbird-base) {
-    display: none;
-}
+        .hummingbird-treeview ul:not(.hummingbird-base) {
+            display: none;
+        }
 
-.hummingbird-treeview .fa {
-    font-style: normal;
-    cursor: pointer;
-}
-
+        .hummingbird-treeview .fa {
+            font-style: normal;
+            cursor: pointer;
+        }
 </style>
 <div class="container">
-  
-<h1>發送校務系統通知</h1>
-<form  id="needs-validation" novalidate>
-    <div class="row">
-        <div class="col-md-12">
-        <label for="validationCustom01">通知內容</label>
-        <textarea name="Summary" class="form-control" rows="6" cols="50">
-            
-        </textarea>
+
+    <h1>發送校務系統通知</h1>
+    <form id="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-12">
+                <label for="validationCustom01">通知內容</label>
+                <textarea name="Summary" class="form-control" rows="6" cols="50"></textarea>
+            </div>
+
         </div>
-   
-    </div>
-    <div class="row">
-        <div class="col-md-4 mb-3">
-          <label>附加檔案</label>
-           <input name="attachment" type="file"> 
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>附加檔案</label>
+                <input name="attachment" type="file">
+            </div>
+            <div class="col-md-8 mb-3">
+                <label>檔案顯示名稱</label>
+                <input type="text" name="attachment_title" class="form-control">
+            </div>
         </div>
-        <div class="col-md-8 mb-3">
-          <label>檔案顯示名稱</label>
-            <input type="text" name="attachment_title" class="form-control" >
+        <div class="row">
+            <div class="col-md-12">
+                <label>通知對象</label>
+
+            </div>
+
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-          <label>通知對象</label>
-          
-        </div>
-        
-    </div>
-   
-  
-  <button class="btn btn-primary" type="submit">Submit form</button>
-</form>
 
 
-<ul id="treeview-members">
-  <li> <i class="fa fa-plus"></i>
-    <label>
-      <input id="xnode-0" data-id="custom-0" type="checkbox" />
-      node-0 </label>
-    <ul>
-      <li> <i class="fa fa-plus"></i>
-        <label>
-          <input  id="xnode-0-1" data-id="custom-0-1" type="checkbox" />
-          node-0-1 </label>
-        <ul>
-          <li>
-            <label>
-              <input class="hummingbirdNoParent" id="xnode-0-1-1" data-id="custom-0-1-1" type="checkbox" />
-              node-0-1-1 </label>
-          </li>
-          <li>
-            <label>
-              <input class="hummingbirdNoParent" id="xnode-0-1-2" data-id="custom-0-1-2" type="checkbox" />
-              node-0-1-2 </label>
-          </li>
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+
+
+    <ul id="treeview-members">
+        <ul id="treeview">
+            <li>
+                <i class="fa fa-plus"></i>
+                <label>
+                    <input id="xnode-0" data-id="custom-0" type="checkbox" />
+                    node-0
+                </label>
+                <ul>
+                    <li>
+                        <i class="fa fa-plus"></i>
+                        <label>
+                            <input id="xnode-0-1" data-id="custom-0-1" type="checkbox" />
+                            node-0-1
+                        </label>
+                        <ul>
+                            <li>
+                                <label>
+                                    <input class="hummingbirdNoParent" id="xnode-0-1-1" data-id="custom-0-1-1" type="checkbox" />
+                                    node-0-1-1
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input class="hummingbirdNoParent" id="xnode-0-1-2" data-id="custom-0-1-2" type="checkbox" />
+                                    node-0-1-2
+                                </label>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <i class="fa fa-plus"></i>
+                        <label>
+                            <input id="xnode-0-2" data-id="custom-0-2" type="checkbox" />
+                            node-0-2
+                        </label>
+                        <ul>
+                            <li>
+                                <label>
+                                    <input class="hummingbirdNoParent" id="xnode-0-2-1" data-id="custom-0-2-1" type="checkbox" />
+                                    node-0-2-1
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input class="hummingbirdNoParent" id="xnode-0-2-2" data-id="custom-0-2-2" type="checkbox" />
+                                    node-0-2-2
+                                </label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
         </ul>
-      </li>
-      <li> <i class="fa fa-plus"></i>
-        <label>
-          <input  id="xnode-0-2" data-id="custom-0-2" type="checkbox" />
-          node-0-2 </label>
-        <ul>
-          <li>
-            <label>
-              <input class="hummingbirdNoParent" id="xnode-0-2-1" data-id="custom-0-2-1" type="checkbox" />
-              node-0-2-1 </label>
-          </li>
-          <li>
-            <label>
-              <input class="hummingbirdNoParent" id="xnode-0-2-2" data-id="custom-0-2-2" type="checkbox" />
-              node-0-2-2 </label>
-          </li>
-        </ul>
-      </li>
+   
+       
     </ul>
-  </li>
-</ul>
 
 </div>
 
 
 
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="  crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-  
- 
+
+
 <script type="text/javascript">
   (function($){
 
@@ -149,13 +159,13 @@
 		if (options.checkboxes == "disabled") {
 		    $(this).find("input:checkbox").hide();
 		}
-		
+
 		//collapseAll
 		if (options.collapseAll === false) {
 		    $.fn.hummingbird.expandAll($(this),options.collapsedSymbol,options.expandedSymbol);
 		}
 		//-------------------options-------------------------------------------------------//
-		
+
 
 		//initialise doubles logic
 		var doubleMode = false;
@@ -171,10 +181,10 @@
 		    });
 		    //console.log(JSON.stringify(allVariables));
 		}
-		
+
 		//three state logic
 		$.fn.hummingbird.ThreeStateLogic($(this),doubleMode,allVariables,options.checkDoubles,options.checkDisabled);
-		
+
 		//expandSingle
 		$(this).on("click", 'li i.' + options.collapsedSymbol, function() {
 		    $.fn.hummingbird.expandSingle($(this),options.collapsedSymbol,options.expandedSymbol);
@@ -182,7 +192,7 @@
 		//collapseSingle
 		$(this).on("click", 'li i.' + options.expandedSymbol, function() {
 		    $.fn.hummingbird.collapseSingle($(this),options.collapsedSymbol,options.expandedSymbol);
-		});		
+		});
 	    });
 	}
 
@@ -209,7 +219,7 @@
 		$.fn.hummingbird.disableNode($(this),attr,name,state);
 	    });
 	}
-	
+
 	//enableNode
 	if (methodName == "enableNode") {
 	    return this.each(function(){
@@ -222,7 +232,7 @@
 
 	//checkNode
 	if (methodName == "checkNode") {
-	    return this.each(function(){		
+	    return this.each(function(){
 		var name = args[1].name;
 		var attr = args[1].attr;
 		var expandParents = args[1].expandParents;
@@ -238,7 +248,7 @@
 	    return this.each(function(){
 		var name = args[1].name;
 		var attr = args[1].attr;
-		var collapseChildren = args[1].collapseChildren;	
+		var collapseChildren = args[1].collapseChildren;
 		$.fn.hummingbird.uncheckNode($(this),attr,name);
 		if (collapseChildren == true) {
 		    $.fn.hummingbird.collapseNode($(this),attr,name,collapseChildren,options.collapsedSymbol,options.expandedSymbol);
@@ -246,7 +256,7 @@
 	    });
 	}
 
-	
+
 
 	//setNodeColor
 	if (methodName == "setNodeColor") {
@@ -296,7 +306,7 @@
 	//getChecked
 	if (methodName == "getChecked") {
 	    return this.each(function(){
-		var attr = args[1].attr;
+	    var attr = args[1].attr;
 		var list = args[1].list;
 		var OnlyFinalInstance = args[1].OnlyFinalInstance;
 		$.fn.hummingbird.getChecked($(this),attr,list,OnlyFinalInstance);
@@ -368,10 +378,10 @@
 
     //global vars
     var nodeDisabled = true;
-    
+
 
     //-------------------methods--------------------------------------------------------------------------//
-    
+
     //-------------------checkAll---------------//
     $.fn.hummingbird.checkAll = function(tree){
 	tree.children("li").children("label").children("input:checkbox").prop('indeterminate', false).prop('checked', false).trigger("click");
@@ -429,7 +439,7 @@
 	//collapse children and change symbol
 	if (collapseChildren === true) {
 	    that_node.parent("label").parent("li").find("ul").hide().siblings("i").removeClass(expandedSymbol).addClass(collapsedSymbol);
-	} else {	    
+	} else {
 	    that_ul.hide().siblings("i").removeClass(expandedSymbol).addClass(collapsedSymbol);
 	}
     };
@@ -465,16 +475,17 @@
 	//all parents enabled
 	this_checkbox.parent("label").parent("li").parents("li").children("label").children("input[type='checkbox']").prop("disabled",false).parents("label").parent("li").css({'color':'#636b6f'});
 	//all children enabled
-	this_checkbox.parent("label").parent("li").find('input:checkbox').prop("disabled",false).parent("label").parent("li").css({'color':'#636b6f'});	
+	this_checkbox.parent("label").parent("li").find('input:checkbox').prop("disabled",false).parent("label").parent("li").css({'color':'#636b6f'});
 	this_checkbox.prop("checked",state === false);
 	nodeDisabled = false;
-	this_checkbox.trigger("click");	
+	this_checkbox.trigger("click");
     };
 
     //--------------get all checked items------------------//
     $.fn.hummingbird.getChecked = function(tree,attr,list,OnlyFinalInstance){
 	if (OnlyFinalInstance == true) {
-	    tree.find('input:checkbox.hummingbirdNoParent:checked').each(function() {
+	    tree.find('input:checkbox.hummingbirdNoParent:checked').each(function () {
+	   
 		if (attr == "text") {
 		    list.push($(this).parent("label").parent("li").text());
 		} else {
@@ -487,7 +498,7 @@
 		    list.push($(this).parent("label").parent("li").text());
 		} else {
 		    list.push($(this).attr(attr));
-		}		
+		}
 	    });
 	}
     };
@@ -512,7 +523,7 @@
     $.fn.hummingbird.setNodeColor = function(tree,attr,ID,color){
 	tree.find('input:checkbox[' + attr + '=' + ID + ']').parent("li").css({'color':color});
     };
-    
+
     //--------------three-state-logic----------------------//
     $.fn.hummingbird.ThreeStateLogic = function(tree,doubleMode,allVariables,checkDoubles,checkDisabled) {
 	tree.find('input:checkbox').on('click', function(e) {
@@ -532,14 +543,14 @@
 	    	var checkSiblings = "input:checkbox:checked";
 		//fire event
 		tree.trigger("nodeUnchecked",ids.join());
-	    }		 		 
+	    }
 	    //check / uncheck all checkboxes below that node
 	    nodes_below.prop("indeterminate",false).prop("checked",state);
 	    //set all parents indeterminate and unchecked
 	    $(this).parent("label").parent().parents("li").children("label").children("input[type='checkbox']").prop("indeterminate",true);
 	    $(this).parent("label").parent().parents("li").children("label").children("input[type='checkbox']").prop("checked",false);
 	    //travel up the DOM
-	    //test if siblings are all checked / unchecked / indeterminate       
+	    //test if siblings are all checked / unchecked / indeterminate
 	    //check / uncheck parents if all siblings are checked /unchecked
 	    //thus, set parents checked / unchecked, if children are all checked or all unchecked with no indeterminates
 	    $(this).parent("label").parents("li").map(function() {
@@ -570,7 +581,7 @@
 		}
 	    });
 
-	    
+
 	    //------------------check if this variable has doubles-----------------------//
 	    //------------------and click doubles if needed------------------------------//
 	    //------------------only if this is not a double check-----------------------//
@@ -625,7 +636,7 @@
 	    //--------------------------disabled-----------------------------------------//
 
 	    //fire event
-	    tree.trigger("CheckUncheckDone");	    
+	    tree.trigger("CheckUncheckDone");
 	});
     }
     //--------------three-state-logic----------------------//
@@ -634,7 +645,7 @@
     //----------------------------search--------------------------------------//
     $.fn.hummingbird.search = function(tree,treeview_container,search_input,search_output,search_button,dialog,enter_key_1,enter_key_2,collapsedSymbol,expandedSymbol,scrollOffset,OnlyFinalInstance,EnterKey) {
 
-	//trigger search on enter key 
+	//trigger search on enter key
 	if (EnterKey == true) {
 	    $(document).keyup(function(e) {
 		if (e.which == 13) {
@@ -711,13 +722,13 @@
 		    document.body.scrollTop = 0;
 		    //Firefox
 		    document.documentElement.scrollTop = 0;
-		} else {		    
+		} else {
 		    $(dialog + " #" + treeview_container)[0].scrollTop = 0;
-		}		    
+		}
 		//get position and offset of element
 		var this_var_checkbox_position = this_var_checkbox.position().top;
 		this_var_checkbox_position = this_var_checkbox_position+scrollOffset;
-		
+
 		if (treeview_container == "body") {
 		    //Chrome
 		    document.body.scrollTop += this_var_checkbox_position;
@@ -725,7 +736,7 @@
 		    document.documentElement.scrollTop += this_var_checkbox_position;
 		} else {
 		    $(dialog + " #" + treeview_container)[0].scrollTop = this_var_checkbox_position;
-		}		    
+		}
 		//---------------------------scrolling-----------------------------------//
 	    });
 	    //if there is only one search result -> go to this without showing the dropdown
@@ -733,7 +744,7 @@
 	    	var one_search_id = $("#" + search_output + " li").attr("id");
 	    	$("#" + one_search_id).trigger("click");
 	    }
-	    
+
 	});
     }
     //----------------------------search--------------------------------------//
@@ -745,29 +756,81 @@
 
 
 <script type="text/javascript">
+    var unitSelected = [];
+    function fetchUnits() {
        
-    $(document).ready(function () {
-        var treeview=$("#treeview-members");
+        var url = 'http://school/api/units';
+        return new Promise((resolve, reject) => {
+            $.getJSON(url)
+             .done(function (data) {
+                 createNodeList(data);
+                 resolve(true)
+             }).fail(function (error) {
+                 reject(error);
+             });
+
+        })
+    }
+    function createNodeList(data) {
+        var html = '';
+       
+     
+        for (var i = 0; i < data.length ; i++)
+        {
+            html += getNode(data[i]);
+        }
+       
+        $("#treeview-members").html(html);
+    }
+    function getNode(unit) {
+        var html = '<li>';
+      
+        if (unit.children.length) {
+            html += ' <i class="fa fa-plus"></i>';
+            html += '<label>' + '<input id="' + unit.code + '"   data-id="' + unit.code + '"   type="checkbox" />'
+            html += unit.name + '</label>';
+        } else {
+            html += '<label>' + '<input id="' + unit.code + '"   data-id="' + unit.code + '" class="hummingbirdNoParent"  type="checkbox" />'
+            html += unit.name + '</label>';
+        }
+        
+
+        if (unit.children.length) {
+            html += ' <ul>';
+            for (var i = 0; i < unit.children.length ; i++) {
+                html += getNode(unit.children[i]);
+            }
+            html += ' </ul>';
+        }
+
+        return html;
+
+    }
+    function iniUnitsTree() {
+        var treeview = $("#treeview-members");
         treeview.hummingbird();
-       // treeview.hummingbird();
-
-        // get checked nodes
-        
-
-        treeview.on("CheckUncheckDone", function(){
+        treeview.on("CheckUncheckDone", function () {
             var list = [];
-            treeview.hummingbird("getChecked",{
-                attr:"id",
+            treeview.hummingbird("getChecked", {
+                attr: "id",
                 list: list,
-                OnlyFinalInstance:true
+                OnlyFinalInstance: true
             });
-           console.log(list);
+           
         });
+    }
+    $(document).ready(function () {
+      
+        var units = fetchUnits();
 
-       
+        units.then(result => {
+            iniUnitsTree();
+        })
+        .catch(error=> {
 
-        
+        })
 
+      
     });
 
 

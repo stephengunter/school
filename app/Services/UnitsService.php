@@ -71,6 +71,8 @@ class UnitsService
         if($parent_code){
             $parent=$this->units->getByCode($parent_code);
             if(!$parent) return;
+
+            $parent_code=$parent->id;
         }
 
         Unit::create([
@@ -86,6 +88,8 @@ class UnitsService
         if($parent_code){
             $parent=$this->units->getByCode($parent_code);
             if(!$parent) return;
+
+            $parent_code=$parent->id;
         }
 
         $unit->update([

@@ -81,7 +81,7 @@ class ClassesService
         ]);
 
     }
-    private function updateClasses(Classes $classes ,GroupSync $record)
+    private function updateClass(Classes $classes ,GroupSync $record)
     {
         $parent_code=$record->parent;
         if($parent_code){

@@ -23,6 +23,23 @@ class Units
         $code=strtolower($code);
         return Unit::where('code',$code)->first();
     }
+
+    public function getTree()
+    {
+        $units=$this->getAll()
+            ->where('active',true)
+            ->where('parent',0)
+            ->orderBy('order','desc')
+            ->orderBy('updated_at','desc')
+            ->get();  
+        if(count($units)){
+            foreach ($units as $unit) {
+               $unit->getChildren();
+            }
+        }
+
+        return $units;
+    }
     
     public function findOrFail($id)
     {
