@@ -36,7 +36,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('sync:classes')->dailyAt('00:00');
         $schedule->command('sync:units')->dailyAt('00:30');
         $schedule->command('sync:departments')->dailyAt('01:00');
-        $schedule->command('sync:users')->dailyAt('02:00');
+
+        
+        $schedule->command('sync:staff')->dailyAt('01:30');
+        $schedule->command('sync:students')->dailyAt('02:00');
+
+        
         $schedule->command('sync:group')->dailyAt('05:00');
         
              

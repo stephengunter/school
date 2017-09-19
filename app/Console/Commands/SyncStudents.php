@@ -6,21 +6,21 @@ use Illuminate\Console\Command;
 
 use App\Repositories\TPSync\Users;
 
-class SyncUsers extends Command
+class SyncStudents extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sync:users';
+    protected $signature = 'sync:students';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync Users';
+    protected $description = 'Sync Students';
 
     /**
      * Create a new command instance.
@@ -42,6 +42,6 @@ class SyncUsers extends Command
     public function handle()
     {
         $this->users->syncStudents();
-        $this->info('Sync Users Has Done.');
+        $this->info('Sync Students Has Done.');
     }
 }
