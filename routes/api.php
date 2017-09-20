@@ -10,3 +10,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('/units', '\App\Http\Controllers\Api\Teamplus\UnitsController',
 ['only' => ['index']]);
+
+Route::resource('/classes', '\App\Http\Controllers\Api\Teamplus\ClassesController',
+['only' => ['index']]);

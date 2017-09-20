@@ -27,6 +27,7 @@ class Units
     public function getTree()
     {
         $units=$this->getAll()
+            ->where('code','!=', '102000')
             ->where('active',true)
             ->where('parent',0)
             ->orderBy('order','desc')
