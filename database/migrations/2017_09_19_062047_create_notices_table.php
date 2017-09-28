@@ -14,7 +14,7 @@ class CreateNoticesTable extends Migration
     public function up()
     {
         Schema::create('Notices', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('Id');
             $table->text('Content')->nullable(); 
             $table->boolean('Staff')->default(false);
             $table->boolean('Teacher')->default(false);
@@ -32,6 +32,8 @@ class CreateNoticesTable extends Migration
 
             $table->datetime('CreatedAt')->nullable();
             $table->datetime('UpdatedAt')->nullable();
+            $table->datetime('ReviewedAt')->nullable();
+            
 
             $table->text('PS')->nullable(); 
             

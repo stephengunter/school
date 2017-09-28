@@ -71,7 +71,11 @@ class ClassesService
         $parent_code=$record->parent;
         if($parent_code){
             $parent=$this->getClassByCode($parent_code);
-            if(!$parent) return;
+            if(!$parent) {
+                Log::info('CreateClass Failed. parent not found parent_code=' . $parent_code);
+                return;
+            }
+            $parent_code=$parent->id;
         }
 
         Classes::create([
@@ -86,7 +90,11 @@ class ClassesService
         $parent_code=$record->parent;
         if($parent_code){
             $parent=$this->classess->getByCode($parent_code);
-            if(!$parent) return;
+            if(!$parent) {
+                Log::info('UpdateClass Failed. parent not found parent_code=' . $parent_code);
+                return;
+            }
+            $parent_code=$parent->id;
         }
 
         $classes->update([

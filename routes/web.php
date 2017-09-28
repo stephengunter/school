@@ -13,7 +13,7 @@ Route::get('/', function () {
      return view('app');
 });
 Route::get('/test', function () {
-    return view('test');
+    return Log::info('This is some useful information.');
 });
 
 Route::get('/login', function () {
@@ -60,4 +60,4 @@ Route::resource('tp-units', '\App\Http\Controllers\Teamplus\UnitsController', ['
 Route::resource('tp-students', '\App\Http\Controllers\Teamplus\StudentsController', ['only' => ['index','store']]);
 Route::resource('tp-staff', '\App\Http\Controllers\Teamplus\StaffController', ['only' => ['index','store']]);
 Route::resource('tp-groups', '\App\Http\Controllers\Teamplus\GroupsController', ['only' => ['index','store']]);
-Route::resource('tp-notices', '\App\Http\Controllers\Teamplus\NoticesController', ['only' => ['create','store']]);
+Route::resource('tp-notices', '\App\Http\Controllers\Teamplus\NoticesController');

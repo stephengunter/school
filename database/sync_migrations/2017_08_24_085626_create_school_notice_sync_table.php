@@ -16,6 +16,9 @@ class CreateSchoolNoticeSyncTable extends Migration
             $table->integer('type_id');
             $table->text('text_content')->nullable(); 
             $table->text('members');
+			$table->string('created_by')->nullable();
+			
+			
             $table->text('media_content')->nullable(); 
             
             

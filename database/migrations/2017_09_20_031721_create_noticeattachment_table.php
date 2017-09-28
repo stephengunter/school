@@ -11,11 +11,11 @@ class CreateNoticeAttachmentTable extends Migration
         
 
         Schema::create('NoticeAttachment', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('Id');
 
             $table->integer('Notice_Id')->unsigned();
             $table->foreign('Notice_Id')
-            ->references('id')->on('Notices')
+            ->references('Id')->on('Notices')
             ->onDelete('cascade');
             
             $table->string('Title');
@@ -23,7 +23,11 @@ class CreateNoticeAttachmentTable extends Migration
             $table->string('Type');
             $table->text('FileData');
 
-            $table->timestamps();
+            $table->string('CreatedBy')->nullable();
+            $table->string('UpdatedBy')->nullable();
+
+            $table->datetime('CreatedAt')->nullable();
+            $table->datetime('UpdatedAt')->nullable();
         });
     }
 

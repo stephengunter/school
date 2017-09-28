@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\ClassesService;
+use Log;
 
 class SyncClasses extends Command
 {
@@ -41,6 +42,7 @@ class SyncClasses extends Command
     public function handle()
     {
         $this->classesService->syncClasses();
+        Log::info('Sync Classes Has Done.');
         $this->info('Sync Classes Has Done.');
     }
 }

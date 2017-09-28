@@ -70,8 +70,11 @@ class UnitsService
         $parent_code=$record->parent;
         if($parent_code){
             $parent=$this->units->getByCode($parent_code);
-            if(!$parent) return;
-
+            if(!$parent) {
+                Log::info('CreateUnit Failed. parent not found parent_code=' . $parent_code);
+                return;
+            }
+            
             $parent_code=$parent->id;
         }
 
@@ -87,7 +90,10 @@ class UnitsService
         $parent_code=$record->parent;
         if($parent_code){
             $parent=$this->units->getByCode($parent_code);
-            if(!$parent) return;
+            if(!$parent) {
+                Log::info('UpdateUnit Failed. parent not found parent_code=' . $parent_code);
+                return;
+            }
 
             $parent_code=$parent->id;
         }

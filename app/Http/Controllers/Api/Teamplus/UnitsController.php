@@ -20,10 +20,23 @@ class UnitsController extends Controller
     
     protected function index()
     {
-        $units=$this->units->getTree();
+        $request = request();
+        $mode=(int)$request->mode; 
+
+        if($mode){
+           
+            $units=$this->units->getAll()->get();
+        }else{
+
+            $units=$this->units->getTree();
+        }
+
+        
 
         return response()->json($units);
     }
+
+    
     
    
 }

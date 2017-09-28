@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Services\UnitsService;
+use Log;
 
 class SyncUnits extends Command
 {
@@ -42,6 +43,7 @@ class SyncUnits extends Command
     public function handle()
     {
         $this->unitsService->syncUnits();
+        Log::info('Sync Units Has Done.');
         $this->info('Sync Units Has Done.');
     }
 }

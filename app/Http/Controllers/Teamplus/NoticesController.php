@@ -16,9 +16,13 @@ class NoticesController extends BaseController
 {
     public function create()
     {
-        
-        return view('tp-notice.create');
+        return view('tp-notice.edit');
     }
+    public function edit($id)
+    {
+        return view('tp-notice.edit');     
+    }
+    
     public function store(Request $request)
     {
         //dd($request->toArray());
